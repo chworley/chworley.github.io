@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Pair Cycler</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 200px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px 5px 5px 0;
+    cursor: pointer;
+}
+
+.pair {
+    padding: 8px;
+    margin: 4px 0;
+    background: #f3f3f3;
+    border-radius: 6px;
+}
+
+.question {
+    padding: 12px;
+    margin: 10px 0;
+    background: #dff0ff;
+    border-left: 5px solid #4a90e2;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.round {
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
+}
+
+small {
+    color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Random Pair Cycler</h1>
+<p>Enter one name per line.</p>
+
+<textarea id="names"></textarea><br>
+
+<button onclick="start()">Start New Session</button>
+<button onclick="generateRound()">Generate Next Round</button>
+<button onclick="newQuestionOnly()">New Question Only</button>
+<button onclick="resetHistory()">Reset Pair History</button>
+
+<div id="output"></div>
+
+<script>
+
+let participants = [];
+let pairHistory = {};
+let roundNumber = 0;
+let usedQuestions = [];
+
+/*
+ * EDIT QUESTIONS HERE
+ */
+const icebreakerQuestions = [
+    "What is something you know more about than most people?",
+    "What is something you learned recently that you probably should have known sooner?",
+    "If you could instantly master one skill, what would it be?",
+    "What is your favorite snack?",
+    "What is the best movie you've seen recently?",
+    "What is a hobby you would like to try someday?",
+    "What is your dream vacation destination?",
+    "What is your favorite season and why?",
+    "If you could have any animal as a pet, what would you choose?",
+    "What is the funniest thing that happened to you this week?",
+    "What is one thing on your bucket list?",
+    "What is your favorite app on your phone?",
+    "If you could travel to any year in history, where would you go?",
+    "What is a food everyone seems to like but you don't?",
+    "What was your favorite subject in middle school?",
+    "What is your go-to music when you're in a good mood?",
+    "What is something you're looking forward to this year?",
+    "If you could invent anything, what would it be?",
+    "What is a small thing that always makes your day better?",
+    "What is the most interesting place you've ever visited?"
+];
+
+function getRandomQuestion() {
+
+    if (usedQuestions.length >= icebreakerQuestions.length) {
+        usedQuestions = [];
+    }
+
+    const available = icebreakerQuestions.filter(
+        q => !usedQuestions.includes(q)
+    );
+
+    const question =
+        available[Math.floor(Math.random() * available.length)];
+
+    usedQuestions.push(question);
+
+    return question;
+}
+
+function pairKey(a, b) {
+    return [a, b].sort().join("||");
+}
+
+function shuffle(arr) {
+    let copy = [...arr];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+function countPair(a, b) {
+    return pairHistory[pairKey(a, b)] || 0;
+}
+
+function savePair(a, b) {
+    const key = pairKey(a, b);
+    pairHistory[key] = (pairHistory[key] || 0) + 1;
+}
+
+function scorePairing(pairing) {
+    let score = 0;
+
+    for (const [a, b] of pairing) {
+        score += countPair(a, b);
+    }
+
+    return score;
+}
+
+function generateBestPairing(names) {
+
+    let best = null;
+    let bestScore = Infinity;
+
+    for (let attempt = 0; attempt < 3000; attempt++) {
+
+        let working = shuffle(names);
+        let pairing = [];
+
+        while (working.length >= 2) {
+            pairing.push([
+                working.pop(),
+                working.pop()
+            ]);
+        }
+
+        if (working.length === 1) {
+            pairing.push([
+                working.pop(),
+                "(solo)"
+            ]);
+        }
+
+        let score = scorePairing(pairing);
+
+        if (score < bestScore) {
+            bestScore = score;
+            best = pairing;
+        }
+    }
+
+    return best;
+}
+
+function start() {
+
+    participants = document.getElementById("names")
+        .value
+        .split("\n")
+        .map(x => x.trim())
+        .filter(x => x);
+
+    roundNumber = 0;
+    pairHistory = {};
+    usedQuestions = [];
+
+    document.getElementById("output").innerHTML = "";
+
+    if (participants.length < 2) {
+        alert("Need at least two names.");
+        return;
+    }
+
+    generateRound();
+}
+
+function generateRound() {
+
+    if (participants.length < 2) {
+        alert("Start a session first.");
+        return;
+    }
+
+    roundNumber++;
+
+    const question = getRandomQuestion();
+    const pairing = generateBestPairing(participants);
+
+    pairing.forEach(([a, b]) => {
+        if (b !== "(solo)") {
+            savePair(a, b);
+        }
+    });
+
+    const div = document.createElement("div");
+    div.className = "round";
+
+    let html = `
+        <h2>Round ${roundNumber}</h2>
+
+        <div id="currentQuestion" class="question">
+            Icebreaker: ${question}
+        </div>
+    `;
+
+    pairing.forEach(([a, b]) => {
+
+        if (b === "(solo)") {
+            html += `<div class="pair">${a} (solo)</div>`;
+        } else {
+            html += `<div class="pair">${a} &amp; ${b}</div>`;
+        }
+
+    });
+
+    div.innerHTML = html;
+
+    document.getElementById("output").prepend(div);
+}
+
+function newQuestionOnly() {
+
+    if (participants.length < 2) {
+        alert("Start a session first.");
+        return;
+    }
+
+    const question = getRandomQuestion();
+
+    const questionBox = document.getElementById("currentQuestion");
+
+    if (questionBox) {
+        questionBox.textContent = `Icebreaker: ${question}`;
+    }
+}
+
+function resetHistory() {
+
+    pairHistory = {};
+    roundNumber = 0;
+    usedQuestions = [];
+
+    document.getElementById("output").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
