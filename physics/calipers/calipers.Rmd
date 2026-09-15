@@ -1,0 +1,115 @@
+```{r,echo=F}
+while(T){
+    x = round(runif(1,0.6,5.9),2)
+    if(round(x,1) != round(x,2)){break}
+}
+```
+
+Question
+========
+
+[Vernier calipers](https://en.wikipedia.org/wiki/Calipers#Vernier_caliper) are cheap devices that allow precise measurements. Let's practice reading a Vernier caliper.
+
+```{r,echo=F,fig.dim=c(8,4)}
+par(mar=c(0,0,0,0))
+plot(0,0,"n",xlim=c(-1.5,10),ylim=c(-3,3),axes=F,ann=F)
+polygon(x+c(-0.3,5.4,5.4,0.8,-0.3),c(0,0,-0.7,-0.7,-3),col=rgb(0.9,0.9,0.9))
+polygon(x+c(-1,-1,-0.65,-0.65,5.4,5.4),
+          c(0,1.5,2,1.5,1.5,0),col=rgb(0.9,0.9,0.9))
+polygon(c(12,0,-0.3,-0.3,-1,-1,-0.65,-0.65,-0.3,-0.3,12),
+      c(0,0,   0,  -3,-1,1.5,1.5,2, 1.5,1.1,1.1),col="white")
+
+for(i in 0:10){
+    lines(c(i,i),c(0,0.5))
+    text(i+0.05,0.45,i,adj=0)
+    for(j in 1:9){
+        if(j == 5){
+            lines(c(i+0.1*j,i+0.1*j),c(0,0.4))
+        } else {
+            lines(c(i+0.1*j,i+0.1*j),c(0,0.25))
+        }
+    }
+}
+
+nums = c(0:9,0)
+
+for(i in 0:10){
+    xpos = x+i/10*3.9 
+    lines(c(xpos,xpos),c(0,-0.2))
+    text(xpos,-0.4,nums[i+1])
+}
+
+for(i in seq(0.5,9.5)){
+    xpos = x+i/10*3.9 
+    lines(c(xpos,xpos),c(0,-0.2))
+}
+
+text(-0.3,0.45,"cm")
+```
+\
+What is the reading on the calipers? The tolerance is 0.005 cm.
+
+
+Solution
+========
+
+The answer is `r x` cm. 
+
+To read it, first look at the left 0 on the gray part (marked in blue below). From there, go left to the nearest tickmark on the white part. From that tick mark, you get the unit digit and tenths digit (shown as a red line and a red number). Lastly, determine where the gray ticks match up best to a tick above. That is your hundredths digit (marked in purple).
+
+```{r,echo=F,fig.dim=c(8,4)}
+par(mar=c(0,0,0,0))
+plot(0,0,"n",xlim=c(-1.5,10),ylim=c(-3,3),axes=F,ann=F)
+polygon(x+c(-0.3,5.4,5.4,0.8,-0.3),c(0,0,-0.7,-0.7,-3),col=rgb(0.9,0.9,0.9))
+polygon(x+c(-1,-1,-0.65,-0.65,5.4,5.4),
+          c(0,1.5,2,1.5,1.5,0),col=rgb(0.9,0.9,0.9))
+polygon(c(12,0,-0.3,-0.3,-1,-1,-0.65,-0.65,-0.3,-0.3,12),
+      c(0,0,   0,  -3,-1,1.5,1.5,2, 1.5,1.1,1.1),col="white")
+
+for(i in 0:10){
+    lines(c(i,i),c(0,0.5))
+    text(i+0.05,0.45,i,adj=0)
+    for(j in 1:9){
+        if(j == 5){
+            lines(c(i+0.1*j,i+0.1*j),c(0,0.4))
+        } else {
+            lines(c(i+0.1*j,i+0.1*j),c(0,0.25))
+        }
+    }
+}
+
+nums = c(0:9,0)
+
+for(i in 0:10){
+    xpos = x+i/10*3.9 
+    lines(c(xpos,xpos),c(0,-0.2))
+    text(xpos,-0.4,nums[i+1])
+}
+
+for(i in seq(0.5,9.5)){
+    xpos = x+i/10*3.9 
+    lines(c(xpos,xpos),c(0,-0.15))
+}
+
+text(-0.3,0.45,"cm")
+xt = floor(x*10)/10
+lines(c(0,xt),c(0.1,0.1),col=rgb(0.9,0,0,0.5),lwd=3)
+text(xt/2,-0.2,sprintf("%.1f",xt),col=rgb(0.9,0,0))
+
+lines(c(x,x),c(0,-0.2),col="blue",lwd=3)
+
+h = x-xt
+xpos = x+h*39
+lines(c(xpos,xpos),c(0.2,-0.2),col="purple",lwd=2)
+
+```
+\
+
+
+
+Meta-information
+============
+extype: num
+exsolution: `r x`
+exname: read_vernier_caliper
+extol: 0.005

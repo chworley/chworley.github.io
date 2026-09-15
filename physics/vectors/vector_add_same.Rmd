@@ -1,0 +1,84 @@
+```{r,echo=F}
+ds = sample(1:2,1)
+if(ds==1){
+  d1 = "North"
+  d2 = "South"
+} else {
+  d1 = "East"
+  d2 = "West"
+}
+
+vv = sample(c(-1,1),1)
+
+x1 = sample(1:10,1)*vv
+x2 = sample(1:10,1)*vv
+x3 = x1+x2
+
+M1 = abs(x1)
+M2 = abs(x2)
+M3 = abs(x3)
+
+if(x1>0){
+  D1 = d1
+} else {
+  D1 = d2
+}
+
+if(x2>0){
+  D2 = d1
+} else {
+  D2 = d2
+}
+
+if(x3>0){
+  D3 = d1
+} else if(x3<0) {
+  D3 = d2
+} else {
+  D3 = "directionless"
+}
+
+ach1 = 0:20
+ach2 = c("North","East","South","West","directionless")
+
+sol1 = paste0(1*(M3==ach1),collapse="")
+sol2 = paste0(1*(ach2==D3),collapse="")
+
+al1 = paste0("* ",ach1,collapse="\n")
+al2 = paste0("* ",ach2,collapse="\n")
+
+
+```
+
+
+
+Question
+========
+
+A box sits on a frictionless surface. A `r M1` newtons force pushes the box towards `r D1`. Simultaneously a `r M2` newtons force pushes the box towards `r D2`.
+
+What is the net force?
+
+##ANSWER1## newtons ##ANSWER2##
+
+Answerlist
+--------
+
+`r al1`
+`r al2`
+
+
+
+Solution
+========
+
+The net (resultant) force is `r M3` newtons `r D3`.
+
+
+
+Meta-information
+============
+extype: cloze
+exclozetype: schoice|schoice
+exsolution: `r sol1`|`r sol2`
+exname: vector_add_easy
