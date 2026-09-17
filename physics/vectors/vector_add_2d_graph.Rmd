@@ -1,0 +1,146 @@
+```{r,echo=F}
+angle_diff <- function(a, b) {
+  abs(((a - b + pi) %% (2*pi)) - pi)
+}
+while(T){
+  u = sample(2:5,2)*sample(c(-1,1),2,T)
+  v = sample(2:5,2)*sample(c(-1,1),2,T)
+  th1 = atan2(v[1],u[1])
+  th2 = atan2(v[2],u[2])
+  u1 = u[1]
+  v1 = v[1]
+  u2 = u[2]
+  v2 = v[2]
+  u3 = sum(u)
+  v3 = sum(v)
+  if(angle_diff(th1,th2)>pi/6 && abs(angle_diff(th1,th2)-pi) > pi/6 && min(abs(c(u3,v3)))>0){
+    break
+  }
+}
+
+wu = list()
+wu[[1]] = c(-u3,v3)
+wu[[2]] = c(u3,-v3)
+wu[[3]] = c(-u3,-v3)
+wu[[4]] = c(v3,u3)
+wu[[5]] = c(-v3,u3)
+wu[[6]] = c(v3,-u3)
+wu[[7]] = c(-v3,-u3)
+wu[[8]] = c(u3+1,v3)
+wu[[9]] = c(u3-1,v3)
+wu[[10]] = c(u3,v3+1)
+wu[[11]] = c(u3,v3-1)
+
+shortc = paste0(u3,"_",v3)
+shorts = paste0(u3,"_",v3)
+choices = list(c(u3,v3))
+
+while(length(choices)<6){
+  i = sample(1:11,1)
+  cho = wu[[i]]
+  short = paste0(cho[1],"_",cho[2])
+  if(!(short %in% shorts)){
+    choices[[length(choices)+1]] = cho
+    shorts = c(shorts,short)
+  }
+}
+
+ord = sample(1:6)
+
+choices = choices[ord]
+shorts = shorts[ord]
+
+sol = paste0(1*(shorts==shortc),collapse="")
+  
+```
+
+
+Question
+========
+
+Consider a box sitting on a frictionless surface viewed from above. Two force vectors are shown as red arrows.
+
+```{r,fig.dim=c(4,4),echo=F}
+par(mar=c(0,0,0,0))
+plot(0,0,"n",xlim=c(-10,10),ylim=c(-10,10),axes=F,ann=F)
+for(i in -10:10){
+  for(j in -10:10){
+    points(i,j,pch=19,cex=0.3)
+  }
+}
+polygon(c(-0.4,-0.4,0.4,0.4),c(0.4,-0.4,-0.4,0.4),col=rgb(0,0,0,0.5))
+arrows(0,0,u1,v1,length=0.1,angle=15,2,col="red",lwd=2)
+arrows(0,0,u2,v2,length=0.1,angle=15,2,col="red",lwd=2)
+
+```
+\
+
+Which of the following options shows the **net** force acting on the box?
+
+```{r,echo=F,fig.dim=c(8,12)}
+par(mar=c(0,0,0,0),mfrow=c(3,2))
+for(i in 1:6){
+  plot(0,0,"n",xlim=c(-10,10),ylim=c(-10,10),axes=F,ann=F)
+  for(ii in -10:10){
+    for(jj in -10:10){
+      points(ii,jj,pch=19,cex=0.3)
+    }
+  }
+  polygon(c(-0.4,-0.4,0.4,0.4),c(0.4,-0.4,-0.4,0.4),col=rgb(0,0,0,0.5))
+  arrows(0,0,choices[[i]][1],choices[[i]][2],length=0.1,angle=15,2,col="blue",lwd=2)
+  text(0,9.5,LETTERS[i],cex=2)
+}
+
+```
+\
+
+
+
+Answerlist
+--------
+
+* A
+* B
+* C
+* D
+* E
+* F
+
+
+
+Solution
+========
+
+Use the parallelogram rule.
+
+
+```{r,fig.dim=c(4,4),echo=F}
+par(mar=c(0,0,0,0))
+plot(0,0,"n",xlim=c(-10,10),ylim=c(-10,10),axes=F,ann=F)
+for(i in -10:10){
+  for(j in -10:10){
+    points(i,j,pch=19,cex=0.3)
+  }
+}
+polygon(c(-0.4,-0.4,0.4,0.4),c(0.4,-0.4,-0.4,0.4),col=rgb(0,0,0,0.5))
+arrows(0,0,u1,v1,length=0.1,angle=15,2,col="red",lwd=2)
+arrows(0,0,u2,v2,length=0.1,angle=15,2,col="red",lwd=2)
+arrows(u1,v1,u3,v3,length=0.1,angle=15,2,col=rgb(1,0,0,0.7),lwd=2)
+arrows(u2,v2,u3,v3,length=0.1,angle=15,2,col=rgb(1,0,0,0.7),lwd=2)
+arrows(0,0,u3,v3,length=0.1,angle=15,2,col="blue",lwd=2)
+
+```
+\
+
+So the answer is `r LETTERS[which(shorts==shortc)]`.
+
+Meta-information
+============
+extype: schoice
+exsolution: `r sol`
+exname: vector_add_2d_graph
+
+
+
+
+
