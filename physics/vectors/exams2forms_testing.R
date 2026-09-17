@@ -2,13 +2,13 @@ library("exams2forms")
 n = 50
 
 ### Entrance ticket
-pm = list("vector_add_2d_graph.Rmd")
+pm = c("vector_perp.Rmd")
 
 exams2webquiz(pm,
              n=n,
-             title = "vector_2d_practice",
+             title = "perpendicular_vector_add_practice",
              dir = ".",
-             name="vector_2d_practice")
+             name="perpendicular_vector_add_practice")
 
 
 

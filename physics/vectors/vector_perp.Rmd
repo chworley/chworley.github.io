@@ -1,0 +1,120 @@
+```{r,echo=F}
+d1 = sample(c("North","South"),1)
+d2 = sample(c("East","West"),1)
+
+dd = paste0(d1,tolower(d2))
+
+M1 = sample(200:699,1)/100
+M2 = sample(200:699,1)/100
+
+M3 = sqrt(M1^2+M2^2)
+
+m3 = round(M3,2)
+
+ach = round(sample(-5:0,1)*0.03+0:5*0.03+M3,2)
+sol1 = paste0(1*(ach==m3),collapse="")
+
+wrd1 = c("North","South")
+wrd2 = c("east","west")
+
+ach2 = c("Northeast","Northwest","Southeast","Southwest")
+sol2 = paste0(1*(ach2==dd),collapse="")
+
+al1 = paste0("* ",sprintf("%.2f",ach),collapse="\n")
+al2 = paste0("* ",ach2,collapse="\n")
+
+# vv = sample(c(-1,1),1)
+# xs = sample(1:10,2)
+# 
+# x1 = xs[1]*vv
+# x2 = xs[1]*vv*(-1)
+# x3 = x1+x2
+# 
+# M1 = abs(x1)
+# M2 = abs(x2)
+# M3 = abs(x3)
+# 
+# if(x1>0){
+#   D1 = d1
+# } else {
+#   D1 = d2
+# }
+# 
+# if(x2>0){
+#   D2 = d1
+# } else {
+#   D2 = d2
+# }
+# 
+# if(x3>0){
+#   D3 = d1
+# } else if(x3<0) {
+#   D3 = d2
+# } else {
+#   D3 = "directionless"
+# }
+# 
+# ach1 = 0:20
+# ach2 = c("North","East","South","West","directionless")
+# 
+# sol1 = paste0(1*(M3==ach1),collapse="")
+# sol2 = paste0(1*(ach2==D3),collapse="")
+# 
+# al1 = paste0("* ",ach1,collapse="\n")
+# al2 = paste0("* ",ach2,collapse="\n")
+
+```
+
+Question
+========
+
+A box sits on a frictionless surface. A `r M1` newtons force pushes the box `r d1`. Simultaneously a `r M2` newtons force pushes the box `r d2`.
+
+What is the net force?
+
+##ANSWER1## newtons ##ANSWER2##
+
+
+Answerlist
+--------
+
+`r al1`
+`r al2`
+
+
+
+Solution
+========
+
+
+These forces are perpendicular. You should use Pythagorean Theorem to find the magnitude of the resultant (net) force.
+
+$$|F_{\mathrm{net}}| = \sqrt{(F_{1})^2+(F_2)^2}$$
+
+
+$$|F_{\mathrm{net}}| = \sqrt{`r M1`^2+`r M2`^2}$$
+
+$$|F_{\mathrm{net}}| = \sqrt{`r M1^2`+`r M2^2`}$$
+
+
+$$|F_{\mathrm{net}}| = \sqrt{`r M1^2+M2^2`}$$
+
+
+$$|F_{\mathrm{net}}| = `r sqrt(M1^2+M2^2)`$$
+
+The original numbers had 3 significant digits, so it seems like that is a good place to round our result.
+
+
+$$|F_{\mathrm{net}}| = `r sprintf("%.2f",sqrt(M1^2+M2^2))`$$
+
+And since the two forces were in directions `r d1` and `r d2`, the resultant will be somewhere between the two, so `r dd`.
+
+Remember, vectors have both MAGNITUDE and DIRECTION.
+
+
+Meta-information
+============
+extype: cloze
+exclozetype: schoice|schoice
+exsolution: `r sol1`|`r sol2`
+exname: vector_add_perp
