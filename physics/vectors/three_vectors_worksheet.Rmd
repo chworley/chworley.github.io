@@ -1,0 +1,159 @@
+---
+title: "Adding 3 and 4 Force Vectors"
+output: pdf_document
+geometry: margin=0.5in
+---
+
+```{r setup, include=FALSE}
+set.seed(2)
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+
+n_each <- 6
+zero_fraction <- 1/3
+max_component <- 5
+chain_limit <- 8
+
+random_vector <- function() {
+  repeat {
+    v <- sample(-max_component:max_component, 2, replace = TRUE)
+    if (!all(v == 0)) return(v)
+  }
+}
+
+# Generate all possible orderings of the vector indices.
+perms <- function(x) {
+  if (length(x) == 1) return(list(x))
+
+  unlist(
+    lapply(seq_along(x), function(i) {
+      lapply(perms(x[-i]), function(p) c(x[i], p))
+    }),
+    recursive = FALSE
+  )
+}
+
+# Check that every possible tip-to-tail ordering stays within
+# chain_limit in both x and y. With a visible grid from -9 to 9,
+# chain_limit = 8 leaves a one-square safety margin.
+chain_fits <- function(vecs, limit = chain_limit) {
+  all_orders <- perms(seq_along(vecs))
+
+  for (ord in all_orders) {
+    positions <- Reduce(
+      "+",
+      vecs[ord],
+      init = c(0, 0),
+      accumulate = TRUE
+    )
+
+    positions <- do.call(rbind, positions)
+
+    if (any(abs(positions) > limit)) return(FALSE)
+  }
+
+  TRUE
+}
+
+# TRUE if any two vectors are exact opposites.  For zero-resultant
+# problems, we reject these so cancellation is not visually trivial.
+has_opposite_pair <- function(vecs) {
+  if (length(vecs) < 2) return(FALSE)
+
+  for (i in 1:(length(vecs) - 1)) {
+    for (j in (i + 1):length(vecs)) {
+      if (all(vecs[[i]] == -vecs[[j]])) return(TRUE)
+    }
+  }
+
+  FALSE
+}
+
+make_problem <- function(n_vectors, make_zero = FALSE) {
+  repeat {
+    if (make_zero) {
+      vecs <- replicate(n_vectors - 1, random_vector(), simplify = FALSE)
+      last <- -Reduce("+", vecs)
+      if (all(last == 0) || any(abs(last) > max_component + 2)) next
+      vecs <- c(vecs, list(last))
+
+      # Avoid easy zero-resultant problems where two vectors simply cancel.
+      if (has_opposite_pair(vecs)) next
+    } else {
+      vecs <- replicate(n_vectors, random_vector(), simplify = FALSE)
+      total <- Reduce("+", vecs)
+      if (all(total == 0) || any(abs(total) > 8)) next
+    }
+
+    # Reject the problem if any possible ordering of the vectors
+    # could cause a student's tip-to-tail chain to leave the safe area.
+    if (!chain_fits(vecs)) next
+
+    return(list(vectors = vecs, total = Reduce("+", vecs)))
+  }
+}
+
+make_set <- function(n_vectors, n) {
+  n_zero <- round(n * zero_fraction)
+  flags <- sample(c(rep(TRUE, n_zero), rep(FALSE, n - n_zero)))
+  lapply(flags, function(z) make_problem(n_vectors, z))
+}
+
+problems <- c(make_set(3, n_each), make_set(4, n_each))
+
+setup_panel <- function(lim = 9) {
+  par(mar = c(0.15, 0.15, 0.15, 0.15), xaxs = "i", yaxs = "i", pty = "s")
+  plot(0, 0, type = "n", xlim = c(-lim, lim), ylim = c(-lim, lim),
+       xlab = "", ylab = "", axes = FALSE, asp = 1)
+  abline(v = -lim:lim, h = -lim:lim, col = "gray85", lwd = 0.7)
+  abline(h = 0, v = 0, col = "gray50", lwd = 1.1)
+  rect(-lim, -lim, lim, lim, border = "gray45", lwd = 1.1)
+}
+
+draw_pair <- function(p) {
+  old <- par(no.readonly = TRUE)
+  on.exit(par(old))
+  layout(matrix(1:2, nrow = 1), widths = c(1, 1))
+
+  setup_panel()
+  cols <- c("blue3", "red3", "darkgreen", "darkorange3")
+  for (i in seq_along(p$vectors)) {
+    v <- p$vectors[[i]]
+    arrows(0, 0, v[1], v[2], length = 0.10, lwd = 2.1, col = cols[i])
+    # text(0.62 * v[1], 0.62 * v[2], paste0("F", i),
+    #      col = cols[i], font = 2, pos = 3, cex = 0.9)
+  }
+
+  setup_panel()
+}
+
+vector_text <- function(v) paste0("<", v[1], ", ", v[2], "> \n")
+```
+
+For each problem, use the left grid to read the given vectors. On the right grid, redraw the vectors **tip-to-tail** to make a chain. Draw the resultant from the beginning of the chain to its end.
+
+```{r problems, results='asis', fig.width=7.2, fig.height=3.6, out.width='100%'}
+for (i in seq_along(problems)) {
+  p <- problems[[i]]
+
+  if (i == 1) cat("# Part A: Three Force Vectors\n\n")
+  if (i == n_each + 1) cat("# Part B: Four Force Vectors\n\n")
+
+  cat("## Problem ", i, "\n\n", sep = "")
+
+  for (j in seq_along(p$vectors)) {
+    cat("**F", j, " = ", vector_text(p$vectors[[j]]), "**", sep = "")
+    if (j < length(p$vectors)) cat("    ")
+  }
+  cat("\n\nOn the right grid, draw the chain and the resultant vector.")
+
+  draw_pair(p)
+
+  cat("\n\n\\vspace{0.5in}\n\n**Resultant vector:** <_______ , _______>  \n\n")
+  cat("\n\n\\vspace{0.5in}\n\n**Assuming these vectors represent force in newtons, what is the magnitude of the net (resultant) force?** \n\n")
+  cat("\n\n\\vspace{0.5in}\n\n**Is $\\sum F = 0$?**\n\n")
+  cat("\n\n\\vspace{0.5in}\n\n**Are these forces balanced or unbalanced?**  Balanced / Unbalanced\n\n")
+
+  # PDF page break.
+  if (i < length(problems)) cat("\n\n\\newpage\n\n")
+}
+```

@@ -1,0 +1,94 @@
+---
+title: "Add Vectors with Parallelogram Rule"
+output: pdf_document
+---
+
+
+```{r,echo=F}
+set.seed(4)
+angle_diff <- function(a, b) {
+  abs(((a - b + pi) %% (2*pi)) - pi)
+}
+
+u1s = numeric()
+v1s = numeric()
+u2s = numeric()
+v2s = numeric()
+u3s = numeric()
+v3s = numeric()
+shorts = character()
+nq = 0
+
+while(nq<40){
+  u = sample(0:5,2)*sample(c(-1,1),2,T)
+  v = sample(0:5,2)*sample(c(-1,1),2,T)
+  th1 = atan2(v[1],u[1])
+  th2 = atan2(v[2],u[2])
+  u1 = u[1]
+  v1 = v[1]
+  u2 = u[2]
+  v2 = v[2]
+  u3 = sum(u)
+  v3 = sum(v)
+  short = paste0(c(u1,v1,u2,v2),collapse=".")
+  if(angle_diff(th1,th2)>pi/8 && abs(angle_diff(th1,th2)-pi) > pi/8 && min(abs(c(u3,v3)))>0 && !(short %in% shorts) && max(c(u1,v1))>0 && max(c(u2,v2))>0){
+    nq = nq+1
+    u1s[nq] = u1
+    u2s[nq] = u2
+    u3s[nq] = u3
+    v1s[nq] = v1
+    v2s[nq] = v2
+    v3s[nq] = v3
+  }
+}
+
+```
+
+```{r,echo=F,fig.dim=c(7,2),results='asis'}
+
+mkgrid = function(xc=0){
+  for(i in c(-9,-8,-7,-6,-4,-3,-2,-1,1,2,3,4,6,7,8,9)){
+    lines(xc+c(i,i),c(-10,10),col="grey",lwd=0.5)
+    lines(xc+c(-10,10),c(i,i),col="grey",lwd=0.5)
+  }
+  for(i in c(-10,-5,5,10)){
+    lines(xc+c(i,i),c(-10,10),col="darkgrey",lwd=0.8)
+    lines(xc+c(-10,10),c(i,i),col="darkgrey",lwd=0.8)
+  }
+  lines(xc+c(-10,10),c(0,0),col="black")
+  lines(xc+c(0,0),c(-10,10),col="black")
+}
+
+for(qn in 1:nq){
+  par(mar=c(0,0,0,0))
+  plot(0,0,"n",xlim=c(0,70),ylim=c(-10,10),axes=F,ann=F)
+  mkgrid(10)
+  mkgrid(35)
+  mkgrid(60)
+  text(22.5,0,"+",cex=2)
+  text(-0.7,10,paste0(qn,")"),cex=0.7)
+  text(47.5,0,"=",cex=2)
+  arrows(10,0,10+u1s[qn],v1s[qn],0.05,15,col="red",lwd=2)
+  arrows(35,0,35+u2s[qn],v2s[qn],0.05,15,col="blue",lwd=2)
+  cat("\n\n\\vfill\n\n")
+  if(qn==1){
+    lightred = rgb(0.8,0.3,0.3)
+    lightblue = rgb(0.3,0.3,0.8)
+    arrows(60,0,60+u1s[qn],v1s[qn],0.05,15,col=lightred,lwd=1)
+    arrows(60,0,60+u2s[qn],v2s[qn],0.05,15,col=lightblue,lwd=1)
+    arrows(60+u2s[qn],v2s[qn],60+u1s[qn]+u2s[qn],v1s[qn]+v2s[qn],0.05,15,col=lightred,lwd=1)
+    arrows(60+u1s[qn],v1s[qn],60+u1s[qn]+u2s[qn],v1s[qn]+v2s[qn],0.05,15,col=lightblue,lwd=1)
+    arrows(60,0,60+u1s[qn]+u2s[qn],v1s[qn]+v2s[qn],0.07,15,col="black",lwd=1.5)
+    text(60,9.5,"Example Solution")
+  }
+}
+
+```
+
+
+
+
+
+
+
+
