@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Student Groups</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #f4f6f8;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 300px;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .controls {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, select {
+        padding: 6px;
+        font-size: 16px;
+    }
+
+    button {
+        background: #0078d4;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #005ea2;
+    }
+
+    #results {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+    }
+
+    .group {
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .group h3 {
+        margin-top: 0;
+        color: #0078d4;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .summary {
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+    .problems {
+        background: #e8f3fc;
+        color: #004578;
+        border-left: 5px solid #0078d4;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        font-size: 19px;
+        font-weight: bold;
+    }
+    .studentCount {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Random Student Group Maker</h1>
+
+<div class="card">
+    <label for="names">Student Names (one per line)</label>
+    <textarea id="names" placeholder="Alice
+Bob
+Charlie
+Diana"></textarea>
+
+    <div class="controls">
+        <div>
+            <label for="groupSize">Preferred Group Size:</label>
+            <input type="number" id="groupSize" value="4" min="2">
+        </div>
+
+        <div>
+            <label for="leftoverStyle">When uneven:</label>
+            <select id="leftoverStyle">
+                <option value="larger">Prefer Larger Groups (+1)</option>
+                <option value="smaller">Prefer Smaller Groups (-1)</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="firstProblem">First Problem:</label>
+            <input type="number" id="firstProblem" value="29" min="1">
+        </div>
+        <div>
+            <label for="lastProblem">Last Problem:</label>
+            <input type="number" id="lastProblem" value="38" min="1">
+        </div>
+        <button onclick="makeGroups()">Generate Groups</button>
+    </div>
+</div>
+
+<div class="summary" id="summary"></div>
+<div id="results"></div>
+
+<script>
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function makeGroups() {
+    let students = document.getElementById("names").value
+        .split("\n")
+        .map(n => n.trim())
+        .filter(n => n.length > 0);
+
+    const preferredSize = parseInt(document.getElementById("groupSize").value);
+    const mode = document.getElementById("leftoverStyle").value;
+
+    const resultsDiv = document.getElementById("results");
+    const summaryDiv = document.getElementById("summary");
+
+    resultsDiv.innerHTML = "";
+    summaryDiv.innerHTML = "";
+
+    if (students.length < 2) {
+        summaryDiv.textContent = "Please enter at least two names.";
+        return;
+    }
+
+    shuffle(students);
+
+    let groups = [];
+
+    if (mode === "larger") {
+
+        let numGroups = Math.floor(students.length / preferredSize);
+
+        if (numGroups === 0) numGroups = 1;
+
+        let baseSize = Math.floor(students.length / numGroups);
+        let extra = students.length % numGroups;
+
+        let index = 0;
+
+        for (let i = 0; i < numGroups; i++) {
+            let size = baseSize + (i < extra ? 1 : 0);
+            groups.push(students.slice(index, index + size));
+            index += size;
+        }
+
+    } else {
+
+        let numGroups = Math.ceil(students.length / preferredSize);
+
+        let baseSize = Math.floor(students.length / numGroups);
+        let extra = students.length % numGroups;
+
+        let index = 0;
+
+        for (let i = 0; i < numGroups; i++) {
+            let size = baseSize + (i < extra ? 1 : 0);
+            groups.push(students.slice(index, index + size));
+            index += size;
+        }
+    }
+
+    const firstProblem = parseInt(document.getElementById("firstProblem").value);
+    const lastProblem = parseInt(document.getElementById("lastProblem").value);
+    let groupProblems = Array.from({ length: groups.length }, () => []);
+    if (Number.isInteger(firstProblem) && Number.isInteger(lastProblem) && lastProblem >= firstProblem) {
+        for (let problem = firstProblem; problem <= lastProblem; problem++) {
+            const groupIndex = (problem - firstProblem) % groups.length;
+            groupProblems[groupIndex].push(problem);
+        }
+    }
+
+    summaryDiv.textContent =
+        `${students.length} students divided into ${groups.length} groups`;
+
+    groups.forEach((group, i) => {
+        const div = document.createElement("div");
+        div.className = "group";
+
+        let html = `<h3>Group ${i + 1}</h3>`;
+        if (groupProblems[i].length > 0) {
+            html += `<div class="problems">Problems: ${groupProblems[i].join(", ")}</div>`;
+        }
+        html += `<div class="studentCount">${group.length} students</div><ul>`;
+
+        group.forEach(student => {
+            html += `<li>${student}</li>`;
+        });
+
+        html += "</ul>";
+
+        div.innerHTML = html;
+        resultsDiv.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>

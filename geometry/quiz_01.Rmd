@@ -1,0 +1,731 @@
+---
+title: "Honors Geometry Quiz"
+output: pdf_document
+params:
+  seed: 1
+geometry: margin=0.75in
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+
+set.seed(params$seed)
+
+
+# ============================================================
+# HELPER FUNCTIONS
+# ============================================================
+
+# Random nonzero integer
+nonzero <- function(a, b) {
+  sample(c(a:-1, 1:b), 1)
+}
+
+
+# Format something like:
+# 2m - 3
+# m + 4
+# -m - 2
+# 3m
+format_linear <- function(a, b, variable = "m") {
+  
+  if (a == 1) {
+    first <- variable
+  } else if (a == -1) {
+    first <- paste0("-", variable)
+  } else {
+    first <- paste0(a, variable)
+  }
+  
+  if (b > 0) {
+    paste0(first, " + ", b)
+  } else if (b < 0) {
+    paste0(first, " - ", abs(b))
+  } else {
+    first
+  }
+}
+
+
+# Format ax + by = c nicely
+format_equation <- function(a, b, c) {
+  
+  if (a == 1) {
+    xpart <- "x"
+  } else if (a == -1) {
+    xpart <- "-x"
+  } else {
+    xpart <- paste0(a, "x")
+  }
+  
+  if (b == 1) {
+    ypart <- " + y"
+  } else if (b == -1) {
+    ypart <- " - y"
+  } else if (b > 0) {
+    ypart <- paste0(" + ", b, "y")
+  } else {
+    ypart <- paste0(" - ", abs(b), "y")
+  }
+  
+  paste0(xpart, ypart, " = ", c)
+}
+
+
+
+# ============================================================
+# QUESTION 1
+# QUADRILATERAL
+# ============================================================
+
+# Approximately half of generated quadrilaterals
+# will be equilateral.
+is_equilateral <- sample(c(TRUE, FALSE), 1)
+
+Ax <- sample(-4:2, 1)
+Ay <- sample(-4:2, 1)
+
+# First side vector
+choices <- list(
+  c(2, 1),
+  c(3, 1),
+  c(3, 2),
+  c(4, 1),
+  c(4, 3),
+  c(2, 3)
+)
+
+u <- choices[[sample(length(choices), 1)]]
+
+# Sometimes point downward
+if (sample(c(TRUE, FALSE), 1)) {
+  u[2] <- -u[2]
+}
+
+if (is_equilateral) {
+  
+  # A perpendicular vector of exactly the same length.
+  # This generates a square.
+  v <- c(-u[2], u[1])
+  
+  if (sample(c(TRUE, FALSE), 1)) {
+    v <- -v
+  }
+  
+} else {
+  
+  # Start with a perpendicular vector and alter it.
+  # This gives a parallelogram with unequal adjacent sides.
+  v <- c(-u[2], u[1])
+  
+  v[1] <- v[1] + sample(c(-2, -1, 1, 2), 1)
+  
+  # Safety check to guarantee unequal side lengths.
+  while (sum(u^2) == sum(v^2) || all(v == 0)) {
+    v[1] <- v[1] + sample(c(-1, 1), 1)
+  }
+}
+
+A <- c(Ax, Ay)
+B <- A + u
+D <- A + v
+C <- B + v
+
+
+
+# ============================================================
+# QUESTION 2
+# RIGHT TRIANGLES
+# ============================================================
+
+# Problems with missing hypotenuse
+legs <- list(
+  c(2, 3),
+  c(2, 5),
+  c(3, 4),
+  c(3, 5),
+  c(4, 5),
+  c(5, 6),
+  c(5, 7),
+  c(6, 7),
+  c(6, 8),
+  c(7, 8),
+  c(8, 9),
+  c(9, 12)
+)
+
+p1 <- legs[[sample(length(legs), 1)]]
+p2 <- legs[[sample(length(legs), 1)]]
+
+while (all(p1 == p2)) {
+  p2 <- legs[[sample(length(legs), 1)]]
+}
+
+
+# Problems with missing leg
+# First number = known leg
+# Second number = hypotenuse
+leg_missing <- list(
+  c(3, 5),
+  c(4, 7),
+  c(5, 8),
+  c(5, 9),
+  c(6, 10),
+  c(7, 11),
+  c(8, 13),
+  c(9, 15),
+  c(10, 17),
+  c(12, 17),
+  c(15, 17)
+)
+
+p3 <- leg_missing[[sample(length(leg_missing), 1)]]
+p4 <- leg_missing[[sample(length(leg_missing), 1)]]
+
+while (all(p3 == p4)) {
+  p4 <- leg_missing[[sample(length(leg_missing), 1)]]
+}
+
+
+
+# ============================================================
+# QUESTION 3
+# POINTS ON A LINE
+# ============================================================
+
+# Randomly use a vertical or horizontal line.
+vertical <- sample(c(TRUE, FALSE), 1)
+
+# Perpendicular distance from the point to the line
+across <- sample(2:6, 1)
+
+# Distance along the line to each solution
+along <- sample(3:8, 1)
+
+# Total distance squared
+distance_squared <- across^2 + along^2
+
+if (vertical) {
+  
+  line_value <- sample(-4:4, 1)
+  point_y <- sample(-4:4, 1)
+  
+  point_x <- line_value +
+    sample(c(-across, across), 1)
+  
+  line_text <- paste0("x = ", line_value)
+  
+} else {
+  
+  line_value <- sample(-4:4, 1)
+  point_x <- sample(-4:4, 1)
+  
+  point_y <- line_value +
+    sample(c(-across, across), 1)
+  
+  line_text <- paste0("y = ", line_value)
+}
+
+
+
+# ============================================================
+# QUESTION 4
+# DISTANCE TWO WAYS
+# ============================================================
+
+Jx <- sample(-6:1, 1)
+Jy <- sample(-5:3, 1)
+
+distance_vectors <- list(
+  c(3, 4),
+  c(4, 5),
+  c(5, 6),
+  c(5, 8),
+  c(6, 7),
+  c(7, 9),
+  c(8, 11),
+  c(9, 12)
+)
+
+change <- distance_vectors[[sample(length(distance_vectors), 1)]]
+
+dx <- change[1] * sample(c(-1, 1), 1)
+dy <- change[2] * sample(c(-1, 1), 1)
+
+Kx <- Jx + dx
+Ky <- Jy + dy
+
+
+
+# ============================================================
+# QUESTION 5
+# SYSTEM OF EQUATIONS
+# ============================================================
+
+# Choose the desired solution first.
+solution_x <- nonzero(-5, 5)
+solution_y <- nonzero(-5, 5)
+
+# Generate coefficients until the equations
+# are not parallel.
+repeat {
+  
+  a1 <- nonzero(-4, 4)
+  b1 <- nonzero(-4, 4)
+  
+  a2 <- nonzero(-4, 4)
+  b2 <- nonzero(-4, 4)
+  
+  determinant <- a1 * b2 - a2 * b1
+  
+  if (determinant != 0) {
+    break
+  }
+}
+
+# Construct the constants so the selected point
+# is guaranteed to be the solution.
+c1 <- a1 * solution_x + b1 * solution_y
+c2 <- a2 * solution_x + b2 * solution_y
+
+equation1 <- format_equation(a1, b1, c1)
+equation2 <- format_equation(a2, b2, c2)
+
+
+
+# ============================================================
+# QUESTION 6
+# EQUATION OF A LINE
+# ============================================================
+
+x1 <- sample(-6:2, 1)
+y1 <- sample(-5:5, 1)
+
+change_x <- nonzero(2, 6)
+change_y <- nonzero(2, 7)
+
+x2 <- x1 + change_x
+y2 <- y1 + change_y
+
+
+
+# ============================================================
+# QUESTION 7
+# SLOPE INVOLVING m
+# ============================================================
+
+# Choose the slope that will appear after simplification.
+slope_choices <- list(
+  c(1, 2),
+  c(2, 3),
+  c(3, 2),
+  c(3, 4),
+  c(-1, 2),
+  c(-2, 3)
+)
+
+pq <- slope_choices[[sample(length(slope_choices), 1)]]
+
+p <- pq[1]
+q <- pq[2]
+
+# Common linear factor connecting the two points
+a <- sample(1:3, 1)
+b <- sample(1:5, 1)
+
+# First point
+xA_m <- sample(1:3, 1)
+xA_b <- sample(-4:4, 1)
+
+yA_m <- sample(1:3, 1)
+yA_b <- sample(-4:4, 1)
+
+# Construct second point.
+#
+# Difference in x:
+# q(am + b)
+#
+# Difference in y:
+# p(am + b)
+#
+# So the slope simplifies to p/q.
+xB_m <- xA_m + q * a
+xB_b <- xA_b + q * b
+
+yB_m <- yA_m + p * a
+yB_b <- yA_b + p * b
+
+
+# Format the four coordinates here.
+xA_text <- format_linear(xA_m, xA_b)
+yA_text <- format_linear(yA_m, yA_b)
+
+xB_text <- format_linear(xB_m, xB_b)
+yB_text <- format_linear(yB_m, yB_b)
+
+
+
+# ============================================================
+# QUESTION 8
+# ALGEBRA
+# ============================================================
+
+# Squaring a binomial misconception
+shift <- sample(2:9, 1)
+
+
+# Monic trinomial
+r1 <- sample(2:9, 1)
+r2 <- sample(2:9, 1)
+
+while (r1 == r2) {
+  r2 <- sample(2:9, 1)
+}
+
+middle <- r1 + r2
+constant <- r1 * r2
+
+
+# Trinomial with a GCF
+gcf <- sample(2:5, 1)
+
+f1 <- sample(1:6, 1)
+f2 <- sample(1:6, 1)
+
+quad_a <- gcf
+quad_b <- gcf * (f1 + f2)
+quad_c <- gcf * f1 * f2
+
+```
+
+**Name:** ____________________________________________
+
+**Version:** `r params$seed`
+
+Show all work and clearly indicate your thinking and process. Keep your work organized. Use exact values unless otherwise indicated.
+
+# 1. Coordinate Quadrilateral
+
+Graph the points:
+
+$A(`r A[1]`, `r A[2]`)$
+
+$B(`r B[1]`, `r B[2]`)$
+
+$C(`r C[1]`, `r C[2]`)$
+
+$D(`r D[1]`, `r D[2]`)$
+
+Is quadrilateral $ABCD$ **equilateral**?
+
+Justify your work and explain clearly.
+
+
+```{r q1-grid, fig.width=5.5, fig.height=5.5}
+
+all_x <- c(A[1], B[1], C[1], D[1])
+all_y <- c(A[2], B[2], C[2], D[2])
+
+xmin <- min(-1, all_x) - 2
+xmax <- max(1, all_x) + 2
+
+ymin <- min(-1, all_y) - 2
+ymax <- max(1, all_y) + 2
+
+plot(
+  NULL,
+  xlim = c(xmin, xmax),
+  ylim = c(ymin, ymax),
+  asp = 1,
+  xlab = "x",
+  ylab = "y",
+  xaxt = "n",
+  yaxt = "n"
+)
+
+x_ticks <- floor(xmin):ceiling(xmax)
+y_ticks <- floor(ymin):ceiling(ymax)
+
+abline(
+  v = x_ticks,
+  h = y_ticks,
+  col = "lightgray",
+  lwd = 0.7
+)
+
+abline(
+  h = 0,
+  v = 0,
+  col = "black",
+  lwd = 1.2
+)
+
+axis(
+  side = 1,
+  at = x_ticks
+)
+
+axis(
+  side = 2,
+  at = y_ticks,
+  las = 1
+)
+
+box()
+
+```
+
+
+\newpage
+
+# 2. Right Triangles
+
+Find the missing side of each **right triangle**.
+
+The third side listed is always the hypotenuse.
+
+Give each answer in **simplified radical form** when necessary. Show your work.
+
+
+### a.
+
+`r p1[1]`, `r p1[2]`, ________
+
+
+\vspace{0.9in}
+
+
+### b.
+
+`r p2[1]`, `r p2[2]`, ________
+
+
+\vspace{0.9in}
+
+
+### c.
+
+`r p3[1]`, ________, `r p3[2]`
+
+
+\vspace{0.9in}
+
+
+### d.
+
+________, `r p4[1]`, `r p4[2]`
+
+
+\newpage
+
+# 3. Points on a Line
+
+Find **both points** on the line
+
+$$
+`r line_text`
+$$
+
+that are
+
+$$
+\sqrt{`r distance_squared`}
+$$
+
+units from the point
+
+$$
+(`r point_x`, `r point_y`).
+$$
+
+Draw a diagram and show your work.
+
+
+\vspace{1in}
+
+
+**First point:** ____________________________________
+
+
+\vspace{0.3in}
+
+
+**Second point:** ___________________________________
+
+
+\newpage
+
+# 4. Distance Two Ways
+
+Given the points
+
+$$
+J(`r Jx`, `r Jy`)
+$$
+
+and
+
+$$
+K(`r Kx`, `r Ky`),
+$$
+
+answer both questions below.
+
+
+## a. Pythagorean Theorem
+
+Find the length of segment $JK$ using the **Pythagorean Theorem**.
+
+
+\vspace{1.5in}
+
+
+## b. Distance Formula
+
+Find the length of segment $JK$ using the **Distance Formula**.
+
+
+\vspace{1.5in}
+
+
+\newpage
+
+# 5. Intersection of Two Lines
+
+Given
+
+$$
+`r equation1`
+$$
+
+and
+
+$$
+`r equation2`,
+$$
+
+solve for their intersection.
+
+Give your answer in **exact values** and show your work.
+
+
+\vspace{2in}
+
+
+**Intersection:** ___________________________________
+
+
+\newpage
+
+# 6. Equation of a Line
+
+Given the points
+
+$$
+(`r x1`, `r y1`)
+$$
+
+and
+
+$$
+(`r x2`, `r y2`),
+$$
+
+find the equation of the line.
+
+Show enough work to justify your answer.
+
+
+\vspace{2.25in}
+
+
+**Equation:** _______________________________________
+
+
+\newpage
+
+# 7. Slope with Variables
+
+Given the points
+
+$$
+(`r xA_text`,\ `r yA_text`)
+$$
+
+and
+
+$$
+(`r xB_text`,\ `r yB_text`),
+$$
+
+find the slope of the line.
+
+Simplify completely and show your algebra.
+
+
+\vspace{2.25in}
+
+
+**Slope:** __________________________________________
+
+
+\newpage
+
+# 8. Algebra
+
+
+## a. Squaring a Binomial
+
+Does
+
+$$
+(x + `r shift`)^2 = x^2 + `r shift^2`
+$$
+
+for all values of $x$?
+
+Explain.
+
+
+\vspace{1.25in}
+
+
+## b. Factor
+
+Factor completely:
+
+$$
+y^2 + `r middle`y + `r constant`
+$$
+
+
+\vspace{1.25in}
+
+
+## c. Factor Completely
+
+Factor completely:
+
+$$
+`r quad_a`v^2 + `r quad_b`v + `r quad_c`
+$$
+
+\vspace{1.25in}
+
+\newpage
+
+
+
+# 9. Important Question
+
+What is your favorite class other than Geometry?
+
+Why?
+
+
+\vspace{2in}
