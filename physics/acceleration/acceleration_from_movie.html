@@ -116,7 +116,7 @@
           <div class="row"><input id="v2" type="number" step="any" inputmode="decimal"><span class="unit">m/s</span></div>
         </div>
         <div class="box">
-          <label for="acc">Average acceleration</label>
+          <label for="acc">Acceleration</label>
           <div class="row"><input id="acc" type="number" step="any" inputmode="decimal"><span class="unit">m/s&sup2;</span></div>
         </div>
       </div>
@@ -331,7 +331,7 @@ function startMovie(){
   $("checkBtn").disabled = false;
   $("taskText").innerHTML =
     "This movie was recorded at <b>" + P.fps + " frames per second</b>. Step through the frames and estimate the velocity at <b>t = " + P.t1 + " s</b> and at <b>t = " + P.t2 +
-    " s</b>. Then use your two velocities to calculate the average acceleration.";
+    " s</b>. Then use your two velocities to calculate the acceleration.";
   $("v1Label").textContent = "Velocity at t = " + P.t1 + " s";
   $("v2Label").textContent = "Velocity at t = " + P.t2 + " s";
   draw();
