@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acceleration from a Movie</title>
+<style>
+  :root { --ink:#1d2433; --muted:#5b6478; --line:#d5d9e2; --bg:#f4f6fa; --accent:#2457d6; --ok:#177a3c; --bad:#b3261e; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; }
+  .hidden { display:none !important; }
+  label { font-weight:600; }
+  input[type=text], input[type=number], select { font-size:1.05rem; padding:8px 10px; border:1px solid #b7bdcb; border-radius:8px; background:#fff; }
+  input[type=text] { width: min(360px, 100%); }
+  button { font-size:1rem; padding:9px 14px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.45; cursor:default; }
+  canvas { width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  canvas.mouseMode { cursor:crosshair; touch-action:none; }
+  .controls { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .controls.sliderRow input[type=range] { flex:1; min-width:160px; }
+  .framelabel { font-variant-numeric: tabular-nums; color:var(--muted); min-width:140px; text-align:right; }
+  .spacer { flex:1; }
+  .task { font-size:1.05rem; line-height:1.5; }
+  .task b { color: var(--accent); }
+  .answers { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:14px; margin-top:12px; }
+  .answers div.box { display:flex; flex-direction:column; gap:6px; }
+  .answers .row { display:flex; align-items:center; gap:8px; }
+  .answers input { width:120px; }
+  .unit { color:var(--muted); }
+  .msg { margin-top:14px; padding:12px 14px; border-radius:8px; background:#fdecea; border:1px solid #f3b8b3; color:var(--bad); }
+  .msg ul { margin:6px 0 10px 18px; padding:0; }
+  .win { text-align:center; border:3px solid var(--ok); }
+  .win h2 { color:var(--ok); font-size:2rem; margin:0 0 6px; }
+  .win .name { font-size:1.5rem; font-weight:700; margin:6px 0; }
+  .win .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size:2.2rem; letter-spacing:.12em; background:#eef7f0; border:2px dashed var(--ok); display:inline-block; padding:8px 22px; border-radius:10px; margin:10px 0; }
+  .win .meta { color:var(--muted); }
+  .teacher { border:1px dashed #b7bdcb; background:#fafbfd; }
+  .tip { color:var(--muted); font-size:.92rem; margin:10px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Acceleration from a Movie</h1>
+  <p class="sub">Estimate velocities from the position of a moving dot, then calculate its acceleration.</p>
+
+  <!-- NAME SCREEN -->
+  <div id="nameScreen" class="card">
+    <p><label for="nameInput">Enter your full name:</label></p>
+    <p><input id="nameInput" type="text" autocomplete="off" placeholder="First Last"></p>
+    <p><button id="startBtn">Start</button></p>
+    <p class="tip">Your name is used to generate a verification code on the final screen, so enter it the same way you appear on the roster.</p>
+  </div>
+
+  <!-- TEACHER VERIFY (only visible at page URL ending in #teacher) -->
+  <div id="teacherBox" class="card teacher hidden">
+    <p><label for="teacherName">Teacher tool: enter a student name to get the expected code</label></p>
+    <p><input id="teacherName" type="text" placeholder="Student name">
+       <button class="secondary" id="teacherBtn">Compute code</button></p>
+    <p id="teacherOut" style="font-family:monospace;font-size:1.3rem"></p>
+  </div>
+
+  <!-- PRACTICE SCREEN -->
+  <div id="practice" class="hidden">
+    <div class="card">
+      <p class="task" id="taskText"></p>
+      <canvas id="cv" width="1000" height="330"></canvas>
+
+      <div class="controls sliderRow">
+        <input type="range" id="slider" min="0" max="500" step="1" value="0" aria-label="Frame">
+        <span class="framelabel" id="frameLabel"></span>
+      </div>
+
+      <div class="controls">
+        <button id="playBtn">&#9654; Play</button>
+        <label for="speedSel" class="unit" style="font-weight:400">Speed</label>
+        <select id="speedSel">
+          <option value="1">1&times;</option>
+          <option value="0.25">0.25&times;</option>
+          <option value="0.1">0.1&times;</option>
+        </select>
+        <label for="magMode" class="unit" style="font-weight:400">Magnifier</label>
+        <select id="magMode">
+          <option value="dot" selected>Follow the dot</option>
+          <option value="mouse">Follow my mouse</option>
+          <option value="off">Off</option>
+        </select>
+        <select id="magZoom" aria-label="Magnification">
+          <option value="6">6&times;</option>
+          <option value="10" selected>10&times;</option>
+          <option value="16">16&times;</option>
+        </select>
+        <span class="spacer"></span>
+        <button class="secondary" data-step="-50">&minus;50</button>
+        <button class="secondary" data-step="-10">&minus;10</button>
+        <button class="secondary" data-step="-1">&#9664; &minus;1</button>
+        <button class="secondary" data-step="1">+1 &#9654;</button>
+        <button class="secondary" data-step="10">+10</button>
+        <button class="secondary" data-step="50">+50</button>
+      </div>
+      <p class="tip">The magnifier shows a zoomed strip of the axis with ticks every 0.1 m, so you can read the dot's position precisely. Buttons step by that many frames. Keyboard: left/right arrows = 1 frame, Shift + arrow = 10 frames, Space = play/pause.</p>
+    </div>
+
+    <div class="card">
+      <div class="answers">
+        <div class="box">
+          <label for="v1" id="v1Label"></label>
+          <div class="row"><input id="v1" type="number" step="any" inputmode="decimal"><span class="unit">m/s</span></div>
+        </div>
+        <div class="box">
+          <label for="v2" id="v2Label"></label>
+          <div class="row"><input id="v2" type="number" step="any" inputmode="decimal"><span class="unit">m/s</span></div>
+        </div>
+        <div class="box">
+          <label for="acc">Average acceleration</label>
+          <div class="row"><input id="acc" type="number" step="any" inputmode="decimal"><span class="unit">m/s&sup2;</span></div>
+        </div>
+      </div>
+      <p><button id="checkBtn">Check my answers</button></p>
+      <div id="feedback" class="msg hidden"></div>
+    </div>
+  </div>
+
+  <!-- WIN SCREEN -->
+  <div id="winScreen" class="card win hidden">
+    <h2>&#10003; Nice work!</h2>
+    <div>All three answers are correct.</div>
+    <div class="name" id="winName"></div>
+    <div class="code" id="winCode"></div>
+    <div class="meta" id="winMeta"></div>
+    <p class="tip">Take a screenshot of this screen and submit it for credit.</p>
+  </div>
+</div>
+
+<script>
+/* ============ SETTINGS YOU MAY WANT TO EDIT ============ */
+const SALT = "Bartholomew";   // Change before using with your class. Keep private.
+const FPS_CHOICES = [50];                   // e.g. [30, 40, 50] to pick the frame rate at random each movie
+const T_TOTAL = 10;                         // movie length in seconds
+const TOL_V_ABS = 0.1, TOL_V_REL = 0.05;    // velocity tolerance: larger of 0.4 m/s or 10%
+const TOL_A_ABS = 0.1, TOL_A_REL = 0.05;   // acceleration tolerance: larger of 0.15 m/s^2 or 15%
+const SHOW_ANSWERS_ON_MISS = true;         // true = reveal correct values after a miss
+/* ======================================================= */
+
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+const W = 1000, H = 330;
+(function fixDPR(){
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = W*dpr; cv.height = H*dpr; ctx.scale(dpr, dpr);
+})();
+
+let studentName = "", attempts = 0, frame = 0, P = null, N = 0;
+let playing = false, playStartTime = 0, playFrame0 = 0, rafId = 0;
+
+/* ---------- verification code ---------- */
+function hash53(str){
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < str.length; i++){
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+function normName(n){ return n.trim().toLowerCase().replace(/\s+/g, " "); }
+function codeFor(name){
+  const s = hash53(normName(name) + "|" + SALT).toString(36).toUpperCase().padStart(6, "0");
+  return s.slice(0,3) + "-" + s.slice(3,6);
+}
+
+/* ---------- random problem ---------- */
+const rnd = (lo, hi) => lo + Math.random()*(hi-lo);
+const rint = (lo, hi) => Math.floor(rnd(lo, hi+1));
+function newProblem(){
+  const a  = Math.round(rnd(0.3, 1.2)*10)/10;      // m/s^2
+  const v0 = Math.round(rnd(0, 2)*2)/2;            // m/s (0, 0.5, ... 2)
+  const x0 = rint(0, 5);                           // m
+  const t1 = rint(1, 3);                           // s
+  const t2 = rint(6, 9);                           // s
+  const fps = FPS_CHOICES[rint(0, FPS_CHOICES.length-1)];
+  const xEnd = x0 + v0*T_TOTAL + 0.5*a*T_TOTAL*T_TOTAL;
+  const xmax = Math.ceil((xEnd + 3)/10)*10;
+  return { a, v0, x0, t1, t2, fps, xmax };
+}
+const xAt = t => P.x0 + P.v0*t + 0.5*P.a*t*t;
+
+/* ---------- drawing ---------- */
+const AXIS_Y = 250, PAD = 40;
+const LENS_W = 420, LENS_H = 120, LENS_TOP = 10, LENS_LEFT = W - 420 - 14, LENS_AX = 45;
+const lens = { mode: "dot", show: false, mx: 0, z: 10, fx: 0 };
+const pxOf = x => PAD + (x/P.xmax)*(W - 2*PAD);
+
+/* Draws the whole scene. z = 1 for the normal view; z > 1 when drawing inside the magnifier
+   (the canvas transform is already scaled by z, so sizes are divided by z to stay crisp). */
+function drawScene(c, z){
+  const lensMode = z > 1;
+  const axisY = AXIS_Y, px = pxOf;
+  const pxPerM = (W - 2*PAD)/P.xmax;
+
+  c.fillStyle = "#fff"; c.fillRect(-5000, -5000, 10000, 10000);
+
+  // axis line
+  c.strokeStyle = "#222"; c.fillStyle = "#222"; c.textAlign = "center";
+  c.lineWidth = lensMode ? 2.2/z : 2;
+  c.beginPath(); c.moveTo(px(0), axisY); c.lineTo(px(P.xmax), axisY); c.stroke();
+
+  // ticks
+  c.lineWidth = lensMode ? 1.3/z : 1;
+  if (!lensMode){
+    c.font = "14px system-ui, sans-serif";
+    const step = pxPerM >= 8 ? 0.5 : 1;               // add half-meter ticks when there is room
+    for (let i = 0; i * step <= P.xmax + 1e-9; i++){
+      const m = i * step;
+      const len = m % 10 === 0 ? 14 : (m % 5 === 0 ? 10 : (m % 1 === 0 ? 6 : 3));
+      c.beginPath(); c.moveTo(px(m), axisY); c.lineTo(px(m), axisY + len); c.stroke();
+      if (m % 10 === 0) c.fillText(String(m), px(m), axisY + 32);
+    }
+    c.textAlign = "right"; c.fillText("position (m)", W - 10, axisY + 58);
+  } else {
+    // fine ticks every 0.1 m; longer at 0.5 m and 1 m; a label at every meter
+    c.font = (18/z) + "px system-ui, sans-serif";
+    const halfM = (LENS_W/2)/(z*pxPerM) + 0.3;
+    const fxM = (lens.fx - PAD)/pxPerM;
+    const iLo = Math.max(0, Math.floor((fxM - halfM)*10));
+    const iHi = Math.min(Math.round(P.xmax*10), Math.ceil((fxM + halfM)*10));
+    for (let i = iLo; i <= iHi; i++){
+      const m = i/10;
+      const len = (i % 10 === 0 ? 38 : (i % 5 === 0 ? 26 : 16))/z;
+      c.beginPath(); c.moveTo(px(m), axisY); c.lineTo(px(m), axisY + len); c.stroke();
+      if (i % 10 === 0) c.fillText(String(m), px(m), axisY + 62/z);
+    }
+  }
+
+  // dot with thin guide line down to the axis
+  const t = frame / P.fps, x = xAt(t), dotY = axisY - 40;
+  //if (lensMode){ c.strokeStyle = "#e01616"; c.lineWidth = 1.3/z; }
+  // else { c.strokeStyle = "#b9bfcc"; c.lineWidth = 1; c.setLineDash([3,3]); }
+  if (lensMode){ c.strokeStyle = "#e01616"; c.lineWidth = 1.3/z; }
+  else { c.strokeStyle = "#e01616"; c.lineWidth = 1; }
+  c.beginPath(); c.moveTo(px(x), dotY); c.lineTo(px(x), axisY); c.stroke();
+  // c.setLineDash([]);
+  c.fillStyle = "#e01616";
+  c.beginPath(); c.arc(px(x), dotY, 8, 0, Math.PI*2); c.fill();
+
+  // stopwatch (not repeated inside the magnifier)
+  if (!lensMode){
+    c.fillStyle = "#111"; c.fillRect(14, 12, 190, 44);
+    c.fillStyle = "#7CFF9B"; c.font = "bold 26px ui-monospace, Menlo, Consolas, monospace"; c.textAlign = "left";
+    c.fillText("t = " + t.toFixed(2) + " s", 24, 43);
+  }
+}
+
+function draw(){
+  ctx.clearRect(0, 0, W, H);
+  drawScene(ctx, 1);
+
+  if (lens.mode !== "off"){
+    const dotPx = pxOf(xAt(frame / P.fps));
+    const fx = (lens.mode === "mouse" && lens.show) ? lens.mx : dotPx;
+    lens.fx = fx;
+
+    // small marker on the main axis showing which stretch is being magnified
+    const halfPx = LENS_W/(2*lens.z);
+    ctx.strokeStyle = "#2457d6"; ctx.lineWidth = 1.5;
+    ctx.strokeRect(fx - halfPx, AXIS_Y - 12, 2*halfPx, 30);
+
+    // magnifier window, fixed in the top-right corner
+    ctx.save();
+    ctx.beginPath(); ctx.rect(LENS_LEFT, LENS_TOP, LENS_W, LENS_H); ctx.clip();
+    ctx.translate(LENS_LEFT + LENS_W/2, LENS_TOP + LENS_AX);
+    ctx.scale(lens.z, lens.z);
+    ctx.translate(-fx, -AXIS_Y);
+    drawScene(ctx, lens.z);
+    ctx.restore();
+    ctx.strokeStyle = "#2457d6"; ctx.lineWidth = 3;
+    ctx.strokeRect(LENS_LEFT, LENS_TOP, LENS_W, LENS_H);
+    ctx.fillStyle = "#2457d6"; ctx.font = "12px system-ui, sans-serif"; ctx.textAlign = "left";
+    ctx.fillText(lens.z + "× magnifier (ticks every 0.1 m)", LENS_LEFT + 6, LENS_TOP + 14);
+  }
+
+  $("frameLabel").textContent = "Frame " + (frame+1) + " of " + N;
+  $("slider").value = frame;
+  $("playBtn").innerHTML = playing ? "&#10074;&#10074; Pause" : "&#9654; Play";
+}
+
+/* ---------- playback / navigation ---------- */
+function stopPlay(){
+  playing = false;
+  cancelAnimationFrame(rafId);
+  if (P) draw();
+}
+function setFrame(i){
+  if (playing) stopPlay();
+  frame = Math.max(0, Math.min(N-1, i));
+  draw();
+}
+function tick(now){
+  if (!playing) return;
+  const speed = parseFloat($("speedSel").value);
+  const f = playFrame0 + Math.floor((now - playStartTime)/1000 * P.fps * speed);
+  if (f >= N-1){ frame = N-1; stopPlay(); return; }
+  if (f !== frame){ frame = f; draw(); }
+  rafId = requestAnimationFrame(tick);
+}
+function togglePlay(){
+  if (playing){ stopPlay(); return; }
+  if (frame >= N-1) frame = 0;
+  playing = true;
+  playFrame0 = frame;
+  playStartTime = performance.now();
+  draw();
+  rafId = requestAnimationFrame(tick);
+}
+
+/* ---------- flow ---------- */
+function startMovie(){
+  if (playing) stopPlay();
+  P = newProblem();
+  N = Math.round(T_TOTAL * P.fps) + 1;
+  frame = 0;
+  $("slider").max = N-1;
+  $("v1").value = $("v2").value = $("acc").value = "";
+  $("feedback").classList.add("hidden");
+  $("checkBtn").disabled = false;
+  $("taskText").innerHTML =
+    "This movie was recorded at <b>" + P.fps + " frames per second</b>. Step through the frames and estimate the velocity at <b>t = " + P.t1 + " s</b> and at <b>t = " + P.t2 +
+    " s</b>. Then use your two velocities to calculate the average acceleration.";
+  $("v1Label").textContent = "Velocity at t = " + P.t1 + " s";
+  $("v2Label").textContent = "Velocity at t = " + P.t2 + " s";
+  draw();
+}
+
+function begin(){
+  const n = $("nameInput").value.trim();
+  if (n.length < 2){ alert("Please enter your full name."); return; }
+  studentName = n; attempts = 0;
+  $("nameScreen").classList.add("hidden");
+  $("teacherBox").classList.add("hidden");
+  $("practice").classList.remove("hidden");
+  startMovie();
+}
+
+function okWithin(val, truth, tolAbs, tolRel){
+  return Math.abs(val - truth) <= Math.max(tolAbs, tolRel*Math.abs(truth));
+}
+function parseNum(s){ const v = parseFloat(String(s).replace(",", ".")); return isFinite(v) ? v : NaN; }
+
+function check(){
+  const v1 = parseNum($("v1").value), v2 = parseNum($("v2").value), a = parseNum($("acc").value);
+  if ([v1, v2, a].some(isNaN)){
+    const fb = $("feedback");
+    fb.innerHTML = "Please fill in all three boxes with numbers.";
+    fb.classList.remove("hidden");
+    return;
+  }
+  const tv1 = P.v0 + P.a*P.t1, tv2 = P.v0 + P.a*P.t2, ta = P.a;
+  const r1 = okWithin(v1, tv1, TOL_V_ABS, TOL_V_REL);
+  const r2 = okWithin(v2, tv2, TOL_V_ABS, TOL_V_REL);
+  const r3 = okWithin(a,  ta,  TOL_A_ABS, TOL_A_REL);
+  attempts++;
+  if (r1 && r2 && r3){ showWin(); return; }
+
+  const items = [];
+  if (!r1) items.push("Velocity at t = " + P.t1 + " s" + (SHOW_ANSWERS_ON_MISS ? " (about " + tv1.toFixed(2) + " m/s)" : ""));
+  if (!r2) items.push("Velocity at t = " + P.t2 + " s" + (SHOW_ANSWERS_ON_MISS ? " (about " + tv2.toFixed(2) + " m/s)" : ""));
+  if (!r3) items.push("Acceleration" + (SHOW_ANSWERS_ON_MISS ? " (about " + ta.toFixed(2) + " m/s\u00b2)" : ""));
+  const fb = $("feedback");
+  fb.innerHTML = "<b>Not quite.</b> These answers were outside the allowed range:<ul>" +
+    items.map(s => "<li>" + s + "</li>").join("") +
+    "</ul>A new movie with different motion will be generated. Think about how you read positions and how you find velocity from them.<br><br>" +
+    "<button id=\"retryBtn\">Start a new movie</button>";
+  fb.classList.remove("hidden");
+  $("checkBtn").disabled = true;
+  $("retryBtn").addEventListener("click", startMovie);
+}
+
+function showWin(){
+  if (playing) stopPlay();
+  $("practice").classList.add("hidden");
+  $("winName").textContent = studentName;
+  $("winCode").textContent = codeFor(studentName);
+  const now = new Date();
+  $("winMeta").textContent = now.toLocaleString() + "  \u2022  Attempts: " + attempts;
+  $("winScreen").classList.remove("hidden");
+}
+
+/* ---------- events ---------- */
+$("startBtn").addEventListener("click", begin);
+$("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") begin(); });
+$("playBtn").addEventListener("click", togglePlay);
+$("magMode").addEventListener("change", e => {
+  lens.mode = e.target.value;
+  cv.classList.toggle("mouseMode", lens.mode === "mouse");
+  lens.show = false;
+  draw();
+});
+$("magZoom").addEventListener("change", e => { lens.z = parseFloat(e.target.value); draw(); });
+function lensPointer(e){
+  if (lens.mode !== "mouse") return;
+  const r = cv.getBoundingClientRect();
+  lens.mx = (e.clientX - r.left) * W / r.width;
+  lens.show = true;
+  draw();
+}
+cv.addEventListener("pointermove", lensPointer);
+cv.addEventListener("pointerdown", lensPointer);
+cv.addEventListener("pointerleave", e => { if (e.pointerType === "mouse"){ lens.show = false; if (P) draw(); } });
+$("slider").addEventListener("input", e => setFrame(parseInt(e.target.value, 10)));
+document.querySelectorAll("button[data-step]").forEach(b =>
+  b.addEventListener("click", () => setFrame(frame + parseInt(b.dataset.step, 10))));
+$("checkBtn").addEventListener("click", check);
+document.addEventListener("keydown", e => {
+  if ($("practice").classList.contains("hidden")) return;
+  const tag = e.target.tagName;
+  if ((tag === "INPUT" && e.target.type !== "range") || tag === "SELECT" || tag === "BUTTON") return;
+  if (e.key === "ArrowRight"){ setFrame(frame + (e.shiftKey ? 10 : 1)); e.preventDefault(); }
+  else if (e.key === "ArrowLeft"){ setFrame(frame - (e.shiftKey ? 10 : 1)); e.preventDefault(); }
+  else if (e.key === " "){ togglePlay(); e.preventDefault(); }
+});
+
+/* teacher tool: open this page with #teacher at the end of the URL */
+if (location.hash === "#teacher") $("teacherBox").classList.remove("hidden");
+$("teacherBtn").addEventListener("click", () => {
+  const n = $("teacherName").value;
+  $("teacherOut").textContent = n.trim() ? codeFor(n) : "";
+});
+</script>
+</body>
+</html>
