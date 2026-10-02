@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alternate Page PDF Rotator</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, sans-serif; color:#172033; background:#f5f7fa; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; }
+    main { width:min(680px,100%); background:white; border:1px solid #dce2ea; border-radius:18px; box-shadow:0 8px 30px #13213a12; padding:32px; box-sizing:border-box; }
+    h1 { margin:0 0 8px; font-size:28px; }
+    p { color:#526174; line-height:1.5; }
+    .drop { margin:26px 0 18px; border:2px dashed #c9d2df; border-radius:16px; padding:30px; text-align:center; background:#fbfcfe; }
+    input { width:100%; }
+    button, .download { appearance:none; border:0; border-radius:11px; padding:12px 18px; font-weight:650; font-size:14px; cursor:pointer; text-decoration:none; text-align:center; box-sizing:border-box; }
+    button { background:#172033; color:white; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    .download { background:#e9f1ff; color:#174ea6; display:none; }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    #status { margin-top:18px; padding:12px 14px; border-radius:10px; background:#f0f3f7; font-size:14px; color:#46556a; }
+    .small { font-size:12px; margin-top:20px; }
+    @media(max-width:560px){ main{padding:22px}.actions{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Alternate Page PDF Rotator</h1>
+  <p>Leaves pages 1, 3, 5, ... alone and rotates pages 2, 4, 6, ... by 180 degrees.</p>
+
+  <div class="drop">
+    <input id="file" type="file" accept="application/pdf,.pdf">
+  </div>
+
+  <div class="actions">
+    <button id="rotate" disabled>Rotate every other page</button>
+    <a id="download" class="download">Download rotated PDF</a>
+  </div>
+
+  <div id="status">Choose a PDF to begin.</div>
+  <p class="small">Your PDF is processed locally in this browser. This file loads pdf-lib from a CDN, so an internet connection is needed when you use it.</p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+const fileInput = document.getElementById('file');
+const rotateButton = document.getElementById('rotate');
+const download = document.getElementById('download');
+const statusBox = document.getElementById('status');
+let currentURL = null;
+
+fileInput.addEventListener('change', () => {
+  if (currentURL) URL.revokeObjectURL(currentURL);
+  currentURL = null;
+  download.style.display = 'none';
+  const f = fileInput.files[0];
+  rotateButton.disabled = !f;
+  statusBox.textContent = f ? `Ready: ${f.name}` : 'Choose a PDF to begin.';
+});
+
+rotateButton.addEventListener('click', async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  rotateButton.disabled = true;
+  download.style.display = 'none';
+  statusBox.textContent = 'Reading PDF...';
+
+  try {
+    if (!window.PDFLib) throw new Error('pdf-lib did not load. Check the internet connection and reload this page.');
+    const { PDFDocument, degrees } = window.PDFLib;
+    const bytes = await file.arrayBuffer();
+    const pdf = await PDFDocument.load(bytes);
+    const pages = pdf.getPages();
+
+    // Page array index 1 is human page 2, index 3 is page 4, etc.
+    for (let i = 1; i < pages.length; i += 2) {
+      const page = pages[i];
+      const oldAngle = page.getRotation().angle || 0;
+      page.setRotation(degrees((oldAngle + 180) % 360));
+    }
+
+    statusBox.textContent = `Rotated ${Math.floor(pages.length / 2)} of ${pages.length} pages. Saving...`;
+    const outputBytes = await pdf.save();
+    const blob = new Blob([outputBytes], { type: 'application/pdf' });
+    if (currentURL) URL.revokeObjectURL(currentURL);
+    currentURL = URL.createObjectURL(blob);
+
+    const baseName = file.name.replace(/\.pdf$/i, '');
+    download.href = currentURL;
+    download.download = baseName + '_alternate_pages_rotated.pdf';
+    download.style.display = 'block';
+    statusBox.textContent = 'Done. Even-numbered pages were rotated 180 degrees.';
+  } catch (err) {
+    console.error(err);
+    statusBox.textContent = 'Error: ' + (err.message || 'Could not process this PDF.');
+  } finally {
+    rotateButton.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
