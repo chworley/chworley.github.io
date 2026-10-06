@@ -1,0 +1,119 @@
+---
+output: pdf_document
+---
+
+**Chapter 3 Practice Quiz**   \hspace{2in} Name: \hrule
+
+
+**1.** Consider the table below that lists positions and times for a cyclist biking East along the Manhan Rail Trail.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|} \hline
+$t~$ time (s) & 9 & 11 & 59 & 61 \\ \hline
+$x~$ position (m) & 51 & 63 & 467 & 489 \\ \hline
+\end{tabular}
+\end{center}
+
+**a.** Estimate the velocity of the cyclist around $t=10$ seconds.
+
+\vfill
+
+**b.** Estimate the velocity of the cyclist around $t=60$ seconds.
+
+\vfill
+
+**c.** Estimate the acceleration of the cyclist from $t=10$ until $t=60$.
+
+\vfill
+
+
+**2.** A baseball is thrown upward at a speed of 40 meters per second. The acceleration due to gravity is $-10 ~\mathrm{m/s^2}$.
+
+**a.** What is the velocity (speed and direction) of the baseball after 2 seconds?
+
+\vfill
+
+**b.** What is the velocity (speed and direction) of the baseball after 7 seconds?
+
+\vfill
+
+**c.** How long does it take for the baseball to switch directions from going up to going down?
+
+\vfill
+
+
+\newpage
+
+**3.** Consider the **position** versus time graph shown below. Let positive indicate North and negative indicate South.
+
+```{r,echo=F,fig.dim=c(6.5,4)}
+par(mar=c(5,5,3,0))
+ts = c(0,1,3,9,10)
+xs = c(0,4,3,-3,-2)
+plot(ts,xs,pch=19,xlim=c(0,10),ylim=c(-5,5),xlab="time (s)",ylab="position (m)",main="Position vs. Time of Object moving North and South")
+for(i in 0:10){
+  lines(c(i,i),c(-5,5),lwd=0.3)
+}
+for(i in -5:5){
+  lines(c(0,10),c(i,i),lwd=0.3)
+}
+abline(h=0,lwd=1.5)
+lines(ts,xs,lwd=3)
+```
+
+**a.** When $t=4$, what is the position of the object? \vfill
+
+**b.** When $t=4$, what is the velocity of the object? (Remember we need speed AND direction.) \vfill
+
+**c.** During which time interval(s) is the object further North than at $t=0$? \vfill
+
+**d.** During which time interval(s) is the object moving North? \vfill
+
+
+\newpage
+
+
+
+**4.** Consider the **velocity** versus time graph shown below. Let positive indicate North and negative indicate South.
+
+```{r,echo=F,fig.dim=c(6.5,4)}
+par(mar=c(5,5,3,0))
+ts = c(0,4,5,8,10)
+xs = c(1,5,0,-3,-2)
+plot(ts,xs,pch=19,xlim=c(0,10),ylim=c(-5,5),xlab="time (s)",ylab="velocity (m/s)",main="Velocity vs. Time of Object moving North and South")
+for(i in 0:10){
+  lines(c(i,i),c(-5,5),lwd=0.3)
+}
+for(i in -5:5){
+  lines(c(0,10),c(i,i),lwd=0.3)
+}
+abline(h=0,lwd=1.5)
+lines(ts,xs,lwd=3)
+```
+
+
+**a.** What is the velocity at $t=7$ s? \vfill
+
+**b.** What is the acceleration at $t=7$ s? \vfill
+
+**c.** When does the object change the direction it is heading? \vfill
+
+**d.** During which intervals is the object slowing down (speed getting closer to 0)? \vfill
+
+\newpage
+
+
+**5.** A kayaker paddles at a speed of 1.6 m/s relative to water. A river is flowing East at a speed of 1.2 m/s.
+
+**a.** Relative to ground, what is the velocity of the kayaker when the kayak points East? (Remember we need speed and direction for velocity.) Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
+
+**b.** Relative to ground, what is the velocity of the kayaker when the kayak points West? Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
+
+**c.** Relative to ground, what is the velocity of the kayaker when the kayak points North? Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
+
+
+
+
+
+
+

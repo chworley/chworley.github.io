@@ -1,0 +1,250 @@
+---
+header-includes:
+  - \usepackage{array}
+  - \usepackage{tabularx}
+output: pdf_document
+---
+
+```{r, echo=F}
+knitr::opts_chunk$set(echo = F)
+
+motion <- function(times, v0, a) {
+  v <- v0 + a * times
+  vbar <- (v0 + v) / 2
+  dy <- vbar * times
+  data.frame(t=times, v=v, vbar=vbar, dy=dy)
+}
+fmt <- function(x) ifelse(abs(x-round(x))<1e-9, as.character(round(x)), as.character(x))
+motion_table <- function(times, v0, a, given_v=integer(0), given_vbar=integer(0), given_dy=integer(0)) {
+  d <- motion(times,v0,a)
+  ent <- function(z,show) if(show) paste0("$",fmt(z),"$") else "\\phantom{$-000.0$}"
+  cat("\\begin{center}\n\\renewcommand{\\arraystretch}{1.55}\n")
+  cat("\\begin{tabularx}{0.96\\textwidth}{|>{\\centering\\arraybackslash}m{.12\\textwidth}|>{\\centering\\arraybackslash}m{.18\\textwidth}|>{\\centering\\arraybackslash}X|>{\\centering\\arraybackslash}m{.24\\textwidth}|}\\hline\n")
+  cat("\\textbf{Time} $t$ (s) & \\textbf{Velocity} $v$ (m/s) & \\textbf{Average velocity} since $t=0$  (m/s) & \\textbf{Position} (m) \\\\ \\hline\n")
+  for(i in seq_along(times)) {
+    av <- if(times[i]==0) "--" else ent(d$vbar[i], i %in% given_vbar)
+    cat(paste0("$",fmt(times[i]),"$ & ",ent(d$v[i],i %in% given_v)," & ",av," & ",ent(d$dy[i],i %in% given_dy)," \\\\ \\hline\n"))
+  }
+  cat("\\end{tabularx}\n\\end{center}\n")
+}
+```
+
+
+Name: \hspace{4in} Date: \hfill \vspace{3pt} \hrule
+
+## Free Fall: Reading Motion from Tables
+
+For this worksheet, UP is positive $(+)$ and DOWN is negative $(-)$.
+
+When acceleration is constant (like during free fall), we can find the average velocity over a time interval by averaging the velocities at the beginning and end of the interval.
+
+### 1. Dropped on Earth
+
+A marble is dropped from rest. On Earth, $v_0=0$ m/s and $a=-10$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:5,0,-10,given_v=1:3,given_vbar=2,given_dy=1:2)
+```
+
+1. Complete the table. Start with velocity. Then find average velocity since $t=0$. Finally, use average velocity $\times$ time to find position.
+
+2. What is the velocity at $t=3$ s?
+
+\vfill
+3. What is the position at $t=3$ s?
+
+\vfill
+4. What is the displacement (change in position) from $t=2$ s to $t=5$ s?
+
+\vfill
+5. What is the average velocity from $t=2$ s to $t=5$ s?
+
+\vfill
+\newpage
+
+
+### 2. Dropped on Another World
+
+A rock is dropped from rest. Here, $v_0=0$ m/s and $a=-4$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:6,0,-4,given_v=1:2,given_dy=1)
+```
+
+1. Complete the table.
+
+2. How much does velocity change each second?
+
+\vfill
+3. Find the displacement from $t=2$ s to $t=5$ s.
+
+\vfill
+4. Find the average velocity from $t=2$ s to $t=5$ s.
+
+\vfill
+5. Does the rock move the same distance during every one-second interval? Use numbers from the table to support your answer.
+
+\vfill
+\newpage
+
+### 3. Thrown Downward on Earth
+
+A ball is thrown downward at $5$ m/s. Thus, $v_0=-5$ m/s and $a=-10$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:5,-5,-10,given_v=1:2,given_dy=1)
+```
+
+1. Complete the table.
+
+2. What is the velocity at $t=4$ s?
+
+\vfill
+3. Find the displacement from $t=1$ s to $t=4$ s.
+
+\vfill
+4. Find the average velocity from $t=1$ s to $t=4$ s.
+
+\vfill
+5. Compare this velocity table with a dropped object on Earth. What stays the same from one row to the next? What is different at $t=0$?
+
+\vfill
+\newpage
+
+
+### 4. Thrown Downward on Another World
+
+A stone is thrown downward at $6$ m/s. Here, $v_0=-6$ m/s and $a=-4$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:6,-6,-4,given_v=1,given_dy=1)
+```
+
+1. Complete the table.
+
+2. What is the velocity at $t=5$ s?
+
+\vfill
+3. What is the position at $t=5$ s?
+
+\vfill
+4. Find the displacement from $t=2$ s to $t=6$ s.
+
+\vfill
+5. Find the average velocity from $t=2$ s to $t=6$ s.
+
+\vfill
+6. At $t=4$ s, write the instantaneous velocity and the average velocity since $t=0$.
+
+\vfill
+\newpage
+
+
+### 5. Thrown Downward: Less Help
+
+A ball is thrown downward at $8$ m/s where $a=-6$ m/s$^2$. Thus, $v_0=-8$ m/s.
+
+```{r, results='asis'}
+motion_table(0:6,-8,-6,given_v=1,given_dy=1)
+```
+
+1. Complete the table.
+
+2. Find the displacement from $t=1$ s to $t=5$ s.
+
+\vfill
+3. Find the average velocity from $t=1$ s to $t=5$ s.
+
+\vfill
+4. At $t=6$ s, which is more negative: the instantaneous velocity or the average velocity since $t=0$?
+
+\vfill
+5. How can you tell from the table that the ball is speeding up as it moves downward?
+
+\vfill
+\newpage
+
+
+### 6. Thrown Upward on Earth
+
+A ball is thrown upward at $20$ m/s. Thus, $v_0=+20$ m/s while $a=-10$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:5,20,-10,given_v=1:2,given_dy=1)
+```
+
+1. Complete the table.
+
+2. At what time is the velocity $0$ m/s?
+
+\vfill
+3. What is the position at that moment?
+
+\vfill
+4. What happens to the direction of motion when velocity changes from positive to negative?
+
+\vfill
+5. When does the ball return to its starting position?
+
+\vfill
+6. What is its average velocity from $t=0$ until when the ball returns to its starting position?
+
+\vfill
+\newpage
+
+
+### 7. Thrown Upward on Another World
+
+A ball is thrown upward at $12$ m/s on a world where $a=-4$ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:6,12,-4,given_v=1,given_dy=1)
+```
+
+1. Complete the table.
+
+2. When does the ball reach its highest position?
+
+\vfill
+3. What is the highest position reached?
+
+\vfill
+4. Find the displacement from $t=1$ s to $t=5$ s.
+
+\vfill
+5. Find the average velocity from $t=1$ s to $t=5$ s.
+
+\vfill
+6. During which times is the ball moving upward? During which times is it moving downward?
+
+\vfill
+\newpage
+
+
+### 8. Put It Together
+
+A small object starts moving upward at $8$ m/s. The planet's gravitational acceleration is $-2$ m/s$^2$.
+
+Write the starting values: $v_0=$ __________ m/s, $a=$ __________ m/s$^2$.
+
+```{r, results='asis'}
+motion_table(0:7,8,-2,given_v=1,given_dy=1)
+```
+
+1. Complete the table.
+
+2. When does the object change direction?
+
+\vfill
+3. What is its position when it changes direction?
+
+\vfill
+4. Find the displacement from $t=2$ s to $t=7$ s.
+
+\vfill
+5. Find the average velocity from $t=2$ s to $t=7$ s.
+
+\vfill
+6. At $t=7$ s, is the object moving up or down? What table entry tells you?
+
+\vfill

@@ -1,0 +1,63 @@
+---
+output: pdf_document
+---
+
+
+```{r,echo=F}
+w = 6.5
+nrow = 11
+a = -50 #m/s2
+v0 = 40 #m/s
+dt = 0.2
+hrow = 0.5
+h = hrow*(nrow+1)
+y0 = 20
+```
+
+
+```{r,echo=F,fig.dim=c(w,h)}
+par(mar=c(0,0,0,0))
+plot(0,0,"n",xlim=c(0,4),ylim=c(0,h),axes=F,ann=F)
+for(i in 0:(nrow)){
+  lines(c(0,2),c(i*hrow,i*hrow))
+}
+lines(c(0,0),c(0,h))
+lines(c(1,1),c(0,h))
+lines(c(2,2),c(0,h))
+lines(c(3,3),c(0.5*hrow,h))
+lines(c(4,4),c(hrow,h))
+for(i in 0:(nrow-1)){
+  lines(c(2,3),c((i+0.5)*hrow,(i+0.5)*hrow))
+}
+for(i in 1:(nrow-1)){
+  lines(c(3,4),c((i)*hrow,(i)*hrow))
+}
+text(0.5,h-hrow*0.5,"time\n(s)")
+text(1.5,h-hrow*0.5,"position\n(m)")
+text(2.5,h-hrow,"velocity\n(m/s)")
+text(3.5,h-hrow*1.5,"acceleration")
+
+for(i in 0:(nrow-1)){
+  t = i*dt
+  text(0.5,h-hrow-(i+0.5)*(hrow),t)
+  text(1.5,h-hrow-(i+0.5)*(hrow),round(1/2*a*t^2+v0*t+y0,4))
+}
+
+library(latex2exp)
+
+text(2.5,h-2*hrow,TeX("$\\frac{27-20}{0.2}=35$"))
+text(2.5,h-3*hrow,TeX("$\\frac{32-27}{0.2}=25$"))
+text(3.5,h-2.5*hrow,TeX("$\\frac{25-35}{0.2}=-50$"))
+
+```
+
+
+
+
+
+
+
+
+
+
+
