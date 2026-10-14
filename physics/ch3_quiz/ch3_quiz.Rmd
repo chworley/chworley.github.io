@@ -2,115 +2,131 @@
 output: pdf_document
 ---
 
-**Chapter 3 Practice Quiz**   \hspace{2in} Name: \hrule
+**Chapter 3 Quiz**   \hspace{2in} Name: \hrule
 
 
-**1.** Consider the table below that lists positions and times for a cyclist biking East along the Manhan Rail Trail.
+**1.** A child bikes East on a straight path. The table below shows the child's position (in meters) at a few select times (in seconds).
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|} \hline
-$t~$ time (s) & 9 & 11 & 59 & 61 \\ \hline
-$x~$ position (m) & 51 & 63 & 467 & 489 \\ \hline
+$t~$ time (s) & 24 & 26 & 124 & 126 \\ \hline
+$x~$ position (m) & 101 & 109 & 820 & 830 \\ \hline
 \end{tabular}
 \end{center}
 
-**a.** Estimate the velocity of the cyclist around $t=10$ seconds.
+**a.** Estimate the velocity at $t=25$ s.
 
 \vfill
 
-**b.** Estimate the velocity of the cyclist around $t=60$ seconds.
+**b.** Estimate the velocity at $t=125$ s.
 
 \vfill
 
-**c.** Estimate the acceleration of the cyclist from $t=10$ until $t=60$.
+**c.** Estimate the acceleration from $t=25$ s until $t=125$ s.
 
 \vfill
 
+**2.** A speeding car has a speed of 30 m/s. By slamming the brakes as hard as possible on dry asphalt, the car can decelerate (slow down) at about 10 $\mathrm{m/s^2}$. (Or, if the direction of travel is positive, the braking causes an acceleration of $-10~\mathrm{m/s^2}$.)
 
-**2.** A baseball is thrown upward at a speed of 40 meters per second. The acceleration due to gravity is $-10 ~\mathrm{m/s^2}$.
-
-**a.** What is the velocity (speed and direction) of the baseball after 2 seconds?
-
-\vfill
-
-**b.** What is the velocity (speed and direction) of the baseball after 7 seconds?
+**a.** How much time elapses between slamming on the brakes and the car coming to a stop?
 
 \vfill
 
-**c.** How long does it take for the baseball to switch directions from going up to going down?
+**b.** While decelerating (in the time between slamming on the brakes and coming to a stop), the average velocity of the car is 15 m/s. Using the time you calculated in part (a), how far did the car travel while decelerating?
+
+\vfill
+
+**c.** If the speeding car slams into a tree, it goes from 30 m/s to 0 m/s in 0.05 seconds. Calculate the (average) acceleration experienced during the crash.
 
 \vfill
 
 
 \newpage
 
-**3.** Consider the **position** versus time graph shown below. Let positive indicate North and negative indicate South.
+**3.** An elevator begins at ground level. It travels up and down. The elevator's **position** ($y$ in meters) is plotted as a function of time ($t$ in seconds).
 
-```{r,echo=F,fig.dim=c(6.5,4)}
-par(mar=c(5,5,3,0))
-ts = c(0,1,3,9,10)
-xs = c(0,4,3,-3,-2)
-plot(ts,xs,pch=19,xlim=c(0,10),ylim=c(-5,5),xlab="time (s)",ylab="position (m)",main="Position vs. Time of Object moving North and South")
-for(i in 0:10){
-  lines(c(i,i),c(-5,5),lwd=0.3)
+```{r,echo=F,fig.dim=c(6,4),fig.align='center'}
+par(mar=c(5,5,1,0))
+ts = c(0,1,4,5,12,13,15,17,18,19,20)
+ys = c(0,1,7,8, 8, 7, 3,-3,-5,-6,-6)
+plot(ts,ys,"n",xlim=c(0,20),ylim=c(-10,10),xlab="time (s)",ylab="position (m)",cex.lab = 0.8,cex.axis = 0.8)
+for(i in seq(0,20,1)){
+  lines(c(i,i),c(-10,10),lwd=0.5,col="grey")
 }
-for(i in -5:5){
-  lines(c(0,10),c(i,i),lwd=0.3)
+for(i in -10:10){
+  lines(c(0,20),c(i,i),lwd=0.5,col="grey")
+}
+for(i in seq(0,20,5)){
+  lines(c(i,i),c(-10,10),lwd=1,col="darkgrey")
+}
+for(i in seq(-20,20,5)){
+  lines(c(0,20),c(i,i),lwd=1,col="darkgrey")
 }
 abline(h=0,lwd=1.5)
-lines(ts,xs,lwd=3)
+points(ts,ys,cex=0.7,pch=19)
+lines(ts,ys,lwd=3)
 ```
 
-**a.** When $t=4$, what is the position of the object? \vfill
+**a.** When $t=3$, what is the position of the elevator? \vfill
 
-**b.** When $t=4$, what is the velocity of the object? (Remember we need speed AND direction.) \vfill
+**b.** When $t=3$, what is the velocity (speed and direction) of the elevator?  \vfill
 
-**c.** During which time interval(s) is the object further North than at $t=0$? \vfill
+**c.** During which time interval(s) is the elevator above ground level (when is $y>0$)? \vfill
 
-**d.** During which time interval(s) is the object moving North? \vfill
+**d.** During which time interval(s) is the elevator moving up? \vfill
+
+**e.** During which time interval(s) is the elevator stationary (not moving)? \vfill
 
 
 \newpage
 
 
 
-**4.** Consider the **velocity** versus time graph shown below. Let positive indicate North and negative indicate South.
+**4.** A dog runs North and South along a beach. Let positive velocity indicate the dog is running North.
 
-```{r,echo=F,fig.dim=c(6.5,4)}
-par(mar=c(5,5,3,0))
-ts = c(0,4,5,8,10)
-xs = c(1,5,0,-3,-2)
-plot(ts,xs,pch=19,xlim=c(0,10),ylim=c(-5,5),xlab="time (s)",ylab="velocity (m/s)",main="Velocity vs. Time of Object moving North and South")
-for(i in 0:10){
-  lines(c(i,i),c(-5,5),lwd=0.3)
+
+```{r,echo=F,fig.dim=c(6,4),fig.align='center'}
+par(mar=c(5,5,1,0))
+ts = c(0,1,3,5,6,7,10,11,12,14,16,20)
+ys = c(0,0,8,8,10,10,1,0,0,-6,-7,-7)
+plot(ts,ys,"n",xlim=c(0,20),ylim=c(-10,10),xlab="time (s)",ylab="velocity (m/s)",cex.lab = 0.8,cex.axis = 0.8)
+for(i in seq(0,20,1)){
+  lines(c(i,i),c(-10,10),lwd=0.5,col="grey")
 }
-for(i in -5:5){
-  lines(c(0,10),c(i,i),lwd=0.3)
+for(i in -10:10){
+  lines(c(0,20),c(i,i),lwd=0.5,col="grey")
+}
+for(i in seq(0,20,5)){
+  lines(c(i,i),c(-10,10),lwd=1,col="darkgrey")
+}
+for(i in seq(-20,20,5)){
+  lines(c(0,20),c(i,i),lwd=1,col="darkgrey")
 }
 abline(h=0,lwd=1.5)
-lines(ts,xs,lwd=3)
+points(ts,ys,cex=0.7,pch=19)
+lines(ts,ys,lwd=3)
 ```
 
 
-**a.** What is the velocity at $t=7$ s? \vfill
+**a.** What is the velocity (speed and direction) at $t=8$ s? \vfill
 
-**b.** What is the acceleration at $t=7$ s? \vfill
+**b.** What is the acceleration at $t=8$ s? \vfill
 
-**c.** When does the object change the direction it is heading? \vfill
+**c.** When is the dog stationary (not moving)? \vfill
 
-**d.** During which intervals is the object slowing down (speed getting closer to 0)? \vfill
+**d.** When is the dog moving North? \vfill
 
 \newpage
 
 
-**5.** A kayaker paddles at a speed of 1.6 m/s relative to water. A river is flowing East at a speed of 1.2 m/s.
+**5.** A salmon swims 4 m/s relative to the surrounding water. The water is flowing North at 3 m/s.
 
-**a.** Relative to ground, what is the velocity of the kayaker when the kayak points East? (Remember we need speed and direction for velocity.) Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
 
-**b.** Relative to ground, what is the velocity of the kayaker when the kayak points West? Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
+**a.** Relative to ground, what is the velocity of the salmon when the salmon swims **South** at 4 m/s relative to the water? Please draw a diagram of vector addition.\vfill
 
-**c.** Relative to ground, what is the velocity of the kayaker when the kayak points North? Please draw a sketch to indicate the vector addition and direction of the resultant. \vfill
+**b.** Relative to ground, what is the velocity of the salmon when the salmon swims **North** at 4 m/s relative to the water? Please draw a diagram of vector addition. \vfill 
 
+**c.** Relative to ground, what is the velocity of the salmon when the salmon swims **East** at 4 m/s relative to the water? Please draw a diagram of vector addition. \vfill
 
 
 

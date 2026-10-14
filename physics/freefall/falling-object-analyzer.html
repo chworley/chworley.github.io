@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Falling Object Video Analyzer</title>
+<style>
+:root{
+  --bg:#f4f6f9; --card:#fff; --ink:#1b2430; --muted:#5d6b7c; --line:#d8dee6;
+  --accent:#1565c0; --ok:#1b7f3b; --warn:#b26a00; --err:#c62828; --rec:#d32f2f;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:14px 20px;background:#14263d;color:#fff}
+header h1{margin:0;font-size:20px}
+header p{margin:3px 0 0;color:#b8c7dc;font-size:13px}
+main{max-width:1400px;margin:0 auto;padding:14px 16px 48px;display:grid;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.card h2{margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h2 .spacer{flex:1}
+.step{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.muted{color:var(--muted);font-size:13px}
+.sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 12px;border-radius:8px;font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;user-select:none}
+.btn:hover:not(:disabled):not(.disabled){background:#eef3f9}
+.btn:disabled,.btn.disabled{opacity:.45;cursor:not-allowed}
+.btn.disabled{pointer-events:none}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover:not(:disabled){background:#0f55a3}
+.btn.danger{color:var(--err);border-color:#e3b4b4}
+.btn.rec{background:var(--rec);border-color:var(--rec);color:#fff}
+.btn.rec:hover:not(:disabled){background:#b71c1c}
+.btn.active{outline:3px solid #90caf9;background:#e3f0fd}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #64b5f6}
+select,input[type=number]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+input[type=number]{width:100px}
+
+.source-grid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
+@media (max-width:820px){.source-grid{grid-template-columns:1fr}}
+.live{position:relative;background:#0b0f14;border-radius:8px;overflow:hidden;aspect-ratio:16/9}
+.live video{width:100%;height:100%;object-fit:contain;display:block}
+.live .ph{position:absolute;inset:0;display:grid;place-items:center;color:#7d8da3;font-size:13px;text-align:center;padding:10px}
+#recInd{color:var(--rec);font-weight:700;font-variant-numeric:tabular-nums}
+.banner{padding:8px 10px;border-radius:8px;margin:8px 0;font-size:14px}
+.banner.err{background:#fdecea;color:#8e1b1b;border:1px solid #f3b8b4}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{font-size:12px;padding:3px 8px;border-radius:999px;background:#eef1f5;color:#34465c;border:1px solid #dbe2ea}
+.chip.ok{background:#e6f5ea;color:#17602d;border-color:#bfe3c9}
+.chip.bad{background:#fdecea;color:#8e1b1b;border-color:#f3b8b4}
+details summary{cursor:pointer;font-size:13px;color:var(--muted)}
+#log{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#0f1722;color:#cfe0f5;padding:8px;border-radius:6px;max-height:150px;overflow:auto;margin-top:6px}
+.l-ok{color:#7ee2a0}.l-warn{color:#ffd27a}.l-error{color:#ff8a8a}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+@media (max-width:1000px){.cols{grid-template-columns:1fr}}
+aside{display:grid;gap:14px}
+.hint{background:#e8f1fb;border:1px solid #c5dcf3;color:#0d3b6e;padding:8px 10px;border-radius:8px;margin-bottom:10px;font-weight:600}
+.stage{position:relative;background:#000;margin:0 auto;border-radius:6px;overflow:hidden;line-height:0}
+.stage video{display:block;width:100%;height:auto;background:#000}
+.stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;cursor:crosshair;touch-action:manipulation}
+.stage .ph{position:absolute;inset:0;display:grid;place-items:center;color:#8fa0b5;line-height:1.4;text-align:center;padding:20px;pointer-events:none;min-height:240px}
+.navbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+.navgrp{display:flex;gap:6px}
+.navbtn{min-width:52px;justify-content:center;padding:10px 8px;font:700 18px ui-monospace,Menlo,Consolas,monospace}
+.timebox{text-align:center;flex:1;min-width:190px}
+#timeMain{font:700 36px/1.1 ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;color:#0d2a4a}
+#timeSub{font-size:12px;color:var(--muted)}
+input[type=range]{width:100%;margin:10px 0 2px}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 14px;font-size:13px;margin-top:6px}
+.info b{color:var(--muted);font-weight:600}
+.keys{font-size:12px;color:var(--muted);margin-top:6px}
+kbd{background:#eef1f5;border:1px solid #cdd5df;border-bottom-width:2px;border-radius:4px;padding:0 5px;font:12px ui-monospace,Menlo,Consolas,monospace}
+
+.status{font-size:13px;margin-top:4px}
+.status.done{color:var(--ok);font-weight:600}
+.stage .loupe-float{position:absolute;width:170px;height:170px;pointer-events:none;border:2px solid #fff;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.65);overflow:hidden;z-index:5;background:#000}
+.stage .loupe-float canvas{position:static;display:block;width:100%;height:100%;cursor:auto}
+#readout{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted);min-height:1.4em}
+.tools{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:8px}
+
+.tables{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:820px){.tables{grid-template-columns:1fr}}
+.tscroll{position:relative;max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:5px 10px;text-align:right;border-bottom:1px solid #eef1f5}
+th{position:sticky;top:0;background:#f0f4f9;font-size:13px;z-index:1}
+th:first-child,td:first-child{text-align:center}
+#posBody tr{cursor:pointer}
+#posBody tr:hover{background:#f3f8fe}
+#posBody tr.sel{background:#fff3b0}
+.empty{padding:12px;color:var(--muted);font-size:13px}
+textarea{width:100%;min-height:110px;font:13px ui-monospace,Menlo,Consolas,monospace;padding:8px;border:1px solid var(--line);border-radius:8px;resize:vertical}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#14263d;color:#fff;padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw;text-align:center}
+#toast.show{opacity:.97}
+#toast.warn{background:#8a5300}
+</style>
+</head>
+<body>
+<header>
+  <h1>Falling Object Video Analyzer</h1>
+  <p>Collect accurate (time, height) data from a video, then copy it into Desmos. This tool does not fit curves or graph anything.</p>
+</header>
+
+<main>
+  <!-- ============ 1. VIDEO SOURCE ============ -->
+  <section class="card">
+    <h2><span class="step">1</span> Video source</h2>
+    <div class="source-grid">
+      <div>
+        <div class="row">
+          <label class="btn primary" id="uploadLabel" for="fileInput">Upload video file…</label>
+          <input type="file" id="fileInput" accept="video/*" hidden>
+          <span class="muted">or record with a webcam:</span>
+        </div>
+        <div class="row">
+          <select id="camSel" title="Camera" aria-label="Camera"><option value="">Default camera</option></select>
+          <select id="resSel" title="Resolution" aria-label="Resolution">
+            <option value="640x480">640×480</option>
+            <option value="1280x720" selected>1280×720</option>
+            <option value="1920x1080">1920×1080</option>
+          </select>
+          <select id="fpsSel" title="Frame rate" aria-label="Frame rate">
+            <option value="30">30 fps</option>
+            <option value="60" selected>60 fps (if available)</option>
+          </select>
+        </div>
+        <div class="row">
+          <button class="btn" id="btnStartCam">Start Camera</button>
+          <button class="btn" id="btnStopCam" disabled>Stop Camera</button>
+          <span class="sep"></span>
+          <button class="btn rec" id="btnStartRec" disabled>● Start Recording</button>
+          <button class="btn" id="btnStopRec" disabled>■ Stop Recording</button>
+          <span id="recInd" hidden>● REC 00:00</span>
+          <button class="btn" id="btnSaveRec" disabled>Save recording…</button>
+        </div>
+        <div id="errorBanner" class="banner err" hidden></div>
+        <div class="chips" id="chips"></div>
+        <details open>
+          <summary>Diagnostics log</summary>
+          <div id="log" aria-live="polite"></div>
+        </details>
+      </div>
+      <div class="live">
+        <video id="live" muted playsinline autoplay></video>
+        <div class="ph" id="livePh">Live camera preview appears here after you press Start Camera</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <!-- ============ VIDEO + NAVIGATION ============ -->
+    <section class="card">
+      <div class="hint" id="hint">Load or record a video to begin.</div>
+      <div class="stage" id="stage">
+        <video id="vid" playsinline muted preload="auto"></video>
+        <canvas id="ov"></canvas>
+        <div class="ph" id="stagePh">No video loaded yet</div>
+        <div class="loupe-float" id="loupeWrap" hidden><canvas id="loupe" width="240" height="240"></canvas></div>
+      </div>
+      <div class="tools">
+        <label class="muted"><input type="checkbox" id="loupeOn" checked> Magnifier (press <kbd>M</kbd>)</label>
+        <label class="muted">Zoom
+          <select id="loupeZoom">
+            <option value="4">4×</option>
+            <option value="8" selected>8×</option>
+            <option value="16">16×</option>
+          </select>
+        </label>
+        <span id="readout">Move the cursor over the video</span>
+      </div>
+
+      <div class="navbar">
+        <div class="navgrp" id="navLeft"></div>
+        <div class="timebox">
+          <div id="timeMain">— s</div>
+          <div id="timeSub">&nbsp;</div>
+        </div>
+        <div class="navgrp" id="navRight"></div>
+      </div>
+      <input type="range" id="slider" min="0" max="10000" value="0" step="1" disabled aria-label="Video position">
+      <div class="row">
+        <span class="muted">Jump to time:</span>
+        <input type="number" id="gotoInput" step="any" min="0" placeholder="seconds">
+        <button class="btn" id="btnGoto" disabled>Go</button>
+      </div>
+      <div class="info">
+        <div><b>Source:</b> <span id="infoSrc">—</span></div>
+        <div><b>Resolution:</b> <span id="infoRes">—</span></div>
+        <div><b>Duration:</b> <span id="infoDur">—</span></div>
+      </div>
+      <div class="keys">
+        <kbd>←</kbd> <kbd>→</kbd> smallest step &nbsp;·&nbsp; <kbd>Shift</kbd>+<kbd>←</kbd>/<kbd>→</kbd> larger step &nbsp;·&nbsp;
+        <kbd>Delete</kbd> removes the selected point &nbsp;·&nbsp; <kbd>Ctrl/⌘</kbd>+<kbd>Z</kbd> undoes the last point &nbsp;·&nbsp; <kbd>M</kbd> toggles the magnifier
+      </div>
+    </section>
+
+    <!-- ============ SIDE PANEL ============ -->
+    <aside>
+      <section class="card">
+        <h2><span class="step">2</span> Calibrate scale</h2>
+        <div class="muted">Click both ends of a meter stick (or any known length) in the video. A vertical stick works best.</div>
+        <div class="row"><button class="btn" id="btnCal">Calibrate (click 2 points)</button></div>
+        <div class="row">
+          <label for="distInput" class="muted">Known distance:</label>
+          <input type="number" id="distInput" value="1" step="any" min="0">
+          <span class="muted">m</span>
+          <button class="btn" id="btnApply" disabled>Set scale</button>
+        </div>
+        <div class="status" id="calStatus">Not calibrated</div>
+      </section>
+
+      <section class="card">
+        <h2><span class="step">3</span> Set height origin</h2>
+        <div class="muted">Click the spot that should count as height&nbsp;= 0 (floor, table top…).</div>
+        <div class="row"><button class="btn" id="btnOrigin">Set origin (click)</button></div>
+        <div class="status" id="originStatus">No origin yet</div>
+      </section>
+
+      <section class="card">
+        <h2><span class="step">4</span> Measure</h2>
+        <div class="row">
+          <button class="btn" id="btnMeasure" disabled>Measure points</button>
+          <button class="btn" id="btnSelect" disabled>Select point</button>
+        </div>
+        <div class="row">
+          <label for="autoAdv" class="muted">After marking:</label>
+          <select id="autoAdv">
+            <option value="0">stay on this frame</option>
+            <option value="1">advance one small step (&gt;)</option>
+            <option value="2">advance one medium step (&gt;&gt;)</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="muted"><input type="checkbox" id="showAll" checked> Show all points on video</label>
+        </div>
+        <div class="row">
+          <button class="btn" id="btnUndo" disabled>Undo Last Point</button>
+          <button class="btn" id="btnDelSel" disabled>Delete Selected</button>
+          <button class="btn danger" id="btnClear" disabled>Clear All Points</button>
+        </div>
+        <div class="status" id="measureMsg"></div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- ============ TABLES ============ -->
+  <div class="tables">
+    <section class="card">
+      <h2>Position data <span class="muted" id="posCount"></span><span class="spacer"></span>
+        <button class="btn" id="btnCopyPos" disabled>Copy Position Data</button>
+        <button class="btn" id="btnCsvPos" disabled>CSV</button>
+      </h2>
+      <div class="tscroll" id="posScroll">
+        <table>
+          <thead><tr><th>Point</th><th>Time (s)</th><th>Height (m)</th></tr></thead>
+          <tbody id="posBody"></tbody>
+        </table>
+        <div class="empty" id="posEmpty">No points yet. Click a row later to jump to that point.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Velocity data <span class="spacer"></span>
+        <button class="btn" id="btnGenVel" disabled>Generate Velocity Table</button>
+        <button class="btn" id="btnCopyVel" disabled>Copy Velocity Data</button>
+        <button class="btn" id="btnCsvVel" disabled>CSV</button>
+      </h2>
+      <div class="muted">v = Δh / Δt between consecutive points, plotted at the midpoint time.</div>
+      <div class="tscroll" id="velScroll" style="margin-top:6px">
+        <table>
+          <thead><tr><th>Time (s)</th><th>Velocity (m/s)</th></tr></thead>
+          <tbody id="velBody"></tbody>
+        </table>
+        <div class="empty" id="velEmpty">Not generated yet. Press “Generate Velocity Table”.</div>
+      </div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Copy preview</h2>
+    <div class="muted">The last text you copied appears here. If a Copy button is ever blocked by your browser, select this text and copy it by hand.</div>
+    <textarea id="exportText" readonly placeholder="(0.000,1.2500)&#10;(0.067,1.1800)"></textarea>
+  </section>
+</main>
+
+<div id="toast" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+
+const $ = id => document.getElementById(id);
+const vid = $('vid'), ov = $('ov'), ctx = ov.getContext('2d'), live = $('live');
+const HAS_RVFC = 'requestVideoFrameCallback' in HTMLVideoElement.prototype;
+
+/* ------------------------------------------------------------------ state */
+const S = {
+  loaded: false, busy: false, name: '', url: null, isBlobUrl: false,
+  fps: null, frameTime: 0, duration: 0, vw: 0, vh: 0,
+  calPts: [], ppm: null, calPx: null, calDist: null, origin: null,
+  points: [], sel: null, idc: 0, seq: 0,
+  mode: 'none', velocity: null, mouse: null
+};
+let stream = null, recorder = null, recChunks = [], recTimer = null, recStart = 0;
+let recordedBlob = null, recordedExt = 'webm', recMime = '';
+
+/* ---------------------------------------------------------------- helpers */
+function fix(v, d) {
+  let s = v.toFixed(d);
+  if (/^-0(\.0+)?$/.test(s)) s = s.slice(1);
+  return s;
+}
+const frameDur = () => 1 / (S.fps || 30);
+const hasWork = () => S.points.length > 0 || S.ppm !== null || S.origin !== null;
+const sortedPts = () => S.points.slice().sort((a, b) => a.t - b.t);
+const heightOf = p => (S.origin.y - p.y) / S.ppm;
+
+let toastTimer = null;
+function toast(msg, kind) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'show' + (kind === 'warn' ? ' warn' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, 2800);
+}
+
+function log(msg, level = 'info') {
+  const box = $('log');
+  const d = document.createElement('div');
+  d.className = 'l-' + level;
+  const t = new Date().toLocaleTimeString([], { hour12: false });
+  d.textContent = `[${t}] ${msg}`;
+  box.appendChild(d);
+  while (box.childElementCount > 250) box.removeChild(box.firstChild);
+  box.scrollTop = box.scrollHeight;
+  if (level === 'error') {
+    const b = $('errorBanner');
+    b.textContent = msg;
+    b.hidden = false;
+    console.error(msg);
+  }
+}
+const clearError = () => { $('errorBanner').hidden = true; };
+
+/* --------------------------------------------------------- diagnostics chips */
+function renderChips() {
+  const chips = [];
+  const add = (label, ok, extra) => chips.push([label + (extra ? ': ' + extra : ''), ok === null ? '' : ok ? 'ok' : 'bad']);
+  add('Secure context', window.isSecureContext, window.isSecureContext ? 'yes' : 'no');
+  add('Camera API', !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia), (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ? 'yes' : 'no');
+  add('Recorder', typeof MediaRecorder !== 'undefined', typeof MediaRecorder !== 'undefined' ? (pickMime() || 'default format') : 'not supported');
+  add('Frame-accurate timing', HAS_RVFC, HAS_RVFC ? 'yes' : 'limited (no frame callbacks)');
+  if (stream) {
+    const st = stream.getVideoTracks()[0].getSettings();
+    const fps = st.frameRate ? ` @ ${Math.round(st.frameRate)} fps` : '';
+    add('Camera', true, `${st.width || '?'}×${st.height || '?'}${fps}`);
+  } else add('Camera', null, 'off');
+  const box = $('chips');
+  box.innerHTML = '';
+  chips.forEach(([text, cls]) => {
+    const s = document.createElement('span');
+    s.className = 'chip ' + cls;
+    s.textContent = text;
+    box.appendChild(s);
+  });
+}
+
+/* ------------------------------------------------------------------ camera */
+function explainMediaError(e) {
+  const n = e && e.name;
+  switch (n) {
+    case 'NotAllowedError': case 'PermissionDeniedError':
+      return 'Camera permission was denied. Click the camera/lock icon in the address bar, allow camera access, then press Start Camera again. (If this page is embedded inside another app or an iframe, open it directly in the browser.)';
+    case 'NotFoundError': case 'DevicesNotFoundError':
+      return 'No camera was found. Plug one in and check that the operating system can see it.';
+    case 'NotReadableError': case 'TrackStartError':
+      return 'The camera is busy or unreadable. Close other programs or tabs that may be using it (Zoom, Teams, another browser tab), then try again.';
+    case 'OverconstrainedError':
+      return 'The camera cannot provide the requested resolution or frame rate. Pick a lower setting and try again.';
+    case 'SecurityError':
+      return 'The browser blocked camera access for security reasons. Try Chrome, Edge, Firefox or Safari, or open the page over https:// or from localhost.';
+    case 'AbortError':
+      return 'Starting the camera was interrupted. Try again.';
+    default:
+      return `Camera error (${n || 'unknown'}): ${(e && e.message) || e}`;
+  }
+}
+
+async function populateDevices() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+  try {
+    const sel = $('camSel');
+    let cur = sel.value;
+    if (stream) cur = stream.getVideoTracks()[0].getSettings().deviceId || cur;
+    const devs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+    sel.innerHTML = '';
+    const def = document.createElement('option');
+    def.value = ''; def.textContent = 'Default camera';
+    sel.appendChild(def);
+    devs.forEach((d, i) => {
+      const o = document.createElement('option');
+      o.value = d.deviceId; o.textContent = d.label || `Camera ${i + 1}`;
+      sel.appendChild(o);
+    });
+    sel.value = devs.some(d => d.deviceId === cur) ? cur : '';
+    log(`${devs.length} camera${devs.length === 1 ? '' : 's'} detected.`);
+  } catch (e) { log('Could not list cameras: ' + e.message, 'warn'); }
+}
+
+async function startCamera() {
+  clearError();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    log('This page cannot access the camera (navigator.mediaDevices is unavailable). Use a current Chrome, Edge, Firefox or Safari, and open the page from https://, localhost or a local file.', 'error');
+    return;
+  }
+  stopCamera(true);
+  const [w, h] = $('resSel').value.split('x').map(Number);
+  const fpsWant = Number($('fpsSel').value);
+  const dev = $('camSel').value;
+  const mk = useDev => {
+    const v = { width: { ideal: w }, height: { ideal: h }, frameRate: { ideal: fpsWant } };
+    if (useDev && dev) v.deviceId = { exact: dev };
+    return { audio: false, video: v };
+  };
+  try {
+    log(`Requesting camera (${w}×${h}, ${fpsWant} fps)…`);
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(mk(true));
+    } catch (e) {
+      if (dev && (e.name === 'OverconstrainedError' || e.name === 'NotFoundError')) {
+        log('Selected camera unavailable; trying the default camera.', 'warn');
+        stream = await navigator.mediaDevices.getUserMedia(mk(false));
+      } else throw e;
+    }
+  } catch (e) {
+    stream = null;
+    log(explainMediaError(e), 'error');
+    updateSourceButtons(); renderChips();
+    return;
+  }
+  const track = stream.getVideoTracks()[0];
+  track.addEventListener('ended', () => {
+    log('The camera was disconnected or stopped by the system.', 'error');
+    if (recorder && recorder.state !== 'inactive') { try { recorder.stop(); } catch (e) {} }
+    stopCamera(true);
+  });
+  live.srcObject = stream;
+  try { await live.play(); } catch (e) { log('Preview could not start automatically: ' + e.message, 'warn'); }
+  $('livePh').hidden = true;
+  const st = track.getSettings();
+  log(`Camera started: ${track.label || 'camera'} — ${st.width}×${st.height}` + (st.frameRate ? ` @ ${Math.round(st.frameRate)} fps` : ''), 'ok');
+  if (st.frameRate && st.frameRate < fpsWant - 1) log(`The camera is delivering ${Math.round(st.frameRate)} fps instead of ${fpsWant}. Bright lighting often allows higher frame rates.`, 'warn');
+  await populateDevices();
+  updateSourceButtons(); renderChips();
+}
+
+function stopCamera(silent) {
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+    if (!silent) log('Camera stopped.');
+  }
+  live.srcObject = null;
+  $('livePh').hidden = false;
+  updateSourceButtons(); renderChips();
+}
+
+/* --------------------------------------------------------------- recording */
+function pickMime() {
+  if (typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported) return '';
+  const list = ['video/webm;codecs=vp8', 'video/webm;codecs=vp9', 'video/webm', 'video/mp4;codecs=avc1', 'video/mp4'];
+  return list.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+}
+
+function startRecording() {
+  clearError();
+  if (!stream) { log('Start the camera before recording.', 'error'); return; }
+  if (typeof MediaRecorder === 'undefined') {
+    log('This browser does not support in-page recording (MediaRecorder). Use Chrome, Edge, Firefox or Safari 14.1+, or record on a phone and upload the file.', 'error');
+    return;
+  }
+  if (hasWork() && !confirm('Recording a new video will clear the current calibration and measurements. Continue?')) return;
+  recMime = pickMime();
+  const opts = { videoBitsPerSecond: 8000000 };
+  if (recMime) opts.mimeType = recMime;
+  try {
+    recorder = new MediaRecorder(stream, opts);
+  } catch (e) {
+    log('Recorder rejected the preferred settings (' + e.message + '). Trying defaults…', 'warn');
+    try { recorder = new MediaRecorder(stream); }
+    catch (e2) { log('Could not create the recorder: ' + e2.message, 'error'); recorder = null; return; }
+  }
+  recChunks = [];
+  recorder.ondataavailable = e => { if (e.data && e.data.size > 0) recChunks.push(e.data); };
+  recorder.onerror = e => log('Recorder error: ' + ((e.error && e.error.message) || 'unknown'), 'error');
+  recorder.onstop = onRecorderStop;
+  try { recorder.start(250); }
+  catch (e) { log('Recording could not start: ' + e.message, 'error'); recorder = null; return; }
+  recStart = performance.now();
+  const ind = $('recInd');
+  ind.hidden = false;
+  const tick = () => {
+    const s = Math.floor((performance.now() - recStart) / 1000);
+    ind.textContent = `● REC ${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  };
+  tick();
+  recTimer = setInterval(tick, 250);
+  log(`Recording started (${recorder.mimeType || recMime || 'browser default format'}).`, 'ok');
+  updateSourceButtons();
+}
+
+function stopRecording() {
+  if (recorder && recorder.state !== 'inactive') {
+    try { recorder.stop(); } catch (e) { log('Could not stop the recorder: ' + e.message, 'error'); }
+  }
+}
+
+async function onRecorderStop() {
+  clearInterval(recTimer);
+  $('recInd').hidden = true;
+  const type = (recorder && recorder.mimeType) || recMime || 'video/webm';
+  const secs = (performance.now() - recStart) / 1000;
+  const blob = new Blob(recChunks, { type });
+  recChunks = []; recorder = null;
+  updateSourceButtons();
+  if (blob.size === 0) { log('The recording contained no data. Try again, and record for at least a second.', 'error'); return; }
+  recordedBlob = blob;
+  recordedExt = type.includes('mp4') ? 'mp4' : 'webm';
+  log(`Recording stopped: ${secs.toFixed(1)} s, ${(blob.size / 1e6).toFixed(2)} MB, ${type}.`, 'ok');
+  updateSourceButtons();
+  await loadVideo(URL.createObjectURL(blob), 'Recorded video', true);
+}
+
+function saveRecording() {
+  if (!recordedBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(recordedBlob);
+  a.download = `recording-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)}.${recordedExt}`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+function updateSourceButtons() {
+  const recording = !!(recorder && recorder.state === 'recording');
+  $('btnStartCam').disabled = !!stream || recording;
+  $('btnStopCam').disabled = !stream || recording;
+  $('btnStartRec').disabled = !stream || recording;
+  $('btnStopRec').disabled = !recording;
+  $('btnSaveRec').disabled = !recordedBlob || recording;
+  $('fileInput').disabled = recording;
+  $('uploadLabel').classList.toggle('disabled', recording);
+  $('camSel').disabled = recording;
+  $('resSel').disabled = recording;
+  $('fpsSel').disabled = recording;
+}
+
+/* ------------------------------------------------------------ video loading */
+vid.addEventListener('error', () => {
+  const c = vid.error && vid.error.code;
+  if (!vid.getAttribute('src')) return;
+  let msg = 'The video could not be loaded.';
+  if (c === 3) msg = 'The video could not be decoded. Try re-exporting it as MP4 (H.264) or WebM.';
+  else if (c === 4) msg = 'This browser cannot play this video format or codec. Convert it to MP4 (H.264) or WebM, or use the built-in recorder.';
+  else if (c === 2) msg = 'A network error interrupted loading the video.';
+  log(msg, 'error');
+});
+
+function resetAnalysis() {
+  S.points = []; S.sel = null; S.calPts = []; S.ppm = null; S.calPx = null; S.calDist = null;
+  S.origin = null; S.velocity = null; S.mode = 'none';
+}
+
+async function ensureDuration() {
+  if (isFinite(vid.duration)) return;
+  // MediaRecorder files often report Infinity; seeking far forward makes the browser compute the real duration.
+  await new Promise(res => {
+    let done = false;
+    const fin = () => { if (done) return; done = true; vid.removeEventListener('timeupdate', onTU); clearTimeout(to); res(); };
+    const onTU = () => {
+      if (isFinite(vid.duration)) {
+        const onSeeked = () => { vid.removeEventListener('seeked', onSeeked); fin(); };
+        vid.addEventListener('seeked', onSeeked);
+        vid.currentTime = 0;
+        setTimeout(fin, 800);
+      }
+    };
+    const to = setTimeout(fin, 4000);
+    vid.addEventListener('timeupdate', onTU);
+    vid.currentTime = 1e7;
+  });
+}
+
+async function estimateFps() {
+  S.fps = null;
+  if (!HAS_RVFC) {
+    log('Frame-rate estimate unavailable in this browser; step buttons assume 30 fps. Time stamps still come from video.currentTime.', 'warn');
+    return;
+  }
+  S.busy = true; renderAll();
+  const times = [];
+  try {
+    vid.muted = true; vid.playbackRate = 1;
+    await new Promise(resolve => {
+      let stopped = false;
+      const t0 = performance.now();
+      const finish = () => { if (stopped) return; stopped = true; try { vid.pause(); } catch (e) {} resolve(); };
+      const cb = (now, meta) => {
+        if (stopped) return;
+        times.push(meta.mediaTime);
+        if (times.length >= 45 || performance.now() - t0 > 2500 || vid.ended) finish();
+        else vid.requestVideoFrameCallback(cb);
+      };
+      vid.addEventListener('ended', finish, { once: true });
+      vid.requestVideoFrameCallback(cb);
+      const p = vid.play();
+      if (p && p.catch) p.catch(e => { log('Could not play briefly to measure the frame rate: ' + e.message, 'warn'); finish(); });
+      setTimeout(finish, 3500);
+    });
+  } catch (e) { log('Frame-rate estimate failed: ' + e.message, 'warn'); }
+  try { vid.pause(); } catch (e) {}
+  const d = [];
+  for (let i = 1; i < times.length; i++) { const dt = times[i] - times[i - 1]; if (dt > 1e-4) d.push(dt); }
+  if (d.length >= 5) {
+    d.sort((a, b) => a - b);
+    S.fps = 1 / d[Math.floor(d.length / 2)];
+    log(`Estimated frame rate: ${S.fps.toFixed(2)} fps (frame ≈ ${(1000 / S.fps).toFixed(1)} ms).`, 'ok');
+  } else {
+    log('Not enough frames to estimate the frame rate; step buttons assume 30 fps.', 'warn');
+  }
+  S.busy = false;
+}
+
+async function loadVideo(url, name, isBlob) {
+  const oldUrl = S.url, oldBlob = S.isBlobUrl;
+  seekReq = null;
+  resetAnalysis();
+  S.loaded = false; S.busy = false; S.fps = null; S.frameTime = 0;
+  S.url = url; S.isBlobUrl = isBlob; S.name = name;
+  renderAll();
+  log(`Loading “${name}”…`);
+  const ok = await new Promise(res => {
+    const good = () => { clean(); res(true); };
+    const bad = () => { clean(); res(false); };
+    const clean = () => { vid.removeEventListener('loadedmetadata', good); vid.removeEventListener('error', bad); clearTimeout(to); };
+    const to = setTimeout(bad, 20000);
+    vid.addEventListener('loadedmetadata', good);
+    vid.addEventListener('error', bad);
+    vid.src = url;
+    vid.load();
+  });
+  if (oldUrl && oldBlob && oldUrl !== url) URL.revokeObjectURL(oldUrl);
+  if (!ok) { log('Loading failed.', 'error'); renderAll(); return; }
+  await ensureDuration();
+  S.vw = vid.videoWidth; S.vh = vid.videoHeight; S.duration = isFinite(vid.duration) ? vid.duration : 0;
+  if (!S.vw || !S.vh) { log('The file loaded but has no picture (audio only?).', 'error'); renderAll(); return; }
+  if (!S.duration) log('The browser could not determine the video length; the slider may be unreliable.', 'warn');
+  ov.width = S.vw; ov.height = S.vh;
+  $('stage').style.maxWidth = `calc(70vh * ${S.vw / S.vh})`;
+  S.loaded = true;
+  log(`Loaded ${S.vw}×${S.vh}, ${S.duration.toFixed(3)} s.`, 'ok');
+  await estimateFps();
+  requestSeek(0, false);
+  await idle();
+  S.mode = 'cal';
+  renderAll();
+}
+
+/* ------------------------------------------------------------------ seeking */
+let seekReq = null, seeking = false, idleWaiters = [];
+const idle = () => seeking ? new Promise(r => idleWaiters.push(r)) : Promise.resolve();
+const baseTime = () => seekReq ? seekReq.nav : S.frameTime;
+
+function requestSeek(nav, exact, dir) {
+  if (!S.loaded || S.busy) return;
+  const dur = S.duration || Infinity;
+  nav = Math.min(Math.max(0, nav), dur);
+  const f = frameDur();
+  // Aim for the middle of the wanted frame so rounding can never land on a neighbouring frame.
+  let target = exact ? nav : (HAS_RVFC ? nav + 0.5 * f : nav);
+  target = Math.min(Math.max(0, target), dur);
+  seekReq = { nav, target, dir: dir || 0 };
+  if (!seeking) runSeeks();
+}
+
+async function runSeeks() {
+  seeking = true;
+  const dur = S.duration || Infinity;
+  while (seekReq) {
+    const r = seekReq; seekReq = null;
+    const before = S.frameTime;
+    await seekOnce(r.target);
+    if (r.dir) {
+      // Step buttons must always change the picture. If the frame did not move (uneven frame
+      // timing in browser-recorded video), nudge the target half a frame at a time until it does.
+      const moved = () => r.dir > 0 ? S.frameTime > before + 1e-4 : S.frameTime < before - 1e-4;
+      let tgt = r.target, tries = 0;
+      while (!moved() && tries < 6 && !seekReq) {
+        const next = Math.min(Math.max(0, tgt + r.dir * 0.5 * frameDur()), dur);
+        if (Math.abs(next - tgt) < 1e-6) break; // reached the start or end of the video
+        tgt = next;
+        await seekOnce(tgt);
+        tries++;
+      }
+    }
+    renderTime(); draw();
+  }
+  seeking = false;
+  idleWaiters.splice(0).forEach(r => r());
+  renderAll();
+}
+
+function seekOnce(target) {
+  return new Promise(resolve => {
+    if (Math.abs(vid.currentTime - target) < 1e-6) { resolve(); return; }
+    const prev = S.frameTime;
+    let gotSeeked = false, gotFrame = false, mt = null, finished = false, rid = null, waitT = null;
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(hard); clearTimeout(waitT);
+      vid.removeEventListener('seeked', onSeeked);
+      if (rid !== null && vid.cancelVideoFrameCallback) { try { vid.cancelVideoFrameCallback(rid); } catch (e) {} }
+      const ct = vid.currentTime;
+      if (mt !== null) S.frameTime = mt;
+      else if (HAS_RVFC && Math.abs(ct - prev) < 1.05 * frameDur()) S.frameTime = prev; // no new frame arrived: same frame still showing
+      else S.frameTime = ct;
+      resolve();
+    };
+    const onFrame = (now, meta) => {
+      rid = null;
+      if (meta.mediaTime <= target + 0.002 && meta.mediaTime >= target - 1) { mt = meta.mediaTime; gotFrame = true; if (gotSeeked) done(); }
+      else rid = vid.requestVideoFrameCallback(onFrame);
+    };
+    const onSeeked = () => { gotSeeked = true; if (gotFrame || !HAS_RVFC) done(); else waitT = setTimeout(done, 350); };
+    const hard = setTimeout(done, 4000);
+    vid.addEventListener('seeked', onSeeked, { once: true });
+    if (HAS_RVFC) rid = vid.requestVideoFrameCallback(onFrame);
+    vid.currentTime = target;
+  });
+}
+
+const stepSeconds = () => [frameDur(), 5 * frameDur(), 0.5, 2];
+function stepBy(dir, level) { requestSeek(baseTime() + dir * stepSeconds()[level], false, dir); }
+
+/* --------------------------------------------------------------- modes etc. */
+function setMode(m) { S.mode = m; renderAll(); }
+
+function confirmClear() {
+  if (S.points.length === 0) return true;
+  return confirm('Changing calibration/origin will clear all measurements. Continue?');
+}
+
+function pointsChanged() { S.velocity = null; renderAll(); }
+function clearPoints() { S.points = []; S.sel = null; S.velocity = null; }
+
+function startCalibrate() {
+  if (!confirmClear()) return;
+  clearPoints(); S.calPts = []; S.ppm = null; S.calPx = null;
+  setMode('cal');
+}
+function startOrigin() {
+  if (!confirmClear()) return;
+  clearPoints(); S.origin = null;
+  setMode('origin');
+}
+function applyScale() {
+  if (S.calPts.length < 2) { toast('Click two points on the meter stick first.', 'warn'); return; }
+  const d = parseFloat($('distInput').value);
+  if (!(d > 0)) { toast('Enter the known distance as a positive number.', 'warn'); return; }
+  const [a, b] = S.calPts;
+  const px = Math.hypot(a.x - b.x, a.y - b.y);
+  if (px < 2) { toast('The two calibration points are too close together.', 'warn'); return; }
+  const np = px / d;
+  if (S.ppm !== null && Math.abs(np - S.ppm) > 1e-9) {
+    if (!confirmClear()) return;
+    clearPoints();
+  }
+  S.ppm = np; S.calPx = px; S.calDist = d;
+  log(`Scale set: ${np.toFixed(2)} pixels per meter (${d} m = ${px.toFixed(1)} px).`, 'ok');
+  setMode(S.origin ? 'measure' : 'origin');
+}
+
+/* ------------------------------------------------------------------ points */
+function addPoint(t, x, y) {
+  const ex = S.points.find(p => Math.abs(p.t - t) < 1e-4);
+  let p;
+  if (ex) { ex.x = x; ex.y = y; ex.seq = ++S.seq; p = ex; }
+  else { p = { id: ++S.idc, t, x, y, seq: ++S.seq }; S.points.push(p); }
+  S.sel = p.id;
+  S.velocity = null;
+  const n = sortedPts().findIndex(q => q.id === p.id) + 1;
+  $('measureMsg').textContent = `${ex ? 'Replaced' : 'Added'} point ${n}: t = ${fix(t, 3)} s, h = ${fix(heightOf(p), 4)} m`;
+  const adv = $('autoAdv').value;
+  if (adv === '1') stepBy(1, 0); else if (adv === '2') stepBy(1, 1);
+  renderAll();
+  scrollSelIntoView();
+}
+function undoLast() {
+  if (!S.points.length) return;
+  let last = S.points[0];
+  S.points.forEach(p => { if (p.seq > last.seq) last = p; });
+  S.points = S.points.filter(p => p !== last);
+  if (S.sel === last.id) S.sel = null;
+  $('measureMsg').textContent = 'Removed the most recently added point.';
+  pointsChanged();
+}
+function deleteSelected() {
+  if (S.sel == null) return;
+  S.points = S.points.filter(p => p.id !== S.sel);
+  S.sel = null;
+  $('measureMsg').textContent = 'Deleted the selected point.';
+  pointsChanged();
+}
+function clearAll() {
+  if (!S.points.length) return;
+  if (!confirm(`Delete all ${S.points.length} measurements? This cannot be undone.`)) return;
+  clearPoints();
+  $('measureMsg').textContent = 'All points cleared.';
+  renderAll();
+}
+function selectPoint(id, seek) {
+  S.sel = id;
+  if (seek && id != null) {
+    const p = S.points.find(q => q.id === id);
+    if (p) requestSeek(p.t, false);
+  }
+  renderAll();
+  scrollSelIntoView();
+}
+function scrollSelIntoView() {
+  const row = $('posBody').querySelector('tr.sel');
+  if (!row) return;
+  const c = $('posScroll');
+  if (row.offsetTop - 34 < c.scrollTop) c.scrollTop = Math.max(0, row.offsetTop - 34);
+  else if (row.offsetTop + row.offsetHeight > c.scrollTop + c.clientHeight) c.scrollTop = row.offsetTop + row.offsetHeight - c.clientHeight;
+}
+
+/* ------------------------------------------------------------- velocity/export */
+function computeVelocity() {
+  const pts = sortedPts(), out = [];
+  for (let i = 0; i + 1 < pts.length; i++) {
+    const dt = pts[i + 1].t - pts[i].t;
+    if (dt <= 1e-9) continue;
+    out.push({ t: (pts[i].t + pts[i + 1].t) / 2, v: (heightOf(pts[i + 1]) - heightOf(pts[i])) / dt });
+  }
+  return out;
+}
+function ensureVelocity() {
+  if (S.points.length < 2) { toast('Mark at least two points first.', 'warn'); return null; }
+  if (!S.velocity) { S.velocity = computeVelocity(); renderTables(); renderButtons(); }
+  return S.velocity;
+}
+const posText = () => sortedPts().map(p => `(${fix(p.t, 3)},${fix(heightOf(p), 4)})`).join('\n');
+const velText = v => v.map(r => `(${fix(r.t, 3)},${fix(r.v, 4)})`).join('\n');
+
+async function copyText(text, what) {
+  const box = $('exportText');
+  box.value = text;
+  if (!text) { toast('Nothing to copy yet.', 'warn'); return; }
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      toast(`${what} copied. Paste it into a Desmos expression.`);
+      return;
+    }
+    throw new Error('Clipboard API unavailable');
+  } catch (e) {
+    try {
+      box.focus(); box.select();
+      if (document.execCommand('copy')) { toast(`${what} copied. Paste it into a Desmos expression.`); box.blur(); return; }
+    } catch (e2) { /* fall through */ }
+    box.focus(); box.select();
+    box.scrollIntoView({ block: 'center' });
+    toast('Your browser blocked copying. The text is selected at the bottom of the page: press Ctrl/⌘+C.', 'warn');
+  }
+}
+function downloadCsv(name, text) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' }));
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+function posCsv() {
+  return 'point,time_s,height_m,x_px,y_px\n' + sortedPts().map((p, i) =>
+    [i + 1, fix(p.t, 4), fix(heightOf(p), 5), p.x.toFixed(1), p.y.toFixed(1)].join(',')).join('\n') + '\n';
+}
+function velCsv(v) { return 'time_s,velocity_m_per_s\n' + v.map(r => `${fix(r.t, 4)},${fix(r.v, 5)}`).join('\n') + '\n'; }
+
+/* ------------------------------------------------------------------ drawing */
+function draw() {
+  ctx.clearRect(0, 0, ov.width, ov.height);
+  if (!S.loaded) return;
+  const r = ov.getBoundingClientRect();
+  if (!r.width) return;
+  const s = ov.width / r.width;
+  ctx.lineJoin = 'round';
+  ctx.font = `bold ${13 * s}px system-ui, sans-serif`;
+  ctx.textBaseline = 'middle';
+  const label = (text, x, y) => {
+    ctx.lineWidth = 3 * s; ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.strokeText(text, x, y);
+    ctx.fillStyle = '#fff'; ctx.fillText(text, x, y);
+  };
+  const cross = (x, y, n) => { ctx.beginPath(); ctx.moveTo(x - n, y); ctx.lineTo(x + n, y); ctx.moveTo(x, y - n); ctx.lineTo(x, y + n); ctx.stroke(); };
+
+  if (S.origin) {
+    ctx.lineWidth = Math.max(1, 1.5 * s); ctx.strokeStyle = 'rgba(60,220,120,.95)';
+    ctx.setLineDash([8 * s, 6 * s]);
+    ctx.beginPath(); ctx.moveTo(0, S.origin.y); ctx.lineTo(ov.width, S.origin.y); ctx.stroke();
+    ctx.setLineDash([]);
+    cross(S.origin.x, S.origin.y, 10 * s);
+    label('origin (h = 0)', S.origin.x + 12 * s, S.origin.y - 10 * s);
+  }
+  if (S.calPts.length) {
+    ctx.lineWidth = Math.max(1, 1.5 * s); ctx.strokeStyle = 'rgba(255,170,0,.95)';
+    if (S.calPts.length === 2) {
+      ctx.beginPath(); ctx.moveTo(S.calPts[0].x, S.calPts[0].y); ctx.lineTo(S.calPts[1].x, S.calPts[1].y); ctx.stroke();
+    }
+    S.calPts.forEach((p, i) => { cross(p.x, p.y, 9 * s); label(String.fromCharCode(65 + i), p.x + 11 * s, p.y - 11 * s); });
+  }
+  const showAll = $('showAll').checked;
+  sortedPts().forEach((p, i) => {
+    const cur = Math.abs(p.t - S.frameTime) < 1e-3;
+    const sel = p.id === S.sel;
+    if (!showAll && !cur && !sel) return;
+    const rad = (cur ? 7 : 5) * s;
+    ctx.lineWidth = Math.max(1, (cur ? 2.5 : 1.5) * s);
+    ctx.strokeStyle = cur ? '#ff3b30' : 'rgba(80,170,255,.95)';
+    ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.stroke();
+    cross(p.x, p.y, rad * 0.6);
+    if (sel) {
+      ctx.strokeStyle = '#ffd600'; ctx.lineWidth = Math.max(1.5, 2.5 * s);
+      ctx.beginPath(); ctx.arc(p.x, p.y, rad + 4 * s, 0, Math.PI * 2); ctx.stroke();
+    }
+    label(String(i + 1), p.x + rad + 4 * s, p.y - rad - 2 * s);
+  });
+}
+
+function drawLoupe(p) {
+  const L = $('loupe'), c = L.getContext('2d');
+  const half = L.width / (2 * Number($('loupeZoom').value || 8));
+  c.imageSmoothingEnabled = false;
+  c.fillStyle = '#000'; c.fillRect(0, 0, L.width, L.height);
+  if (p && S.loaded) { try { c.drawImage(vid, p.x - half, p.y - half, half * 2, half * 2, 0, 0, L.width, L.height); } catch (e) {} }
+  c.strokeStyle = 'rgba(255,40,40,.9)'; c.lineWidth = 1;
+  c.beginPath();
+  c.moveTo(L.width / 2, 0); c.lineTo(L.width / 2, L.height / 2 - 8);
+  c.moveTo(L.width / 2, L.height / 2 + 8); c.lineTo(L.width / 2, L.height);
+  c.moveTo(0, L.height / 2); c.lineTo(L.width / 2 - 8, L.height / 2);
+  c.moveTo(L.width / 2 + 8, L.height / 2); c.lineTo(L.width, L.height / 2);
+  c.stroke();
+}
+function placeLoupe(e) {
+  const wrap = $('loupeWrap');
+  if (!$('loupeOn').checked || !S.loaded) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const sr = $('stage').getBoundingClientRect();
+  const size = wrap.offsetWidth || 170, gap = 24;
+  let x = e.clientX - sr.left + gap, y = e.clientY - sr.top + gap;
+  if (x + size > sr.width) x = e.clientX - sr.left - gap - size;
+  if (y + size > sr.height) y = e.clientY - sr.top - gap - size;
+  wrap.style.left = Math.max(0, x) + 'px';
+  wrap.style.top = Math.max(0, y) + 'px';
+}
+
+/* ----------------------------------------------------------------- rendering */
+function renderTime() {
+  $('timeMain').textContent = S.loaded ? fix(S.frameTime, 3) + ' s' : '— s';
+  $('timeSub').textContent = S.loaded
+    ? 'video time'
+    : '\u00a0';
+  if (S.loaded && S.duration) $('slider').value = Math.round(S.frameTime / S.duration * 10000);
+}
+function renderInfo() {
+  $('infoSrc').textContent = S.loaded ? S.name : '—';
+  $('infoRes').textContent = S.loaded ? `${S.vw} × ${S.vh} px` : '—';
+  $('infoDur').textContent = S.loaded ? `${S.duration.toFixed(3)} s` : '—';
+}
+function renderHint() {
+  let t;
+  if (!S.loaded) t = 'Load or record a video to begin.';
+  else if (S.busy) t = 'Measuring the video’s frame rate…';
+  else if (S.mode === 'cal') t = S.calPts.length === 0 ? 'Calibrate: click one end of the meter stick.'
+    : S.calPts.length === 1 ? 'Calibrate: click the other end of the meter stick.'
+    : 'Calibrate: enter the distance between the two points (right), then press “Set scale”.';
+  else if (S.mode === 'origin') t = 'Origin: click the point that should be height 0 (floor or table top).';
+  else if (S.mode === 'measure') t = 'Measure: step to a time, then click the center of the object. Clicking again at the same time replaces that point.';
+  else if (S.mode === 'select') t = 'Select: click a point marker on the video (or a table row), then press Delete Selected.';
+  else t = S.ppm === null ? 'Start with step 2: calibrate the scale.' : 'Choose what to do next from the panel on the right.';
+  $('hint').textContent = t;
+}
+function renderCal() {
+  const cs = $('calStatus');
+  if (S.ppm !== null) { cs.textContent = `✓ Scale: ${S.ppm.toFixed(1)} pixels per meter (${S.calDist} m = ${S.calPx.toFixed(1)} px)`; cs.className = 'status done'; }
+  else { cs.textContent = S.calPts.length ? `${S.calPts.length} of 2 points placed` : 'Not calibrated'; cs.className = 'status'; }
+  const os = $('originStatus');
+  if (S.origin) { os.textContent = `✓ Origin set at y = ${S.origin.y.toFixed(1)} px`; os.className = 'status done'; }
+  else { os.textContent = 'No origin yet'; os.className = 'status'; }
+}
+function renderButtons() {
+  const ready = S.loaded && !S.busy;
+  document.querySelectorAll('.navbtn').forEach(b => { b.disabled = !ready; });
+  $('slider').disabled = !ready; $('btnGoto').disabled = !ready;
+  $('btnCal').disabled = !ready; $('btnOrigin').disabled = !ready;
+  $('btnApply').disabled = !ready || S.calPts.length < 2;
+  $('btnMeasure').disabled = !(ready && S.ppm !== null && S.origin);
+  $('btnSelect').disabled = !(ready && S.points.length);
+  $('btnUndo').disabled = !S.points.length;
+  $('btnDelSel').disabled = S.sel == null;
+  $('btnClear').disabled = !S.points.length;
+  $('btnCal').classList.toggle('active', S.mode === 'cal');
+  $('btnOrigin').classList.toggle('active', S.mode === 'origin');
+  $('btnMeasure').classList.toggle('active', S.mode === 'measure');
+  $('btnSelect').classList.toggle('active', S.mode === 'select');
+  const n = S.points.length;
+  $('btnCopyPos').disabled = !n; $('btnCsvPos').disabled = !n;
+  $('btnGenVel').disabled = n < 2; $('btnCopyVel').disabled = n < 2; $('btnCsvVel').disabled = n < 2;
+  const names = ['1 frame', '5 frames', '0.5 s', '2 s'];
+  document.querySelectorAll('.navbtn').forEach(b => { b.title = names[b.dataset.level]; });
+}
+function renderTables() {
+  const tb = $('posBody'); tb.innerHTML = '';
+  const pts = sortedPts();
+  pts.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.dataset.id = p.id;
+    if (p.id === S.sel) tr.className = 'sel';
+    [i + 1, fix(p.t, 3), (S.ppm && S.origin) ? fix(heightOf(p), 4) : '—'].forEach(v => {
+      const td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+  $('posEmpty').hidden = pts.length > 0;
+  $('posCount').textContent = pts.length ? `(${pts.length})` : '';
+
+  const vb = $('velBody'); vb.innerHTML = '';
+  if (S.velocity) {
+    S.velocity.forEach(r => {
+      const tr = document.createElement('tr');
+      [fix(r.t, 3), fix(r.v, 4)].forEach(v => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+      vb.appendChild(tr);
+    });
+  }
+  $('velEmpty').hidden = !!S.velocity;
+  if (S.velocity && !S.velocity.length) { $('velEmpty').hidden = false; $('velEmpty').textContent = 'No valid consecutive points (need different times).'; }
+  else $('velEmpty').textContent = 'Not generated yet. Press “Generate Velocity Table”.';
+}
+function renderAll() {
+  renderTime(); renderInfo(); renderHint(); renderCal(); renderButtons(); renderTables();
+  $('stagePh').hidden = S.loaded;
+  draw();
+}
+
+/* ------------------------------------------------------------------ events */
+function videoXY(e) {
+  const r = ov.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * ov.width / r.width, y: (e.clientY - r.top) * ov.height / r.height };
+}
+
+ov.addEventListener('click', e => {
+  if (!S.loaded || S.busy) return;
+  const p = videoXY(e);
+  if (S.mode === 'cal') {
+    if (S.calPts.length >= 2) S.calPts = [];
+    S.calPts.push(p);
+    renderAll();
+    if (S.calPts.length === 2) $('distInput').focus();
+  } else if (S.mode === 'origin') {
+    S.origin = p;
+    log(`Origin set at y = ${p.y.toFixed(1)} px.`, 'ok');
+    setMode(S.ppm !== null ? 'measure' : 'cal');
+  } else if (S.mode === 'measure') {
+    if (S.ppm === null || !S.origin) { toast('Set the scale and origin first.', 'warn'); return; }
+    if (seeking || seekReq) { toast('Still moving to that time; click again in a moment.', 'warn'); return; }
+    addPoint(S.frameTime, p.x, p.y);
+  } else if (S.mode === 'select') {
+    const r = ov.getBoundingClientRect();
+    const lim = 20 * ov.width / r.width;
+    let best = null, bd = Infinity;
+    S.points.forEach(q => {
+      const d = Math.hypot(q.x - p.x, q.y - p.y);
+      if (d < bd) { bd = d; best = q; }
+    });
+    if (best && bd <= lim) selectPoint(best.id, true);
+    else toast('No point marker there. Click closer to a marker, or click a table row.', 'warn');
+  } else {
+    toast('Pick a step on the right first (calibrate, origin, measure).', 'warn');
+  }
+});
+
+ov.addEventListener('pointermove', e => {
+  if (!S.loaded) return;
+  const p = videoXY(e);
+  S.mouse = p;
+  placeLoupe(e);
+  drawLoupe(p);
+  let txt = `x ${p.x.toFixed(1)}, y ${p.y.toFixed(1)} px`;
+  if (S.ppm !== null && S.origin) txt += `  →  height ${fix((S.origin.y - p.y) / S.ppm, 4)} m`;
+  $('readout').textContent = txt;
+});
+ov.addEventListener('pointerleave', () => { S.mouse = null; $('loupeWrap').hidden = true; $('readout').textContent = 'Move the cursor over the video'; });
+$('loupeOn').addEventListener('change', () => { if (!$('loupeOn').checked) $('loupeWrap').hidden = true; $('loupeOn').blur(); });
+$('loupeZoom').addEventListener('change', e => { e.target.blur(); if (S.mouse) drawLoupe(S.mouse); });
+
+// navigation buttons
+const NAV = [['<<<<', -1, 3], ['<<<', -1, 2], ['<<', -1, 1], ['<', -1, 0], ['>', 1, 0], ['>>', 1, 1], ['>>>', 1, 2], ['>>>>', 1, 3]];
+NAV.forEach(([txt, dir, level], i) => {
+  const b = document.createElement('button');
+  b.className = 'btn navbtn'; b.textContent = txt; b.dataset.level = level; b.disabled = true;
+  b.setAttribute('aria-label', (dir < 0 ? 'Back ' : 'Forward ') + ['one frame', 'five frames', 'half a second', 'two seconds'][level]);
+  b.addEventListener('click', () => stepBy(dir, level));
+  (i < 4 ? $('navLeft') : $('navRight')).appendChild(b);
+});
+
+$('slider').addEventListener('input', e => { if (S.loaded && S.duration) requestSeek(e.target.value / 10000 * S.duration, true); });
+$('btnGoto').addEventListener('click', () => {
+  const t = parseFloat($('gotoInput').value);
+  if (isNaN(t)) { toast('Enter a time in seconds.', 'warn'); return; }
+  requestSeek(t, true);
+});
+$('gotoInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGoto').click(); });
+
+document.addEventListener('keydown', e => {
+  const t = e.target, tag = t.tagName;
+  const typing = (tag === 'INPUT' && !['range', 'checkbox', 'file'].includes(t.type)) || tag === 'TEXTAREA' || tag === 'SELECT';
+  if (typing) return;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    if (!S.loaded || S.busy) return;
+    e.preventDefault();
+    stepBy(e.key === 'ArrowLeft' ? -1 : 1, e.shiftKey ? 1 : 0);
+  } else if ((e.key === 'Delete' || e.key === 'Backspace') && S.sel != null) {
+    e.preventDefault(); deleteSelected();
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+    e.preventDefault(); undoLast();
+  } else if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    const cb = $('loupeOn');
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  }
+});
+
+['autoAdv', 'camSel', 'resSel', 'fpsSel'].forEach(id => $(id).addEventListener('change', e => e.target.blur()));
+$('showAll').addEventListener('change', draw);
+
+// source
+$('fileInput').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  if (hasWork() && !confirm('Loading a new video will clear the current calibration and measurements. Continue?')) { e.target.value = ''; return; }
+  clearError();
+  log(`Selected file: ${f.name} (${(f.size / 1e6).toFixed(1)} MB, ${f.type || 'unknown type'})`);
+  await loadVideo(URL.createObjectURL(f), f.name, true);
+  e.target.value = '';
+});
+$('btnStartCam').addEventListener('click', startCamera);
+$('btnStopCam').addEventListener('click', () => stopCamera(false));
+$('btnStartRec').addEventListener('click', startRecording);
+$('btnStopRec').addEventListener('click', stopRecording);
+$('btnSaveRec').addEventListener('click', saveRecording);
+['camSel', 'resSel', 'fpsSel'].forEach(id => $(id).addEventListener('change', () => { if (stream && !(recorder && recorder.state === 'recording')) startCamera(); }));
+if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+  navigator.mediaDevices.addEventListener('devicechange', populateDevices);
+}
+
+// calibration / origin / measure
+$('btnCal').addEventListener('click', startCalibrate);
+$('btnApply').addEventListener('click', applyScale);
+$('distInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyScale(); });
+$('btnOrigin').addEventListener('click', startOrigin);
+$('btnMeasure').addEventListener('click', () => setMode('measure'));
+$('btnSelect').addEventListener('click', () => setMode('select'));
+$('btnUndo').addEventListener('click', undoLast);
+$('btnDelSel').addEventListener('click', deleteSelected);
+$('btnClear').addEventListener('click', clearAll);
+$('posBody').addEventListener('click', e => {
+  const tr = e.target.closest('tr');
+  if (tr) selectPoint(Number(tr.dataset.id), true);
+});
+
+// tables / export
+$('btnGenVel').addEventListener('click', () => {
+  if (S.points.length < 2) return;
+  S.velocity = computeVelocity();
+  renderTables();
+});
+$('btnCopyPos').addEventListener('click', () => copyText(posText(), 'Position data'));
+$('btnCopyVel').addEventListener('click', () => { const v = ensureVelocity(); if (v) copyText(velText(v), 'Velocity data'); });
+$('btnCsvPos').addEventListener('click', () => downloadCsv('position_data.csv', posCsv()));
+$('btnCsvVel').addEventListener('click', () => { const v = ensureVelocity(); if (v) downloadCsv('velocity_data.csv', velCsv(v)); });
+
+window.addEventListener('beforeunload', e => { if (S.points.length) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('resize', draw);
+if (window.ResizeObserver) new ResizeObserver(draw).observe($('stage'));
+
+/* -------------------------------------------------------------------- init */
+log(`Page opened from ${location.protocol}//${location.host || '(local file)'} — secure context: ${window.isSecureContext ? 'yes' : 'no'}.`);
+if (!window.isSecureContext) log('Camera access normally needs https:// or localhost. Uploading a video file still works.', 'warn');
+if (typeof MediaRecorder === 'undefined') log('MediaRecorder is not available here, so in-page recording will not work. Uploading a video still works.', 'warn');
+if (!HAS_RVFC) log('This browser lacks requestVideoFrameCallback; time stamps use video.currentTime directly and may be up to half a frame off.', 'warn');
+renderChips(); updateSourceButtons(); populateDevices(); renderAll(); drawLoupe(null);
+})();
+</script>
+</body>
+</html>
