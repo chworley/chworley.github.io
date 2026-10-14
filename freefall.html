@@ -38,6 +38,13 @@ main{max-width:1400px;margin:0 auto;padding:14px 16px 48px;display:grid;gap:14px
 select,input[type=number]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
 input[type=number]{width:100px}
 
+.tips summary{font-size:15px;font-weight:700;cursor:pointer;color:var(--ink)}
+.tips ul{margin:8px 0 0;padding-left:20px}
+.tips li{margin:3px 0}
+.tipcols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+@media (max-width:760px){.tipcols{grid-template-columns:1fr}}
+.tipbox{background:#f4f8fd;border:1px solid #d3e3f5;border-radius:8px;padding:8px 12px;font-size:14px}
+.tipbox b{display:block;margin-bottom:2px}
 .source-grid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
 @media (max-width:820px){.source-grid{grid-template-columns:1fr}}
 .live{position:relative;background:#0b0f14;border-radius:8px;overflow:hidden;aspect-ratio:16/9}
@@ -105,6 +112,22 @@ textarea{width:100%;min-height:110px;font:13px ui-monospace,Menlo,Consolas,monos
 </header>
 
 <main>
+  <!-- ============ SETUP TIPS ============ -->
+  <details class="card tips" id="tips" open>
+    <summary>Before you record: setting up your shot</summary>
+    <ul>
+      <li><b>Keep the camera still.</b> Rest it on a stack of books or a tripod, level, pointing straight at the action. Don’t hold it.</li>
+      <li><b>Put the meter stick as close to the object’s path as you can,</b> hanging vertically, at the same distance from the camera as the object. This keeps perspective errors small.</li>
+      <li><b>Keep the motion near the center of the frame.</b> Back the camera up until the whole motion fits with some room to spare. A telephoto or optical zoom is great (stand farther back, fill the frame), but set it before you calibrate, never change it mid-video, and avoid digital zoom.</li>
+      <li><b>Use as much light as possible,</b> shining on the scene (not a bright window behind it). Use a plain background and a dense ball that contrasts with it.</li>
+      <li><b>Start recording a moment before the release,</b> and take a few tries. Use the cleanest one.</li>
+    </ul>
+    <div class="tipcols">
+      <div class="tipbox"><b>Dropping an object</b>Hang or hold the stick right beside the fall path, with the release point near its top. Let go from rest and get your hand out of the way.</div>
+      <div class="tipbox"><b>Tossing a ball upward</b>Have a partner hold the stick steadily, upright, right beside the ball’s path. Toss straight up so the ball stays in one plane, and leave room above the highest point. Points on the way up and down both help.</div>
+    </div>
+  </details>
+
   <!-- ============ 1. VIDEO SOURCE ============ -->
   <section class="card">
     <h2><span class="step">1</span> Video source</h2>
@@ -660,6 +683,7 @@ async function loadVideo(url, name, isBlob) {
   ov.width = S.vw; ov.height = S.vh;
   $('stage').style.maxWidth = `calc(70vh * ${S.vw / S.vh})`;
   S.loaded = true;
+  $('tips').open = false;
   log(`Loaded ${S.vw}×${S.vh}, ${S.duration.toFixed(3)} s.`, 'ok');
   await estimateFps();
   requestSeek(0, false);
