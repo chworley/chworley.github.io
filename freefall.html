@@ -45,14 +45,6 @@ input[type=number]{width:100px}
 @media (max-width:760px){.tipcols{grid-template-columns:1fr}}
 .tipbox{background:#f4f8fd;border:1px solid #d3e3f5;border-radius:8px;padding:8px 12px;font-size:14px}
 .tipbox b{display:block;margin-bottom:2px}
-.labs summary{font-size:15px;font-weight:700;cursor:pointer;color:var(--ink)}
-#labList{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.labpanel{margin-top:10px;background:#f6faf3;border:1px solid #d4e5cc;border-radius:8px;padding:10px 14px}
-.labpanel h3{margin:0 0 2px;font-size:16px}
-.labpanel .goal{color:var(--muted);font-style:italic}
-.labpanel h4{margin:10px 0 2px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.labpanel ul{margin:2px 0 0;padding-left:20px}
-.labpanel li{margin:2px 0}
 .source-grid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
 @media (max-width:820px){.source-grid{grid-template-columns:1fr}}
 .live{position:relative;background:#0b0f14;border-radius:8px;overflow:hidden;aspect-ratio:16/9}
@@ -134,13 +126,6 @@ textarea{width:100%;min-height:110px;font:13px ui-monospace,Menlo,Consolas,monos
       <div class="tipbox"><b>Dropping an object</b>Hang or hold the stick right beside the fall path, with the release point near its top. Let go from rest and get your hand out of the way.</div>
       <div class="tipbox"><b>Tossing a ball upward</b>Have a partner hold the stick steadily, upright, right beside the ball’s path. Toss straight up so the ball stays in one plane, and leave room above the highest point. Points on the way up and down both help.</div>
     </div>
-  </details>
-
-  <!-- ============ LAB IDEAS ============ -->
-  <details class="card labs" id="labs">
-    <summary>Lab ideas: click one for setup help</summary>
-    <div id="labList"></div>
-    <div class="labpanel" id="labPanel" hidden></div>
   </details>
 
   <!-- ============ 1. VIDEO SOURCE ============ -->
@@ -258,7 +243,17 @@ textarea{width:100%;min-height:110px;font:13px ui-monospace,Menlo,Consolas,monos
       </section>
 
       <section class="card">
-        <h2><span class="step">4</span> Measure</h2>
+        <h2><span class="step">4</span> Set time zero <span class="muted">(optional)</span></h2>
+        <div class="muted">Step to the frame where the motion begins (for example, the release), then press the button. Times are measured from that frame, so earlier frames show negative times.</div>
+        <div class="row">
+          <button class="btn" id="btnT0" disabled>Set t = 0 at this frame</button>
+          <button class="btn" id="btnT0Reset" disabled>Reset</button>
+        </div>
+        <div class="status" id="t0Status">t = 0 is the start of the video</div>
+      </section>
+
+      <section class="card">
+        <h2><span class="step">5</span> Measure</h2>
         <div class="row">
           <button class="btn" id="btnMeasure" disabled>Measure points</button>
           <button class="btn" id="btnSelect" disabled>Select point</button>
@@ -339,7 +334,7 @@ const S = {
   loaded: false, busy: false, name: '', url: null, isBlobUrl: false,
   fps: null, frameTime: 0, duration: 0, vw: 0, vh: 0,
   calPts: [], ppm: null, calPx: null, calDist: null, origin: null,
-  points: [], sel: null, idc: 0, seq: 0,
+  points: [], sel: null, idc: 0, seq: 0, t0: 0,
   mode: 'none', velocity: null, mouse: null
 };
 let stream = null, recorder = null, recChunks = [], recTimer = null, recStart = 0;
@@ -352,7 +347,7 @@ function fix(v, d) {
   return s;
 }
 const frameDur = () => 1 / (S.fps || 30);
-const hasWork = () => S.points.length > 0 || S.ppm !== null || S.origin !== null;
+const hasWork = () => S.points.length > 0 || S.ppm !== null || S.origin !== null || S.t0 !== 0;
 const sortedPts = () => S.points.slice().sort((a, b) => a.t - b.t);
 const heightOf = p => (S.origin.y - p.y) / S.ppm;
 const hdrOn = () => $('hdrOn').checked;
@@ -609,7 +604,7 @@ vid.addEventListener('error', () => {
 
 function resetAnalysis() {
   S.points = []; S.sel = null; S.calPts = []; S.ppm = null; S.calPx = null; S.calDist = null;
-  S.origin = null; S.velocity = null; S.mode = 'none';
+  S.origin = null; S.velocity = null; S.t0 = 0; S.mode = 'none';
 }
 
 async function ensureDuration() {
@@ -832,7 +827,7 @@ function addPoint(t, x, y) {
   S.sel = p.id;
   S.velocity = null;
   const n = sortedPts().findIndex(q => q.id === p.id) + 1;
-  $('measureMsg').textContent = `${ex ? 'Replaced' : 'Added'} point ${n}: t = ${fix(t, 3)} s, h = ${fix(heightOf(p), 4)} m`;
+  $('measureMsg').textContent = `${ex ? 'Replaced' : 'Added'} point ${n}: t = ${fix(t - S.t0, 3)} s, h = ${fix(heightOf(p), 4)} m`;
   const adv = $('autoAdv').value;
   if (adv === '1') stepBy(1, 0); else if (adv === '2') stepBy(1, 1);
   renderAll();
@@ -884,7 +879,7 @@ function computeVelocity() {
   for (let i = 0; i + 1 < pts.length; i++) {
     const dt = pts[i + 1].t - pts[i].t;
     if (dt <= 1e-9) continue;
-    out.push({ t: (pts[i].t + pts[i + 1].t) / 2, v: (heightOf(pts[i + 1]) - heightOf(pts[i])) / dt });
+    out.push({ t: (pts[i].t + pts[i + 1].t) / 2 - S.t0, v: (heightOf(pts[i + 1]) - heightOf(pts[i])) / dt });
   }
   return out;
 }
@@ -895,7 +890,7 @@ function ensureVelocity() {
 }
 // Copied data is tab-separated, one row per line: it pastes as a table into Desmos, Excel and Google Sheets.
 const withHeader = (head, rows) => (hdrOn() ? [head].concat(rows) : rows).join('\n');
-const posText = () => withHeader('Time (s)\tHeight (m)', sortedPts().map(p => `${fix(p.t, 3)}\t${fix(heightOf(p), 4)}`));
+const posText = () => withHeader('Time (s)\tHeight (m)', sortedPts().map(p => `${fix(p.t - S.t0, 3)}\t${fix(heightOf(p), 4)}`));
 const velText = v => withHeader('Time (s)\tVelocity (m/s)', v.map(r => `${fix(r.t, 3)}\t${fix(r.v, 4)}`));
 
 async function copyText(text, what) {
@@ -928,7 +923,7 @@ function downloadCsv(name, text) {
 }
 function posCsv() {
   return 'point,time_s,height_m,x_px,y_px\n' + sortedPts().map((p, i) =>
-    [i + 1, fix(p.t, 4), fix(heightOf(p), 5), p.x.toFixed(1), p.y.toFixed(1)].join(',')).join('\n') + '\n';
+    [i + 1, fix(p.t - S.t0, 4), fix(heightOf(p), 5), p.x.toFixed(1), p.y.toFixed(1)].join(',')).join('\n') + '\n';
 }
 function velCsv(v) { return 'time_s,velocity_m_per_s\n' + v.map(r => `${fix(r.t, 4)},${fix(r.v, 5)}`).join('\n') + '\n'; }
 
@@ -1010,9 +1005,9 @@ function placeLoupe(e) {
 
 /* ----------------------------------------------------------------- rendering */
 function renderTime() {
-  $('timeMain').textContent = S.loaded ? fix(S.frameTime, 3) + ' s' : '— s';
+  $('timeMain').textContent = S.loaded ? fix(S.frameTime - S.t0, 3) + ' s' : '— s';
   $('timeSub').textContent = S.loaded
-    ? 'video time'
+    ? (S.t0 !== 0 ? `t = 0 is at video time ${fix(S.t0, 3)} s (this frame: ${fix(S.frameTime, 3)} s)` : 'video time')
     : '\u00a0';
   if (S.loaded && S.duration) $('slider').value = Math.round(S.frameTime / S.duration * 10000);
 }
@@ -1038,6 +1033,9 @@ function renderCal() {
   const cs = $('calStatus');
   if (S.ppm !== null) { cs.textContent = `✓ Scale: ${S.ppm.toFixed(1)} pixels per meter (${S.calDist} m = ${S.calPx.toFixed(1)} px)`; cs.className = 'status done'; }
   else { cs.textContent = S.calPts.length ? `${S.calPts.length} of 2 points placed` : 'Not calibrated'; cs.className = 'status'; }
+  const ts = $('t0Status');
+  if (S.t0 !== 0) { ts.textContent = `✓ t = 0 is at video time ${fix(S.t0, 3)} s`; ts.className = 'status done'; }
+  else { ts.textContent = 't = 0 is the start of the video'; ts.className = 'status'; }
   const os = $('originStatus');
   if (S.origin) { os.textContent = `✓ Origin set at y = ${S.origin.y.toFixed(1)} px`; os.className = 'status done'; }
   else { os.textContent = 'No origin yet'; os.className = 'status'; }
@@ -1047,6 +1045,7 @@ function renderButtons() {
   document.querySelectorAll('.navbtn').forEach(b => { b.disabled = !ready; });
   $('slider').disabled = !ready; $('btnGoto').disabled = !ready;
   $('btnCal').disabled = !ready; $('btnOrigin').disabled = !ready;
+  $('btnT0').disabled = !ready; $('btnT0Reset').disabled = !ready || S.t0 === 0;
   $('btnApply').disabled = !ready || S.calPts.length < 2;
   $('btnMeasure').disabled = !(ready && S.ppm !== null && S.origin);
   $('btnSelect').disabled = !(ready && S.points.length);
@@ -1069,7 +1068,7 @@ function renderTables() {
     const tr = document.createElement('tr');
     tr.dataset.id = p.id;
     if (p.id === S.sel) tr.className = 'sel';
-    [i + 1, fix(p.t, 3), (S.ppm && S.origin) ? fix(heightOf(p), 4) : '—'].forEach(v => {
+    [i + 1, fix(p.t - S.t0, 3), (S.ppm && S.origin) ? fix(heightOf(p), 4) : '—'].forEach(v => {
       const td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
     });
     tb.appendChild(tr);
@@ -1160,7 +1159,7 @@ $('slider').addEventListener('input', e => { if (S.loaded && S.duration) request
 $('btnGoto').addEventListener('click', () => {
   const t = parseFloat($('gotoInput').value);
   if (isNaN(t)) { toast('Enter a time in seconds.', 'warn'); return; }
-  requestSeek(t, true);
+  requestSeek(t + S.t0, true);
 });
 $('gotoInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGoto').click(); });
 
@@ -1211,6 +1210,18 @@ $('btnCal').addEventListener('click', startCalibrate);
 $('btnApply').addEventListener('click', applyScale);
 $('distInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyScale(); });
 $('btnOrigin').addEventListener('click', startOrigin);
+function changeT0(v) {
+  S.t0 = v;
+  if (S.velocity) S.velocity = computeVelocity();
+  renderAll();
+}
+$('btnT0').addEventListener('click', () => {
+  if (seeking || seekReq) { toast('Still moving to that frame; try again in a moment.', 'warn'); return; }
+  changeT0(S.frameTime);
+  log(`Time zero set at video time ${S.t0.toFixed(3)} s.`, 'ok');
+  toast('t = 0 set at this frame.');
+});
+$('btnT0Reset').addEventListener('click', () => { changeT0(0); toast('t = 0 is back at the start of the video.'); });
 $('btnMeasure').addEventListener('click', () => setMode('measure'));
 $('btnSelect').addEventListener('click', () => setMode('select'));
 $('btnUndo').addEventListener('click', undoLast);
@@ -1236,98 +1247,6 @@ $('btnCsvVel').addEventListener('click', () => { const v = ensureVelocity(); if 
 window.addEventListener('beforeunload', e => { if (S.points.length) { e.preventDefault(); e.returnValue = ''; } });
 window.addEventListener('resize', draw);
 if (window.ResizeObserver) new ResizeObserver(draw).observe($('stage'));
-
-/* --------------------------------------------------------------- lab ideas */
-const LABS = [
-  { title: 'Free fall (measure g)',
-    goal: 'Find the acceleration of a dropped object.',
-    setup: ['Hang a meter stick vertically right beside the fall path, with the ball released near its top.',
-            'Drop a dense ball from rest from about 1–1.5 m. Camera 2–3 m back, level and still, motion near the center of the frame.'],
-    mark: ['Set the origin at the floor (or the landing point).',
-           'Click the ball’s center at each step, from just after release until just before it lands.'],
-    analyze: ['Copy Position Data and paste it into a new Desmos table. Fit y₁ ~ a·x₁² + b·x₁ + c. Then g = −2a.',
-              'Generate the velocity table: the points should fall on a line with slope ≈ −g.'],
-    watch: ['Let go from rest and get your hand out of the way quickly.', 'Light objects (paper, foam) feel air drag, so use a dense ball.'] },
-
-  { title: 'Ball tossed straight up',
-    goal: 'Find g from the full up-and-down flight, and see velocity change sign.',
-    setup: ['A partner holds the meter stick upright and steady, right beside the ball’s path.',
-            'Toss straight up so the ball comes down along the same line, staying in one plane. Leave room above the highest point in the frame.'],
-    mark: ['Origin at the release height (or the floor).', 'Mark from just after the ball leaves the hand until it is caught or lands, including points near the top.'],
-    analyze: ['One quadratic fit covers the whole flight: g = −2a.',
-              'In the velocity table, the velocity crosses zero at the top, and its slope is the same going up and coming down.'],
-    watch: ['If the ball drifts toward or away from the camera, its apparent size and scale change. Practice the toss first.'] },
-
-  { title: 'Bouncing ball',
-    goal: 'Measure how much energy a ball loses on each bounce.',
-    setup: ['Hang the meter stick vertically beside the bounce spot. Drop a ball from about 1 m onto a hard floor.',
-            'Use bright light. Frames right at impact are blurry, so rely on the peaks.'],
-    mark: ['Set the origin at the height of the ball’s center when the ball rests on the floor.',
-           'Click the ball’s center at each step, and be careful to catch the highest frame after each bounce.'],
-    analyze: ['Read the peak heights h₀, h₁, h₂… from the table. The ratio hₙ₊₁/hₙ equals e², where e is the coefficient of restitution (speed after ÷ speed before).',
-              'In Desmos, plot peak height vs bounce number and fit an exponential decay.'],
-    watch: ['Pick a ball that bounces several times. Heights near the top are easiest to read.'] },
-
-  { title: 'Air resistance (coffee filter)',
-    goal: 'See an object reach terminal velocity.',
-    setup: ['Drop a flat coffee filter beside the meter stick from as high as is safe (2 m or more). Fall height matters, so back the camera up to see the whole fall.',
-            'Still air: turn off fans and close doors.'],
-    mark: ['Origin at the floor. Use the larger steps (<<) since the filter falls slowly.'],
-    analyze: ['Generate the velocity table. The speed levels off: that is the terminal velocity.',
-              'Repeat with 1, 2 and 4 nested filters and compare. Try a dense ball for contrast: its velocity keeps growing at a steady rate.'],
-    watch: ['The filter may flutter sideways. Keep it flat at release and within the plane facing the camera.'] },
-
-  { title: 'Vertical spring–mass oscillator',
-    goal: 'Measure period and amplitude, and see how mass affects the period.',
-    setup: ['Hang a mass from a spring (or slinky) in front of a vertical meter stick or tape, at the same distance from the camera.',
-            'Pull down a few centimeters and release, and film 5–10 oscillations against a plain background. Put a bright sticker on the mass to click on.'],
-    mark: ['Origin at the mass’s equilibrium height. Step with << (about 5 frames): you want roughly 6+ points per cycle.'],
-    analyze: ['Fit y₁ ~ A·sin(B·x₁ + C) + D. Give B a starting guess of 2π divided by the period you can see. The period is 2π/B.',
-              'Repeat with different masses: the period should grow like the square root of the mass.'],
-    watch: ['Keep the amplitude small and the motion vertical. Swinging sideways turns it into a pendulum.'] },
-
-  { title: 'Vertical jump',
-    goal: 'Find hang time and takeoff speed, and test h = ½·g·(t/2)².',
-    setup: ['Stand a person beside a wall with a vertical meter stick or tape. Camera 3–4 m back, whole body in the frame, plain background.',
-            'Put a bright sticker or tape on the hip or belt to track. Clear the floor and jump straight up.'],
-    mark: ['Origin at the sticker’s standing height. Click the sticker at each step from the crouch through the landing.'],
-    analyze: ['Fit a quadratic to the flight part only (feet off the ground to touchdown): g = −2a.',
-              'Compare the jump height with ½·g·(hang time ÷ 2)². The velocity table gives the takeoff speed.'],
-    watch: ['Hang time is only a few tenths of a second, so each frame is a large fraction of it. Use the brightest light you can and step one frame at a time.'] },
-
-  { title: 'Energy conservation',
-    goal: 'Compare kinetic and gravitational potential energy during a fall or bounce.',
-    setup: ['Use the free-fall setup (or a single bounce). You need both the position table and the velocity table.'],
-    mark: ['Origin at the floor. Click the ball at each step through the motion.'],
-    analyze: ['Work per kilogram so the mass cancels: PE = g·h and KE = ½·v².',
-              'Each velocity is at a midpoint time, so pair it with the average of the two neighboring heights. Plot PE, KE, and PE + KE against time.'],
-    watch: ['Air drag and noisy points make the total drift a little. Talk about why.'] }
-];
-let labOpen = -1;
-function showLab(i) {
-  const panel = $('labPanel');
-  document.querySelectorAll('#labList .btn').forEach(b => b.classList.toggle('active', Number(b.dataset.i) === i && labOpen !== i));
-  if (labOpen === i) { labOpen = -1; panel.hidden = true; return; }
-  labOpen = i;
-  const L = LABS[i];
-  panel.innerHTML = '';
-  const add = (tag, text, cls) => { const e = document.createElement(tag); e.textContent = text; if (cls) e.className = cls; panel.appendChild(e); return e; };
-  add('h3', L.title);
-  add('div', L.goal, 'goal');
-  [['Setup', L.setup], ['What to mark', L.mark], ['Analyze in Desmos', L.analyze], ['Watch out for', L.watch]].forEach(([h, items]) => {
-    add('h4', h);
-    const ul = document.createElement('ul');
-    items.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
-    panel.appendChild(ul);
-  });
-  panel.hidden = false;
-}
-LABS.forEach((L, i) => {
-  const b = document.createElement('button');
-  b.className = 'btn'; b.textContent = L.title; b.dataset.i = i;
-  b.addEventListener('click', () => showLab(i));
-  $('labList').appendChild(b);
-});
 
 /* -------------------------------------------------------------------- init */
 log(`Page opened from ${location.protocol}//${location.host || '(local file)'} — secure context: ${window.isSecureContext ? 'yes' : 'no'}.`);
