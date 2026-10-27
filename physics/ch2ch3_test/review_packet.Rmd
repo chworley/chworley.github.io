@@ -1,0 +1,861 @@
+---
+title: "Review Packet: Forces, Equilibrium, and Linear Motion"
+subtitle: "Chapters 2 and 3"
+output:
+  pdf_document:
+    number_sections: false
+fontsize: 11pt
+geometry: margin=1in
+header-includes:
+  - \renewcommand{\arraystretch}{1.25}
+---
+
+\pagenumbering{gobble}
+
+\noindent Name: \underline{\hspace{8cm}}
+
+# How to use this packet
+
+This packet walks you through Chapters 2 and 3 in the order the ideas build on each other. Every part has a short explanation, a worked example, and practice questions. The answer key is a separate document.
+
+Chapter 2 asks: **what makes motion change?** The answer is net force. Chapter 3 asks: **how do we describe motion changing?** The answer is velocity, acceleration, graphs, and a few equations. The two chapters connect in one chain:
+
+$$\text{net force} = 0 \;\Longleftrightarrow\; \text{velocity does not change} \;\Longleftrightarrow\; \text{acceleration} = 0$$
+
+Keep that chain in mind. It comes back in almost every part.
+
+**How to work through it**
+
+- Read the **Big idea** first, then follow the **Worked example** with a pencil in your hand.
+- Try the practice questions before you look at the answers. A wrong attempt that you then fix teaches more than reading a right answer.
+- Show your work and write units: N, m, s, m/s, m/s$^2$.
+- Use $g = 10$ m/s$^2$ for falling objects unless a question says otherwise.
+- Questions marked $\star$ are challenges. Skip them on a first pass if you are short on time.
+
+**Map of the packet**
+
+| Part | Topic | The skill you will practice |
+|-----|--------------------------|--------------------------------------------|
+| A1 | Inertia and Newton's first law | Explaining motion with no net force |
+| A2 | Force as a vector, net force | Adding forces along a line |
+| A3 | Equilibrium | Static vs. dynamic, finding an unknown force |
+| A4 | Support force, tension, force diagrams | Reading and checking a force diagram |
+| A5 | Angles and tension, perpendicular forces | Rope angle reasoning, Pythagorean theorem |
+| B1 | Speed, velocity, relative motion | Average speed, adding speeds |
+| B2 | Position-time graphs | Slope = velocity |
+| B3 | Tables, acceleration | Estimating velocity and acceleration from data |
+| B4 | Velocity-time graphs | Slope = acceleration |
+| B5 | Constant acceleration equations | Choosing and using $v = at$ and $d = \tfrac{1}{2}at^2$ |
+| B6 | Free fall and tosses | $g$, symmetry, the top of the path |
+| B7 | Adding velocity vectors | Tip-to-tail diagrams, crosswinds and currents |
+| C | Putting it together | Linking forces and motion, then a full mixed test |
+
+
+# Reference sheet: formulas and when to use them
+
+Every formula you need for Chapters 2 and 3 is in the tables below, along with the situation that tells you to use it. Look here whenever you are not sure where to start.
+
+**Forces (Chapter 2)**
+
+| Tool | What it says | Use it when |
+|-------------|------------------------------------|------------------------------|
+| Net force on a line | Add forces in the same direction; subtract forces in opposite directions. Call right/up positive, left/down negative. | Several forces push or pull along the same line and you want the total. |
+| Equilibrium: $\Sigma F = 0$ | Net force is zero. The object is at rest (static) or moving at constant velocity (dynamic). | You are told an object is at rest or at constant velocity, or you need an unknown force. |
+| Weight: $W = m \times g$ | Weight in newtons = mass in kg $\times$ 10 N/kg (on Earth). | You know the mass and need the downward pull of gravity. |
+| Support force | For an object at rest on a level surface with no other vertical forces, support force = weight. | A book on a table, a person on a scale. |
+| Tension | A stretching force along a rope. A rope pulled equally from both ends has a tension equal to ONE end's pull. | Tug-of-war, ropes tied to trees, hanging objects. |
+| Rope angle | The flatter the rope (smaller angle above horizontal), the larger the tension needed to hold the same weight. | Hammocks, clotheslines, hanging signs. |
+| Right-angle forces: $R = \sqrt{a^2 + b^2}$ | The resultant of two perpendicular forces (the Pythagorean theorem). | Two forces at $90^\circ$ to each other. |
+| Tip-to-tail rule | Draw each force starting where the last one ended. If the arrows return to the start, the net force is zero. | Showing that forces balance on a diagram. |
+
+**Motion (Chapter 3)**
+
+| Tool | What it says | Use it when |
+|-------------|------------------------------------|------------------------------|
+| Average speed = distance $\div$ time | How fast, with no direction. | You know how far and how long. |
+| $d = v \times t$ | Distance at a steady speed. | Speed is constant, or you are using an average speed or average velocity. |
+| $v \approx \Delta x \div \Delta t$ | Velocity is the change in position divided by the change in time. | You have two position readings close together in time, or the slope of a position-time graph. |
+| $a = \Delta v \div \Delta t$ | Acceleration = (final velocity $-$ starting velocity) $\div$ time taken. Units m/s$^2$. | You know two velocities and the time between them, or the slope of a velocity-time graph. |
+| $v = v_0 + a \times t$ | Velocity after time $t$. If the object starts from rest, $v_0 = 0$ and this is just $v = a \times t$. | Constant acceleration and you want the speed at a certain time. |
+| $v_{\text{avg}} = (v_0 + v) \div 2$ | Average velocity when acceleration is constant. | Constant acceleration and you want distance without the next formula. |
+| $d = \tfrac{1}{2} \times a \times t^2$ | Distance covered from rest at constant acceleration. | Starting from rest and you know $a$ and $t$. |
+| Free fall | $a = g = 10$ m/s$^2$ downward. Dropped from rest: $v = g \times t$ and $d = \tfrac{1}{2} \times g \times t^2 = 5 \times t^2$. | Only gravity acts (ignore air resistance), going up, down, or at the top. |
+| Toss straight up | Time up = $v_0 \div g$. Total time in air = 2 $\times$ time up. Return speed = launch speed. Max height = distance fallen in the time up. | A ball thrown up and coming back to the same level. |
+| Adding velocities | Ground velocity = object's velocity + medium's velocity. Same direction: add. Opposite: subtract. Perpendicular: $R = \sqrt{a^2 + b^2}$. | Boats in currents, planes in wind, walking on moving trains. |
+
+**Reading graphs**
+
+| Feature | On a position-time graph | On a velocity-time graph |
+|--------------------|----------------------------|----------------------------|
+| Height of the line | Where the object is | How fast and which way it moves |
+| Slope of the line | **Velocity** | **Acceleration** |
+| Flat (horizontal) line | At rest | Constant velocity, acceleration = 0 |
+| Straight sloped line | Constant velocity | Constant acceleration |
+| Slope up / slope down | Moving in the positive / negative direction | Positive / negative acceleration |
+| Line crosses zero | Object passes the origin | Object turns around (velocity changes sign) |
+
+**Falling objects from rest ($g = 10$ m/s$^2$)**
+
+| Time (s) | Speed (m/s) | Total distance fallen (m) |
+|:--------:|:-----------:|:-------------------------:|
+| 0 | 0 | 0 |
+| 1 | 10 | 5 |
+| 2 | 20 | 20 |
+| 3 | 30 | 45 |
+| 4 | 40 | 80 |
+| 5 | 50 | 125 |
+
+
+# Part A1: Inertia and Newton's first law
+
+**Big idea.** Objects keep doing what they are already doing unless a net force changes it. An object at rest stays at rest, and an object in motion keeps moving at the same speed in a straight line. This tendency is called **inertia**. Inertia is a property of matter, not a force, and an object with more mass has more inertia.
+
+This was a big change in thinking. Aristotle taught that moving objects need a continual push to keep moving. Galileo, using ramps and rolling balls, realized that things slow down because of **friction**, a force, and not because stopping is their "natural" state. Remove friction and a moving object just keeps going.
+
+**Watch out:** "No net force" does not mean "no motion." It means *no change* in motion.
+
+**Inertia in everyday life**
+
+- Yank a tablecloth out from under dishes and the dishes stay put. They were at rest, and the quick tug gave them almost no push.
+- You are standing on a bus that turns left, and you lurch to the right. Your body was moving straight ahead and keeps trying to. The bus turned out from under you.
+- Toss a coin straight up on a train moving at constant velocity and it lands in your hand. The coin shares the train's forward motion and nothing pushes it forward or backward.
+- Toss the coin while the train speeds up and it lands *behind* you. The coin keeps its old forward velocity while the train moves ahead.
+
+**Worked example.** A seagull flies in a straight line at a constant 10 m/s and lets go of a clam over the rocks, hoping the fall will crack the shell. Ignoring air resistance, how fast is the clam moving horizontally just before it hits the rocks?
+
+1. Before the gull let go, the clam moved forward at 10 m/s along with the gull.
+2. Once released, gravity pulls the clam down, but nothing pushes it forward or backward.
+3. No horizontal force means no change in horizontal velocity. The answer is **10 m/s**. Seen from the ground, the clam keeps moving forward as it falls, so it lands well ahead of the spot directly below where it was released. Seen from the gull, which keeps flying at the same velocity, the clam stays directly below the bird the whole way down.
+
+**Try it**
+
+**A1.1** If no external forces act on a moving object, it will
+
+| A) continue moving at the same speed in a straight line.
+| B) slow down gradually until it stops.
+| C) stop abruptly.
+| D) speed up.
+
+**A1.2** A rock drifts through deep space at 20 m/s, far from any planet. What force is needed to keep it moving at 20 m/s?
+
+| A) A force equal to its weight
+| B) 20 N
+| C) No force at all
+| D) It depends on the rock's mass
+
+**A1.3** You whirl a rock on a string in a horizontal circle, and the string suddenly breaks. Seen from above, the rock then moves
+
+| A) in a circle, as before.
+| B) in a straight line in the direction it was moving at the moment the string broke.
+| C) in a straight line directly away from the center of the circle.
+| D) toward the center of the circle.
+
+**A1.4** Which has more inertia, a bowling ball or a tennis ball? How do you know?
+
+**A1.5** A hockey puck slides across ice and slowly comes to a stop. Explain *why* it stops, and explain what would happen on perfectly frictionless ice.
+
+**A1.6** A coin is tossed straight up inside a train moving at constant velocity. Explain why the coin lands back in your hand. Then explain where it lands if the train speeds up while the coin is in the air.
+
+# Part A2: Force as a vector and finding net force
+
+**Big idea.** A force is a push or pull, measured in **newtons (N)**. A force is a **vector**, meaning it has both a **magnitude** (how strong) and a **direction** (which way). You need both to describe what a force does.
+
+When several forces act on an object, what matters is the **net force**, the single combined force. Whether the velocity changes depends on the net force:
+
+- **Net force = 0:** the velocity does not change.
+- **Net force $\neq$ 0:** the velocity changes. The speed can change, the direction can change, or both.
+
+**How to find net force along a line**
+
+1. Pick a positive direction (for example right is $+$, left is $-$; up is $+$, down is $-$).
+2. Add the forces, using the signs.
+3. The sign of the answer tells you the direction. The size is the magnitude.
+
+Forces at right angles to each other do **not** cancel. Handle each direction on its own: left-right forces with left-right forces, up-down forces with up-down forces.
+
+**Worked example 1.** A block is pulled 5 N to the left and 15 N to the right. Right is positive:
+
+$$\text{net} = (+15) + (-5) = +10 \text{ N}$$
+
+The net force is **10 N to the right**.
+
+**Worked example 2.** An object feels 120 N to the left, 70 N to the right, 45 N up, and 45 N down.
+
+- Up-down: $+45 - 45 = 0$ N, so these cancel.
+- Left-right: $+70 - 120 = -50$ N.
+
+The net force is **50 N to the left**.
+
+**Try it**
+
+**A2.1** A tree stump is pulled north by a 10 N force and south by a 25 N force. What is the net force (magnitude and direction)?
+
+**A2.2** A box is pushed 30 N to the right, another 20 N to the right, and 10 N to the left. What is the net force?
+
+**A2.3** An object has these forces on it: 100 N up, 60 N down, 35 N left, and 35 N right. What is the net force?
+
+**A2.4** True or false, with a reason: "If the net force on an object is zero, the object must be at rest."
+
+**A2.5** Why is force called a *vector* quantity?
+
+**A2.6** Two 10 N forces act on a box. Describe the directions of the two forces that would make the net force (a) 20 N and (b) 0 N.
+
+**A2.7** $\star$ A cart is moving to the right. A net force of 8 N points to the *left*. Without any calculation, describe what happens to the cart's velocity over the next few seconds.
+
+# Part A3: Equilibrium
+
+**Big idea.** An object is in **equilibrium** when the net force on it is zero. There are two kinds, and both have balanced forces:
+
+- **Static equilibrium:** the object is at rest.
+- **Dynamic equilibrium:** the object moves at constant velocity (constant speed in a straight line).
+
+$$\Sigma F = 0$$
+
+**Watch out:** Many people think "it is moving, so there must be a net force." That is Aristotle's idea, and Galileo showed it is wrong. Constant velocity means zero net force. Only a *change* in velocity needs a net force.
+
+A falling insect that reaches a steady speed is a good example. Gravity pulls it down with its weight, and air resistance pushes up with an equal force. The forces balance, so the speed stops changing.
+
+**Finding an unknown force.** If an object is in equilibrium, the known forces and the unknown force must add to zero. So the unknown force is equal in size and opposite in direction to the sum of the known forces.
+
+**Worked example.** Three horizontal forces act on an object in static equilibrium. Two of them are 80 N to the right and 30 N to the left, and the third is unknown. Find the unknown force.
+
+1. Right is positive. The known forces add to $+80 - 30 = +50$ N, which is 50 N to the right.
+2. For zero net force, the unknown force must cancel that: it is **50 N to the left**.
+3. Check: $+80 - 30 - 50 = 0$.
+
+**Try it**
+
+**A3.1** A book sits motionless on a table. Which best describes it?
+
+| A) Static equilibrium
+| B) Dynamic equilibrium
+| C) Not in equilibrium, because gravity pulls it down
+| D) No forces act on it
+
+**A3.2** A hockey puck glides at constant velocity across smooth ice. Is it in equilibrium? If so, which kind? What is the net force on it?
+
+**A3.3** An object is in static equilibrium. Three horizontal forces act on it: 120 N to the right, 45 N to the left, and an unknown force. Find the magnitude and direction of the unknown force.
+
+**A3.4** A parachutist who weighs 600 N falls at a constant velocity. What is the net force on her? What is the air resistance, including its direction?
+
+**A3.5** A car drives at a steady 25 m/s on a straight, level road. The engine pushes the car forward with 2000 N. What is the total friction and air resistance on the car, and what kind of equilibrium is this?
+
+**A3.6** A friend says, "The box is sliding across the floor, so there must be a net force on it." Explain whether your friend is right.
+
+**A3.7** $\star$ An object has these forces on it: 50 N up, 50 N down, 30 N left, and 30 N right. A classmate says it must be at rest. What is wrong with that claim?
+
+# Part A4: Support force, tension, and force diagrams
+
+**Big idea.** Four forces show up again and again, and a **force diagram** is how you keep track of them. The diagram shows the object as a dot, with an arrow for each force acting on it. Arrow length is proportional to the force's size, and each arrow is labeled.
+
+| Force | What it is | Direction |
+|-------------|----------------------------------|------------------------|
+| **Weight** | Gravity's pull on the object. $W = m \times g$, with $m$ in kg and $g = 10$ N/kg. | Always down |
+| **Support (normal) force** | The push of a surface on the object. | Perpendicular to the surface, away from it |
+| **Tension** | A stretching pull along a rope or string. | Along the rope, away from the object |
+| **Friction** | A force from a surface that resists sliding. | Opposite to the motion (or the attempted motion) |
+
+**Key facts**
+
+- A book at rest on a table has a support force equal to its weight, so the two cancel.
+- A scale reads the support force. If you stand on two scales, the two readings **add up** to your weight.
+- Tension is a force that stretches. If two people pull on opposite ends of a rope with 400 N each and nothing moves, the net force on the rope is **0 N** and the tension is **400 N**, not 800 N. Tension equals one end's pull.
+- If a scaffold hangs from ropes at rest, the tensions in the ropes **add up** to the total weight of the scaffold plus the people on it.
+
+**Tip-to-tail check.** If an object is in equilibrium, the force arrows drawn tip-to-tail form a closed shape that comes back to the starting point. If the shape does not close, there is a net force.
+
+**Worked example.** A sled moves at constant velocity as a person pulls it with a rope that points up and to the right. The forces are:
+
+- Weight: 400 N, down.
+- Support force: 350 N, up.
+- Tension: 130 N along the rope. Its horizontal part is 120 N to the right and its vertical part is 50 N up.
+- Friction: 120 N, to the left.
+
+Show that the sled is in dynamic equilibrium.
+
+1. **Vertical forces:** 350 N up $+$ 50 N up (from the rope) $=$ 400 N up, which balances the 400 N weight down. Net vertical force $= 0$.
+2. **Horizontal forces:** 120 N right (from the rope) balances 120 N left (friction). Net horizontal force $= 0$.
+3. Tip-to-tail: start at a point, go down 400, up 350, then along the rope (right 120, up 50), then left 120. You are back at the start, so the forces balance.
+4. Net force $= 0$ and the sled moves at constant velocity, so it is in **dynamic equilibrium**.
+
+**Try it**
+
+**A4.1** A 10 N book rests on a table. What is the support force on it?
+
+**A4.2** A 30 kg dog is sleeping on the floor. What is its weight, and what is the support force on it?
+
+**A4.3** A 500 N student stands at rest on two bathroom scales, with her weight shared equally. What does each scale read?
+
+**A4.4** Two painters with a combined weight of 1300 N stand on a scaffold that weighs 400 N. The scaffold hangs at rest from two ropes. What do the two rope tensions add up to?
+
+**A4.5** In a tug-of-war that is perfectly balanced, each team pulls on the rope with 300 N. What is the net force on the rope? What is the tension in the rope?
+
+**A4.6** A crate is pulled across the floor at constant velocity by a rope. The forces are: weight 800 N down, support force 650 N up, and tension whose horizontal part is 240 N to the right and whose vertical part is 150 N up. (a) What is the friction force? (b) Show that the vertical forces balance.
+
+**A4.7** A person weighs themself on a bathroom scale, then rises up onto their tiptoes and stays still. Does the scale reading change? Explain using equilibrium.
+
+**A4.8** $\star$ In the worked example above, the person pulls harder and the sled's speed starts increasing. What does that tell you about the horizontal forces?
+
+# Part A5: Angles and tension, and forces at right angles
+
+**Big idea, part 1: rope angles.** When an object hangs at rest from two ropes, the **upward parts** of the two tensions have to add up to the object's weight. Each rope only contributes the part of its pull that points up.
+
+- If both ropes are **vertical**, all of each tension points up. Each rope carries **half the weight**.
+- If the ropes are **tilted** away from vertical, only part of each tension points up, so each rope must pull harder. Each tension is **more than half the weight**.
+- The **flatter** the ropes (the smaller the angle above horizontal), the less each rope's pull points up, and the **larger the tension** has to be.
+
+Tension depends on the **angle** of the ropes, not on their length. If both ropes make equal angles, the two tensions are equal. If the angles are different, the tensions are different.
+
+**Hammock example.** A hammock hangs between two trees. When the trees are far apart, the ropes are nearly flat, the angle of elevation is small, and the tension is large. When the trees are closer together, the ropes tilt more steeply, the angle is larger, and the tension is smaller.
+
+| Ropes | Angle above horizontal | Tension in each rope |
+|--------------------------|--------------------|------------------------------------------|
+| Straight up (vertical) | $90^\circ$ | Smallest: half the weight |
+| Tilted | Medium | Greater than half the weight |
+| Nearly flat | Small | Very large |
+| Perfectly flat | $0^\circ$ | Impossible, because no part of the pull points up |
+
+**Big idea, part 2: forces at right angles.** Two forces that point in perpendicular directions do not simply add. Their resultant is the hypotenuse of a right triangle:
+
+$$R = \sqrt{a^2 + b^2}$$
+
+The same formula works for velocities at right angles (Part B7). Useful sets of numbers: 3-4-5, 5-12-13, 6-8-10, and two equal forces at right angles give about 1.4 times one force (10 N right and 10 N up give about 14 N right-up).
+
+**Worked example.** A 40 N force pulls an object east and a 30 N force pulls it north at the same time. What is the net force?
+
+1. The forces are at right angles, so use the Pythagorean theorem.
+2. $R = \sqrt{40^2 + 30^2} = \sqrt{1600 + 900} = \sqrt{2500} =$ **50 N**.
+3. The direction is between east and north, tilted a bit more toward east, since the east force is larger.
+
+**Try it**
+
+**A5.1** A monkey hangs from the middle of a horizontal rope. The tension in the rope is greatest when the rope
+
+| A) sags a lot.
+| B) sags very little.
+| C) has the same tension no matter how much it sags.
+
+**A5.2** An 800 N object hangs at rest from two ropes that are both vertical. What is the tension in each rope?
+
+**A5.3** The same 800 N object is now hung from two ropes that are tilted away from vertical, at equal angles. Is the tension in each rope less than, equal to, or greater than 400 N? Explain.
+
+**A5.4** You move the two trees holding a hammock farther apart, but the hammock sags to the same spot. What happens to the angle of the ropes and to the tension in them?
+
+**A5.5** A 6 N force pulls an object east and an 8 N force pulls it north. What is the magnitude of the net force?
+
+**A5.6** Two 10 N forces act on a box at right angles. Is the net force closer to 10 N, 14 N, or 20 N?
+
+**A5.7** A 5 N force pulls a cart east while a 12 N force pulls it north. Find the net force magnitude.
+
+**A5.8** $\star$ A person tries to pull a clothesline completely flat and horizontal while a heavy shirt hangs from its middle. Use what you know about the upward parts of the tensions to explain why this can never be done.
+
+
+# Part B1: Speed, velocity, and relative motion
+
+**Big idea.** **Speed** tells you how fast something moves. **Velocity** tells you how fast *and* in which direction, so velocity is a vector and speed is not. Both are measured in units such as m/s or km/h.
+
+$$\text{average speed} = \frac{\text{distance}}{\text{time}} \qquad\qquad d = v \times t$$
+
+- **Average speed** covers a whole trip: total distance divided by total time.
+- **Instantaneous speed** is the speed at one moment. A car's speedometer reads instantaneous speed.
+- A velocity of $+5$ m/s and a velocity of $-5$ m/s have the same speed but opposite directions.
+
+**Relative motion.** Speeds are always measured relative to something. When something moves on top of something else that is also moving, the velocities combine:
+
+- Moving in the **same** direction: **add** the speeds.
+- Moving in **opposite** directions: **subtract** the speeds.
+
+**Worked example 1.** A horse gallops 10 km in 30 minutes. Convert 30 minutes to 0.5 hours:
+
+$$\text{average speed} = \frac{10 \text{ km}}{0.5 \text{ h}} = 20 \text{ km/h}$$
+
+**Worked example 2.** Jake runs at 4 m/s along a train flatcar that moves at 10 m/s. Relative to the ground:
+
+- Running in the same direction as the train: $10 + 4 =$ **14 m/s**.
+- Running in the opposite direction: $10 - 4 =$ **6 m/s**.
+
+**Try it**
+
+**B1.1** A car's speedometer shows how fast the car is going at one moment. Is that average speed or instantaneous speed?
+
+**B1.2** A runner covers 400 m in 80 s. What is her average speed?
+
+**B1.3** A cyclist averages 6 m/s for 2 minutes. How far does the cyclist travel? (Convert the time to seconds first.)
+
+**B1.4** A car travels 60 km in 45 minutes. What is its average speed in km/h?
+
+**B1.5** Which of these are vectors: speed, velocity, distance, acceleration?
+
+**B1.6** Katelyn runs along the aisle of a train moving at 8 m/s. Her speed relative to the floor of the train is 3 m/s. What could her speed be relative to the ground? Give both possibilities and say when each happens.
+
+**B1.7** A mosquito flies at 3 m/s straight into a 3 m/s breeze that blows in the opposite direction. What is the mosquito's speed relative to the ground?
+
+**B1.8** A car drives around a circular track at a constant 20 m/s. Is its *speed* constant? Is its *velocity* constant? Explain.
+
+# Part B2: Position-time graphs
+
+**Big idea.** A position-time graph shows **where** an object is at each moment. The **slope** of the graph is the object's **velocity**:
+
+$$v = \text{slope} = \frac{\Delta x}{\Delta t} = \frac{\text{rise}}{\text{run}}$$
+
+- A **steeper** line means a **faster** object.
+- A line sloping **up** means motion in the **positive** direction. A line sloping **down** means motion in the **negative** direction.
+- A **flat** (horizontal) line means the object is **at rest**, because its position is not changing.
+
+**Watch out:** A position-time graph is not a picture of the path. A flat line does not mean "moving at a constant speed". It means *not moving*. Also, a line that is high on the graph just means the object is far from the origin, not that it moves fast.
+
+**Figure 1** shows a student walking back and forth along a straight hallway. Position is measured from the doorway ($x = 0$), and positive positions are toward the east end of the hall.
+
+```{r fig1, echo=FALSE, fig.width=7, fig.height=4.3, fig.align="center", out.width="95%"}
+t <- c(0, 4, 8, 12, 16, 20)
+x <- c(0, 8, 8, -8, -8, -4)
+par(mar = c(4.2, 4.4, 2.2, 1))
+plot(t, x, type = "n", xlim = c(0, 20), ylim = c(-10, 10),
+     xlab = "time (s)", ylab = "position (m)", axes = FALSE,
+     main = "Figure 1: position of a student walking along a hallway")
+abline(v = 0:20, col = "grey88", lwd = 0.6)
+abline(h = -10:10, col = "grey88", lwd = 0.6)
+abline(v = seq(0, 20, 2), col = "grey72", lwd = 0.8)
+abline(h = seq(-10, 10, 2), col = "grey72", lwd = 0.8)
+abline(h = 0, lwd = 1.5)
+axis(1, at = seq(0, 20, 2))
+axis(2, at = seq(-10, 10, 2), las = 1)
+lines(t, x, lwd = 2.5, col = "#1f5fbf")
+points(t, x, pch = 19, cex = 1.1, col = "#1f5fbf")
+box()
+```
+
+**Worked example.** Find the student's velocity from $t = 0$ to $t = 4$ s in Figure 1.
+
+1. At $t = 0$ the position is 0 m. At $t = 4$ s the position is 8 m.
+2. Slope = rise $\div$ run = $(8 - 0) \div (4 - 0) = 8 \div 4 =$ **$+2$ m/s**.
+3. The sign is positive, so the student is walking toward the east end at 2 m/s.
+
+The straight line means the velocity is constant during that interval. To find the velocity at $t = 2$ s, you do not need a new calculation: it is the same, $+2$ m/s.
+
+**Try it** (use Figure 1)
+
+**B2.1** What is the student's position at $t = 6$ s?
+
+**B2.2** What is the student's position at $t = 10$ s?
+
+**B2.3** What is the student's velocity (speed and direction) at $t = 6$ s?
+
+**B2.4** What is the student's velocity at $t = 10$ s?
+
+**B2.5** What is the student's velocity at $t = 18$ s?
+
+**B2.6** During which time interval(s) is the student at rest?
+
+**B2.7** During which time interval(s) is the student east of the doorway (position greater than 0)?
+
+**B2.8** During which time interval(s) is the student moving in the positive direction?
+
+**B2.9** During which interval is the student moving fastest, and how fast?
+
+**B2.10** $\star$ At $t = 10$ s the student is exactly at the doorway ($x = 0$). Is the student at rest at that moment? Explain using the slope.
+
+**B2.11** $\star$ What is the total *distance* the student walks from $t = 0$ to $t = 20$ s? How does it compare with the student's final *position*?
+
+# Part B3: Velocity from data tables, and acceleration
+
+**Big idea.** **Acceleration** is how quickly velocity changes. Any change in velocity counts: speeding up, slowing down, or changing direction. Acceleration is a vector and its units are m/s$^2$ (meters per second, every second).
+
+$$a = \frac{\Delta v}{\Delta t} = \frac{v_{\text{final}} - v_{\text{start}}}{\Delta t}$$
+
+- **Positive $a$** with positive velocity: speeding up. **Negative $a$** with positive velocity: slowing down. A negative acceleration is also called a *deceleration* when the object is slowing down.
+- **Zero $a$** means the velocity is constant. A car at a steady 100 m/s has $a = 0$.
+- Going around a curve at constant speed is still an acceleration, because the *direction* of the velocity changes.
+
+**Getting velocity from a table of positions.** Velocity is change in position divided by change in time:
+
+$$v \approx \frac{\Delta x}{\Delta t}$$
+
+If two position readings are close together in time, this gives the velocity at the **midpoint** time between them. To estimate acceleration, find velocity at two different times, then divide the change in velocity by the time between those two midpoints.
+
+**Worked example.** A runner's position is recorded:
+
+| Time (s) | 10 | 12 | 50 | 52 |
+|:------------|:----:|:----:|:----:|:----:|
+| Position (m) | 30 | 42 | 330 | 348 |
+
+1. Velocity at $t = 11$ s: $\Delta x / \Delta t = (42 - 30) \div (12 - 10) = 12 \div 2 =$ **6 m/s**.
+2. Velocity at $t = 51$ s: $(348 - 330) \div (52 - 50) = 18 \div 2 =$ **9 m/s**.
+3. Acceleration from $t = 11$ s to $t = 51$ s: $(9 - 6) \div (51 - 11) = 3 \div 40 =$ **0.075 m/s$^2$**.
+
+**Worked example (braking).** A car at 30 m/s brakes at $-10$ m/s$^2$.
+
+- Time to stop: $t = \Delta v \div a = (0 - 30) \div (-10) =$ **3 s**.
+- Distance: use average velocity. The speed falls steadily from 30 to 0, so $v_{\text{avg}} = (30 + 0) \div 2 = 15$ m/s, and $d = 15 \times 3 =$ **45 m**.
+
+**Try it**
+
+**B3.1** A cyclist's position is recorded:
+
+| Time (s) | 4 | 6 | 14 | 16 |
+|:------------|:----:|:----:|:----:|:----:|
+| Position (m) | 20 | 32 | 120 | 140 |
+
+(a) Estimate the velocity at $t = 5$ s. (b) Estimate the velocity at $t = 15$ s. (c) Estimate the acceleration from $t = 5$ s to $t = 15$ s.
+
+**B3.2** A car increases its velocity from zero to 60 m/s in 10 s. What is its acceleration?
+
+**B3.3** A cart travels at a constant 100 m/s for 10 s. What is its acceleration during that time?
+
+**B3.4** A cyclist slows from 12 m/s to 4 m/s in 4 s. Find the acceleration. What does the sign of your answer tell you?
+
+**B3.5** An object covers 8 m in the first second, 8 m in the next second, and 8 m in the third second. What is its acceleration?
+
+**B3.6** A speeding car at 30 m/s slams on the brakes with $a = -10$ m/s$^2$. (a) How much time passes until it stops? (b) The car's average velocity while braking is 15 m/s. How far does it travel while stopping? (c) If instead the car hits a tree and goes from 30 m/s to 0 m/s in 0.05 s, what is the average acceleration in the crash? How many times larger is it than the braking acceleration?
+
+**B3.7** A car travels around a circular track at constant speed. Is it accelerating? Explain.
+
+**B3.8** $\star$ A ball rolls to the right at 6 m/s, hits a wall, and rolls back to the left at 6 m/s, all in 0.2 s. Taking right as positive, find the average acceleration. (Be careful with the signs of the velocities.)
+
+# Part B4: Velocity-time graphs
+
+**Big idea.** A velocity-time graph shows **how fast and in which direction** an object moves at each moment. The **height** of the line is the velocity, and the **slope** of the line is the **acceleration**:
+
+$$a = \text{slope} = \frac{\Delta v}{\Delta t} = \frac{\text{rise}}{\text{run}}$$
+
+- A **flat** line means **constant velocity** and zero acceleration. The object is at rest only if the flat line is at $v = 0$.
+- A line **sloping up** means positive acceleration. A line **sloping down** means negative acceleration.
+- Where the line **crosses zero**, the object stops for an instant and **turns around**.
+- The object **speeds up** when the line moves **away** from the zero axis, and **slows down** when the line moves **toward** the zero axis. In other words, it speeds up when velocity and acceleration have the same sign, and slows down when they have opposite signs.
+
+**Watch out:** Compare this with Part B2. On a position-time graph a flat line means *at rest*. On a velocity-time graph a flat line means *constant velocity*. The same-looking line means something different, so always check which graph you are reading.
+
+**Figure 2** shows a cyclist on a straight road. East is the positive direction.
+
+```{r fig2, echo=FALSE, fig.width=7, fig.height=4.3, fig.align="center", out.width="95%"}
+t <- c(0, 2, 6, 8, 10, 14, 16)
+v <- c(0, 6, 6, 0, -4, -4, 0)
+par(mar = c(4.2, 4.4, 2.2, 1))
+plot(t, v, type = "n", xlim = c(0, 16), ylim = c(-8, 8),
+     xlab = "time (s)", ylab = "velocity (m/s)", axes = FALSE,
+     main = "Figure 2: velocity of a cyclist on a straight road")
+abline(v = 0:16, col = "grey88", lwd = 0.6)
+abline(h = -8:8, col = "grey88", lwd = 0.6)
+abline(v = seq(0, 16, 2), col = "grey72", lwd = 0.8)
+abline(h = seq(-8, 8, 2), col = "grey72", lwd = 0.8)
+abline(h = 0, lwd = 1.5)
+axis(1, at = seq(0, 16, 2))
+axis(2, at = seq(-8, 8, 2), las = 1)
+lines(t, v, lwd = 2.5, col = "#1f5fbf")
+points(t, v, pch = 19, cex = 1.1, col = "#1f5fbf")
+box()
+```
+
+**Worked example.** Find the cyclist's acceleration from $t = 0$ to $t = 2$ s in Figure 2.
+
+1. At $t = 0$ the velocity is 0. At $t = 2$ s the velocity is $+6$ m/s.
+2. Slope = rise $\div$ run = $(6 - 0) \div (2 - 0) =$ **$+3$ m/s$^2$**.
+3. Velocity and acceleration are both positive, so the cyclist is speeding up toward the east.
+
+**Try it** (use Figure 2)
+
+**B4.1** What is the velocity (speed and direction) at $t = 4$ s?
+
+**B4.2** What is the velocity at $t = 12$ s?
+
+**B4.3** What is the acceleration at $t = 4$ s?
+
+**B4.4** What is the acceleration at $t = 7$ s?
+
+**B4.5** What is the acceleration at $t = 9$ s?
+
+**B4.6** What is the acceleration at $t = 15$ s?
+
+**B4.7** At what times is the cyclist momentarily stopped?
+
+**B4.8** During which time interval is the cyclist moving east?
+
+**B4.9** During which time intervals is the cyclist (a) speeding up, (b) slowing down, and (c) moving at constant velocity?
+
+**B4.10** $\star$ How far does the cyclist travel during the first 2 s? (Hint: the velocity rises steadily from 0 to 6 m/s, so use the average velocity.)
+
+**B4.11** $\star$ A student says, "From 2 s to 6 s the cyclist is stopped because the line is flat." What is wrong with this statement?
+
+**B4.12** $\star$ From 8 s to 10 s the acceleration is negative, yet the cyclist is speeding up. How is that possible?
+
+# Part B5: Constant acceleration equations
+
+**Big idea.** When acceleration is **constant**, velocity changes by the **same amount every second**. That makes it possible to predict the speed and the distance covered at any time. Rearranging $a = \Delta v \div \Delta t$ gives the speed equation, and the distance equations come from using the average velocity.
+
+$$v = v_0 + a\,t \qquad\qquad v_{\text{avg}} = \frac{v_0 + v}{2} \qquad\qquad d = v_{\text{avg}}\,t$$
+
+If the object **starts from rest**, then $v_0 = 0$ and the equations simplify:
+
+$$v = a\,t \qquad\qquad d = \tfrac{1}{2}\,a\,t^2$$
+
+**Which equation do I use?**
+
+| You know... | You want... | Use |
+|----------------------------|--------------------|--------------------------------|
+| $a$ and $t$, starting from rest | Final speed | $v = a \times t$ |
+| $a$ and $t$, starting from rest | Distance | $d = \tfrac{1}{2} \times a \times t^2$ |
+| $v$ and $a$, starting from rest | Time | $t = v \div a$ |
+| $a$, $t$, and a starting speed $v_0$ | Final speed | $v = v_0 + a \times t$ |
+| Starting and final speeds, and $t$ | Distance | $d = ((v_0 + v) \div 2) \times t$ |
+
+**Watch out:** Do not use $d = v_{\text{final}} \times t$. The object was slower earlier in the trip, so the distance is smaller than that. Use the *average* velocity, or use $\tfrac{1}{2}at^2$.
+
+**Worked example.** A car starts from rest and accelerates at 2 m/s$^2$.
+
+1. Speed after 3 s: $v = at = 2 \times 3 =$ **6 m/s**.
+2. Distance in 3 s: $d = \tfrac{1}{2}at^2 = \tfrac{1}{2} \times 2 \times 3^2 = \tfrac{1}{2} \times 2 \times 9 =$ **9 m**.
+3. Check with the average: $v_{\text{avg}} = (0 + 6) \div 2 = 3$ m/s, and $d = 3 \times 3 = 9$ m. These match.
+4. Time to reach 30 m/s: $t = v \div a = 30 \div 2 =$ **15 s**.
+
+**Try it**
+
+**B5.1** A ball starting from rest at the top of a ramp gains 2 m/s of speed for every second it rolls. What is its acceleration?
+
+**B5.2** The ramp in B5.1 takes 3 s to roll down. (a) What is the ball's speed at the bottom? (b) How long is the ramp?
+
+**B5.3** A car starts from rest and accelerates at 3 m/s$^2$ for 5 s. Find its speed and the distance it travels.
+
+**B5.4** How long does a car take to go from rest to 24 m/s at 3 m/s$^2$?
+
+**B5.5** A rocket, starting from rest, accelerates at 50 m/s$^2$ for one minute. What is its speed at the end? (Use 60 s.)
+
+**B5.6** A cart starts from rest at 5 m/s$^2$ and runs for 4 s. Find the final speed. Then find the distance two ways, with $d = \tfrac{1}{2}at^2$ and with $d = v_{\text{avg}} \times t$, and show that you get the same answer.
+
+**B5.7** A car already moving at 20 m/s accelerates at 3 m/s$^2$ for 4 s. What is its final speed?
+
+**B5.8** $\star$ A student says, "The car in B5.3 ends at 15 m/s and drove for 5 s, so it went $15 \times 5 = 75$ m." Find the mistake and give the correct distance.
+
+# Part B6: Free fall and tosses
+
+**Big idea.** An object is in **free fall** when gravity is the only force acting on it (we ignore air resistance). Free fall is a special case of constant acceleration, with $a = g \approx$ **10 m/s$^2$ downward**. Five facts cover most questions:
+
+1. The acceleration is **the same for every object**, heavy or light.
+2. It is the same going **down, going up, and at the very top**. While rising, an object loses 10 m/s of speed every second. While falling, it gains 10 m/s every second.
+3. At the **top** of a toss, the velocity is momentarily zero but the acceleration is still 10 m/s$^2$ downward. (If the acceleration were zero at the top, the ball would hang there.)
+4. A ball thrown straight up **returns with the same speed** it was launched with, and the trip up takes **as long** as the trip down.
+5. Each second a falling object covers a **greater** distance than the second before, since it is speeding up.
+
+$$v = g\,t \qquad\qquad d = \tfrac{1}{2}\,g\,t^2 = 5\,t^2 \qquad\qquad \text{(dropped from rest)}$$
+
+For an object thrown **upward** with starting speed $v_0$, it is easiest to use the symmetry rules:
+
+$$t_{\text{up}} = \frac{v_0}{g} \qquad\qquad t_{\text{total}} = 2\,t_{\text{up}} \qquad\qquad h_{\max} = \tfrac{1}{2}\,g\,t_{\text{up}}^2$$
+
+(The maximum height is the distance an object would fall from rest in the time it takes to rise.) You can also use $v = v_0 - g \times t$, where a positive velocity means upward.
+
+**Worked example 1: dropped object.** A stone falls from rest down a mineshaft and hits the bottom after 4 s.
+
+- Speed at the bottom: $v = gt = 10 \times 4 =$ **40 m/s**.
+- Depth: $d = \tfrac{1}{2}gt^2 = 5 \times 4^2 = 5 \times 16 =$ **80 m**.
+
+**Worked example 2: a toss.** A ball is tossed straight up at 30 m/s.
+
+1. Time to rise: $t = v_0 \div g = 30 \div 10 =$ **3 s**.
+2. Total time in the air: $2 \times 3 =$ **6 s**, and it lands at **30 m/s** downward.
+3. Maximum height: $\tfrac{1}{2} \times 10 \times 3^2 =$ **45 m**.
+4. Velocity after 1 s: $v = 30 - 10 \times 1 =$ **$+20$ m/s** (up). After 3 s: **0** (the top). After 4 s: $30 - 40 =$ **$-10$ m/s** (10 m/s downward).
+
+**Try it**
+
+**B6.1** A freely falling watermelon falls with constant
+
+| A) velocity.
+| B) speed.
+| C) acceleration.
+| D) distance each second.
+
+**B6.2** A ball is dropped from rest. How fast is it moving after 3 s, and how far has it fallen?
+
+**B6.3** A stone dropped down a mineshaft takes 6 s to hit the bottom. How deep is the shaft?
+
+**B6.4** An apple falls 5 m from a tree. How long does it take to hit the ground, and how fast is it going when it lands?
+
+**B6.5** On a distant planet, the acceleration of free fall is 20 m/s$^2$. An object is dropped from rest. Find its speed and the distance it has fallen after 5 s.
+
+**B6.6** A ball is tossed straight up at 20 m/s. Find (a) its velocity after 1 s, (b) its velocity after 2 s, (c) its velocity after 3 s, (d) the total time in the air, (e) its acceleration at the very top, and (f) the maximum height.
+
+**B6.7** Phil leans over a cliff edge and throws a rock straight up at 5 m/s. What is the rock's speed 1 s later? And 2 s later? Which direction is it moving each time?
+
+**B6.8** How fast must you throw a ball straight up so that it takes 6 s to return to your hand?
+
+**B6.9** Phil stands at the edge of a cliff and throws one ball straight up and another straight down, both at the same speed. Which ball hits the ground below with the greater speed? Use the idea of symmetry to explain.
+
+**B6.10** A basketball player has a hang time of 1 s (total time in the air). How high does she rise?
+
+**B6.11** $\star$ For the ball in B6.6, describe the *velocity-time* graph. What shape is it, what is its slope, and where does it cross zero?
+
+# Part B7: Adding velocity vectors
+
+**Big idea.** Velocity is a vector, so velocities combine like forces do. An object's velocity **relative to the ground** is its velocity relative to the water or air **plus** the velocity of the water or air.
+
+$$\vec{v}_{\text{ground}} = \vec{v}_{\text{in the medium}} + \vec{v}_{\text{medium}}$$
+
+There are three cases:
+
+| Case | Example | How to combine |
+|------------------|--------------------------------|----------------------------------|
+| Same direction | Plane with a tailwind | Add the speeds |
+| Opposite directions | Plane flying into a headwind | Subtract the speeds; the direction is that of the larger one |
+| Right angles | Boat pointed straight across a river current, plane in a crosswind | $R = \sqrt{a^2 + b^2}$ |
+
+**Drawing the vector diagram (tip-to-tail).**
+
+1. Draw the first velocity as an arrow, with its length proportional to its speed.
+2. Start the second arrow at the **tip** of the first.
+3. Draw the resultant from the **tail of the first** arrow to the **tip of the last**.
+4. Label each arrow with its speed and direction.
+
+For right angles, the three arrows form a right triangle, and the resultant is its hypotenuse. The resultant always points partly in the direction of the current or wind. That is why a boat pointed straight across a river drifts downstream.
+
+**Worked example.** A boat moves at 6 m/s relative to the water, in a river that flows east at 2 m/s. Find the boat's velocity relative to the ground in each case.
+
+- **Boat points east (with the current):** $6 + 2 =$ **8 m/s east**.
+- **Boat points west (against the current):** $6 - 2 =$ **4 m/s west**, since the boat's speed is the larger one.
+- **Boat points north (across the current):** the velocities are at right angles, so $R = \sqrt{6^2 + 2^2} = \sqrt{40} \approx$ **6.3 m/s**, directed mostly north but tilted east.
+
+**Try it**
+
+**B7.1** An 80 km/h airplane flies in the same direction as a 10 km/h tailwind. What is its speed relative to the ground?
+
+**B7.2** The same 80 km/h airplane flies into a 10 km/h headwind. What is its speed relative to the ground?
+
+**B7.3** An airplane that flies at 100 km/h in still air is caught in a 100 km/h crosswind. What is its ground speed? (Give your answer to the nearest whole number.)
+
+**B7.4** An 80 km/h airplane flies in a 60 km/h crosswind. What is its ground speed?
+
+**B7.5** A river 100 m wide flows due south at 1 m/s. A boat that travels 1 m/s relative to the water is pointed due east and crosses from the west bank. (a) How long does the crossing take? (b) How far south does the boat drift during the crossing? (c) What is the boat's speed relative to the ground, and how far does it actually travel?
+
+**B7.6** A swimmer swims at 2 m/s relative to the water in a river that flows east at 1.5 m/s. Find her speed relative to the ground if she swims (a) east, (b) west, (c) north. Draw a vector diagram for part (c).
+
+**B7.7** $\star$ A boat captain wants to land directly across the river from the starting point, which means the boat must travel straight across relative to the ground. Should the boat be pointed straight across, upstream, or downstream? Explain with a vector diagram.
+
+
+# Part C: Putting it together
+
+Chapters 2 and 3 tell one story: **a net force changes velocity, and acceleration is how we measure that change.** The table below collects the connections that show up most often on tests.
+
+| If you see... | Then... | So the net force is... |
+|--------------------------------|-------------------------|---------------------------|
+| Constant velocity (flat line on a v-t graph, straight line on an x-t graph) | $a = 0$ | Zero (equilibrium) |
+| Speed changing, direction changing, or both | $a \neq 0$ | Not zero |
+| Free fall (only gravity acts) | $a = 10$ m/s$^2$ down | Equal to the weight, pointing down |
+| Constant speed around a circle | Direction keeps changing, so $a \neq 0$ | Not zero, pointing toward the center |
+| Two perpendicular forces or velocities | Pythagorean theorem for either | Resultant $= \sqrt{a^2 + b^2}$ |
+
+**Worked example.** A ball is tossed straight up. At the very top of its path, its velocity is zero for an instant. Is the ball in equilibrium at that moment?
+
+No. Gravity still pulls it down with a force equal to its weight, and nothing balances that force. The net force is not zero, so the velocity is changing (from upward to downward) and the acceleration is 10 m/s$^2$ downward. A velocity of zero for an instant is not the same as having zero net force.
+
+**Connecting questions**
+
+**C1** An insect falls at a constant speed of 3 m/s. (a) What is its acceleration? (b) What is the net force on it? (c) If its weight is 0.02 N, what is the air resistance on it, and in which direction?
+
+**C2** A car travels around a circular track at a constant speed. (a) Is its velocity constant? (b) Is it accelerating? (c) Is the net force zero? If not, which way does it point?
+
+**C3** A ball is thrown straight up. At the very top of its path, what are (a) its velocity, (b) its acceleration, and (c) is it in equilibrium?
+
+**C4** A sled's velocity-time graph is a flat line at $+4$ m/s. What does that tell you about the net force on the sled? What could the individual forces be doing?
+
+**C5** An elevator moves upward at a constant 3 m/s. (a) Compare the tension in the cable with the elevator's weight. (b) Describe the shape of its position-time graph and its velocity-time graph.
+
+**C6** (a) Two ropes pull on a post, one with 30 N toward the north and one with 40 N toward the east. Find the net force. (b) A boat moves at 3 m/s north relative to the water in a river that flows 4 m/s east. Find the boat's speed relative to the ground. (c) What do (a) and (b) have in common?
+
+**C7** A hockey puck slides on frictionless ice at 5 m/s. (a) What is the net force on it? (b) What is its acceleration? (c) Describe its velocity-time graph and its position-time graph. (d) How far does it travel in 4 s?
+
+**C8** $\star$ A rock is dropped from a high cliff. At first the only force on it is gravity. (a) What is the net force right after release, and what is the acceleration? (b) Suppose air resistance grows as the rock speeds up, and eventually the rock reaches a constant speed. What must be true about the forces at that point?
+
+\newpage
+
+# Mixed practice test
+
+This is a full practice test. Try it without looking at the earlier parts, then check your answers. It is worth **100 points**, and about 40 minutes is a good target. Use $g = 10$ m/s$^2$ and use Figures 1 and 2 from Parts B2 and B4.
+
+**Part 1: Multiple choice (4 points each)**
+
+**T1** A rocket in deep space runs out of fuel. It will
+
+| A) keep gaining speed.
+| B) slow down gradually until it stops.
+| C) continue moving at a constant velocity.
+| D) turn around.
+
+**T2** Which of the following is a vector quantity?
+
+| A) Mass
+| B) Speed
+| C) Time
+| D) Force
+
+**T3** A ball is thrown straight up. At the very top of its path, its acceleration is
+
+| A) zero.
+| B) 5 m/s$^2$ downward.
+| C) 10 m/s$^2$ downward.
+| D) 10 m/s$^2$ upward.
+
+**T4** A hammock hangs from two ropes tied to two trees. In which setup is the tension in the ropes greater?
+
+| A) Trees close together, so the ropes are steeper
+| B) Trees far apart, so the ropes are flatter
+| C) The tension is the same in both
+| D) There is no tension, because the hammock is at rest
+
+**T5** A car travels around a circular track at a constant speed. The net force on the car points
+
+| A) toward the center of the circle.
+| B) away from the center of the circle.
+| C) in the direction the car is moving.
+| D) nowhere, because the net force is zero.
+
+**T6** A freely falling object speeds up each second by about
+
+| A) 5 m/s.
+| B) 10 m/s.
+| C) 20 m/s.
+| D) an amount that depends on its mass.
+
+**T7** An object is in dynamic equilibrium. Which statement must be true?
+
+| A) The object is at rest.
+| B) The net force is zero and the velocity is constant.
+| C) The net force is zero and the object is speeding up.
+| D) No forces act on the object.
+
+**T8** An airplane flies at 120 km/h through the air in a 50 km/h crosswind. Its speed relative to the ground is
+
+| A) 70 km/h.
+| B) 120 km/h.
+| C) 130 km/h.
+| D) 170 km/h.
+
+**Part 2: Calculations (6 points each, show your work)**
+
+**T9** An object has these forces on it: 90 N to the right, 30 N to the left, 20 N up, and 20 N down. (a) Find the net force. (b) Is the object in equilibrium? (c) What single extra force would put it in equilibrium?
+
+**T10** A ball dropped from a bridge hits the water 3 s later. (a) How fast is it moving when it hits? (b) How high is the bridge?
+
+**T11** A car starts from rest and accelerates at 4 m/s$^2$ for 6 s. (a) What is its final speed? (b) How far does it travel?
+
+**T12** A runner's position is recorded:
+
+| Time (s) | 9 | 11 | 29 | 31 |
+|:------------|:----:|:----:|:----:|:----:|
+| Position (m) | 18 | 26 | 146 | 160 |
+
+(a) Estimate the velocity at $t = 10$ s. (b) Estimate the velocity at $t = 30$ s. (c) Estimate the acceleration from $t = 10$ s to $t = 30$ s.
+
+**Part 3: Graphs (8 points each)**
+
+**T13** Use Figure 1. (a) What is the student's position at $t = 14$ s? (b) What is the student's velocity at $t = 10$ s? (c) During which interval(s) is the student at rest?
+
+**T14** Use Figure 2. (a) What is the cyclist's acceleration at $t = 7$ s? (b) What is the cyclist's velocity at $t = 12$ s? (c) During which interval(s) is the cyclist speeding up?
+
+**Part 4: Explanations (8 points each)**
+
+**T15** Using Newton's first law, explain why a passenger lurches forward when the car they are riding in brakes suddenly.
+
+**T16** A student says, "At the top of its flight, a ball tossed straight up is in equilibrium, because it is momentarily at rest." Is she right? Explain.
+
+**Part 5: Vectors (12 points)**
+
+**T17** A swimmer swims east at 1.5 m/s relative to the water in a river that flows north at 2.0 m/s. (a) Draw a tip-to-tail vector diagram. (4 points) (b) Find the swimmer's speed relative to the ground. (4 points) (c) What would the swimmer's velocity relative to the ground be if the swimmer instead swam south at 1.5 m/s relative to the water? (4 points)

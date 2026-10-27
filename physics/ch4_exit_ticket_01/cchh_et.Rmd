@@ -1,0 +1,124 @@
+```{r data generation, echo = FALSE, results = "hide"}
+## ---------------------------------------------------------------------------
+## Cart + cargo + hanger + heft exit ticket (r-exams exercise)
+##
+## All masses are stored in GRAMS as whole numbers so the arithmetic is exact.
+## A setup is kept only if the answers are friendly enough for no calculator:
+##   - the total mass is a multiple of 100 g
+##   - the acceleration is one of the values in a_allowed (below)
+## Ranges: cart 0.3-1.5 kg, cargo 0.05-1.0 kg, hanger 0.05 or 0.10 kg,
+##         heft 0.05-1.0 kg.
+## ---------------------------------------------------------------------------
+
+## possible accelerations in m/s^2 (1 is left out on purpose)
+a_allowed <- c(0.5, 1.5, 2, 2.5, 3, 3.5, 4)
+
+grid <- expand.grid(
+  cart   = seq(300, 1500, by = 100),   # g
+  cargo  = seq(50, 1000, by = 50),     # g
+  hanger = c(50, 100),                 # g (the two hangers in the lab)
+  heft   = seq(50, 1000, by = 50)      # g
+)
+grid$hs  <- grid$hanger + grid$heft                 # hanger side, g
+grid$M   <- grid$cart + grid$cargo + grid$hs        # total mass, g
+grid$a10 <- 100 * grid$hs / grid$M                  # 10 x acceleration in m/s^2
+                                                    # (F = hs/100 N, m = M/1000 kg)
+
+ok <- (grid$M %% 100 == 0) &
+      ((100 * grid$hs) %% grid$M == 0) &            # acceleration is a multiple of 0.1
+      (grid$a10 %in% round(10 * a_allowed))         # ... and is one of the allowed values
+grid <- grid[ok, ]
+
+## pick the acceleration first (so every allowed value is equally likely),
+## then pick a setup that produces it
+a_values <- unique(grid$a10)
+a_pick   <- a_values[sample(length(a_values), 1)]
+rows     <- grid[grid$a10 == a_pick, ]
+setup    <- rows[sample(nrow(rows), 1), ]
+
+## quantities in kg and N
+cart   <- setup$cart   / 1000
+cargo  <- setup$cargo  / 1000
+hanger <- setup$hanger / 1000
+heft   <- setup$heft   / 1000
+hs     <- setup$hs     / 1000          # hanger side mass, kg
+force  <- setup$hs / 100               # forward force, N  (= hs in kg x 10 N/kg)
+total  <- setup$M      / 1000          # total mass, kg
+acc    <- setup$a10 / 10               # m/s^2  (= force / total)
+
+## formatting helpers
+kg  <- function(x) sprintf("%.2f", x)                 # 0.05, 0.60, ...
+num <- function(x) format(round(x, 3), trim = TRUE)   # 2, 1.5, ...
+```
+
+Question
+========
+
+A cart is pulled along a level track by a string that runs over a pulley to a hanger. Some mass (cargo) rides on the cart, and some mass (heft) sits on the hanger. Ignore friction and the mass of the string.
+
+```{r diagram, echo = FALSE, fig.path = "", fig.cap = "", fig.width = 8, fig.height = 2.7}
+par(mar = c(0, 0, 0, 0))
+plot(NULL, xlim = c(0, 10.5), ylim = c(0, 3.3), asp = 1,
+     axes = FALSE, xlab = "", ylab = "")
+
+## track, cart, wheels
+segments(0.2, 1.4, 7.0, 1.4, lwd = 3)
+rect(1.0, 1.7, 3.6, 2.4, col = "grey95", lwd = 2)
+symbols(c(1.5, 3.1), c(1.55, 1.55), circles = c(0.15, 0.15),
+        inches = FALSE, add = TRUE, bg = "black")
+text(2.3, 2.05, paste0("cart ", kg(cart), " kg"))
+
+## cargo on the cart
+rect(1.3, 2.4, 3.3, 3.1, col = "grey85", lwd = 2)
+text(2.3, 2.75, paste0("cargo ", kg(cargo), " kg"))
+
+## pulley and string
+symbols(7.3, 1.7, circles = 0.3, inches = FALSE, add = TRUE, bg = "white", lwd = 2)
+segments(3.6, 2.0, 7.3, 2.0, lwd = 1.5)
+segments(7.6, 1.7, 7.6, 1.1, lwd = 1.5)
+
+## hanger and heft
+rect(7.2, 0.2, 8.0, 0.4, col = "black")
+rect(7.3, 0.4, 7.9, 1.1, col = "grey85", lwd = 2)
+text(8.2, 0.3, paste0("hanger ", kg(hanger), " kg"), adj = 0)
+text(8.2, 0.8, paste0("heft ", kg(heft), " kg"), adj = 0)
+
+## forward direction
+# arrows(4.2, 1.0, 6.2, 1.0, length = 0.12, lwd = 2)
+# text(5.2, 0.65, "forward")
+```
+
+* The **forward force** is the weight of the hanger plus the heft.
+* Weight is found by multiplying mass by 10 N/kg.
+* The **total mass** being pushed forward is made of all four masses: cart, cargo, hanger, and heft.
+
+Answerlist
+----------
+* What is the forward force (in N)?
+* What is the total mass (in kg)?
+* What is the acceleration of the cart (in m/s$^2$)?
+
+Solution
+========
+
+The forward force is the weight of the hanger plus the heft. Their total mass is
+$`r kg(hanger)` + `r kg(heft)` = `r kg(hs)`$ kg, so the weight is
+$`r kg(hs)` \times 10 = `r num(force)`$ N.
+
+The total mass includes all four masses:
+$`r kg(cart)` + `r kg(cargo)` + `r kg(hanger)` + `r kg(heft)` = `r kg(total)`$ kg.
+
+The acceleration is the force divided by the total mass:
+$`r num(force)` \div `r num(total)` = `r num(acc)`$ m/s$^2$.
+
+* $(`r kg(hanger)` + `r kg(heft)`) \times 10 = `r num(force)`$ N
+* $`r kg(cart)` + `r kg(cargo)` + `r kg(hanger)` + `r kg(heft)` = `r kg(total)`$ kg
+* $`r num(force)` \div `r num(total)` = `r num(acc)`$ m/s$^2$
+
+Meta-information
+================
+exname: Cart, cargo, hanger, heft: force, mass, acceleration
+extype: cloze
+exclozetype: num|num|num
+exsolution: `r paste(num(force), num(total), num(acc), sep = "|")`
+extol: 0.01

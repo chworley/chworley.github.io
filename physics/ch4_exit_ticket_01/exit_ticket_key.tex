@@ -1,0 +1,53 @@
+\documentclass[letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,xcolor,verbatim,url,fancyvrb}
+\usepackage{amsmath,amssymb,booktabs,longtable,textcomp,eurosym,latexsym}
+
+\pagestyle{empty}
+
+%% SOLUTIONS: false = student copy (solutions are not printed), true = answer key
+\newif\ifshowsolutions
+\showsolutionstrue
+
+%% Each question starts on its own page (in the key, each solution ends its page).
+\newenvironment{question}{\item \textbf{Problem}\newline}{\ifshowsolutions\else\newpage\fi}
+
+\ifshowsolutions
+  \newenvironment{solution}{\par\medskip\noindent\textbf{Solution}\par}{\newpage}
+\else
+  \newenvironment{solution}{\comment}{\endcomment}
+\fi
+
+%% Answer list: no (a), (b), (c) labels or boxes, just spaced lines to write beside.
+\newenvironment{answerlist}%
+  {\begin{list}{}{\setlength{\leftmargin}{1.5em}\setlength{\labelwidth}{0pt}%
+                  \setlength{\labelsep}{0pt}\setlength{\itemsep}{2em}}}%
+  {\end{list}}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl}
+\newenvironment{Schunk}{}{}
+\setkeys{Gin}{width=0.95\textwidth}
+
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\newcounter{none}
+\def\LTcaptype{none}
+\setkeys{Gin}{keepaspectratio}
+
+%% \exinput{header}
+
+\begin{document}
+
+%% Optional name line: remove the leading % to turn it on.
+%\noindent Name: \rule{6cm}{0.4pt}\hfill Date: \rule{3cm}{0.4pt}\par\bigskip
+
+\begin{enumerate}
+%% \exinput{exercises}
+\end{enumerate}
+
+\end{document}

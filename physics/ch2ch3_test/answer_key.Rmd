@@ -1,0 +1,175 @@
+---
+title: "Answer Key: Forces, Equilibrium, and Linear Motion"
+subtitle: "Chapters 2 and 3 Review Packet"
+output:
+  pdf_document:
+    number_sections: false
+fontsize: 11pt
+geometry: margin=1in
+---
+
+
+\pagenumbering{gobble}
+
+Check your work against these answers after you try each question. If your answer differs, find the step where your thinking went a different way.
+
+**Part A1: Inertia**
+
+- **A1.1** A.
+- **A1.2** C. No force is needed to keep an object moving at constant velocity.
+- **A1.3** B. The rock moves in a straight line in the direction it was moving when the string broke.
+- **A1.4** The bowling ball. It has more mass, so it has more inertia and is harder to start, stop, or turn.
+- **A1.5** Friction (and a little air resistance) pushes backward on the puck, so there is a net force that slows it. On frictionless ice there would be no net force, and the puck would slide at constant velocity forever.
+- **A1.6** The coin shares the train's forward velocity, and nothing pushes it forward or backward, so it keeps that velocity and lands in your hand. If the train speeds up, the coin keeps its old forward velocity while the train moves ahead, so it lands behind you.
+
+**Part A2: Net force**
+
+- **A2.1** $25 - 10 = 15$ N toward the south.
+- **A2.2** $30 + 20 - 10 = 40$ N to the right.
+- **A2.3** Up-down: $100 - 60 = 40$ N up. Left-right: $35 - 35 = 0$. Net force is 40 N up.
+- **A2.4** False. Zero net force means the velocity does not change, so the object could be at rest or moving at constant velocity.
+- **A2.5** The effect of a force depends on both how strong it is and which way it points. Two forces with the same magnitude but different directions have different effects.
+- **A2.6** (a) Both forces point in the same direction. (b) The forces point in opposite directions.
+- **A2.7** The cart slows down. If the net force kept acting, it would stop and then speed up toward the left.
+
+**Part A3: Equilibrium**
+
+- **A3.1** A (static equilibrium).
+- **A3.2** Yes, dynamic equilibrium, because its velocity is constant. The net force is 0 N.
+- **A3.3** The known forces add to $+120 - 45 = 75$ N to the right, so the unknown force is **75 N to the left**.
+- **A3.4** The net force is 0 N. Air resistance is **600 N upward**, equal to her weight.
+- **A3.5** **2000 N backward**, equal and opposite to the engine force. It is dynamic equilibrium.
+- **A3.6** Not necessarily. If the box slides at constant velocity, the net force is zero (the push balances friction). A net force is needed only if the box's velocity is changing.
+- **A3.7** The net force is zero in both directions, so the object is in equilibrium. But equilibrium includes constant-velocity motion, so it could be at rest or moving at constant velocity.
+
+**Part A4: Support force, tension, force diagrams**
+
+- **A4.1** 10 N, upward.
+- **A4.2** Weight $= 30 \times 10 = 300$ N. Support force $= 300$ N, upward.
+- **A4.3** 250 N on each scale.
+- **A4.4** $1300 + 400 = 1700$ N.
+- **A4.5** Net force on the rope is 0 N. Tension is 300 N.
+- **A4.6** (a) Friction is 240 N to the left, to balance the 240 N rightward part of the tension. (b) Up: $650 + 150 = 800$ N, which equals the 800 N weight down.
+- **A4.7** No. The person is still at rest, so the support force still equals the weight.
+- **A4.8** The forward part of the tension is now greater than the friction force, so there is a net force forward and the sled is not in equilibrium.
+
+**Part A5: Angles, tension, right-angle forces**
+
+- **A5.1** B. The flatter the rope, the greater the tension.
+- **A5.2** 400 N each.
+- **A5.3** Greater than 400 N. Only part of each tension points upward, so each rope has to pull harder for the upward parts to add up to 800 N.
+- **A5.4** The ropes become flatter, so the angle gets smaller and the tension gets larger.
+- **A5.5** $\sqrt{6^2 + 8^2} = \sqrt{100} = 10$ N. (The 6-8-10 triangle.)
+- **A5.6** About 14 N.
+- **A5.7** $\sqrt{5^2 + 12^2} = \sqrt{169} = 13$ N.
+- **A5.8** A perfectly flat rope would have tension pointing only sideways, with no upward part to support the shirt's weight. The tension would have to be infinite, so the rope always sags.
+
+**Part B1: Speed, velocity, relative motion**
+
+- **B1.1** Instantaneous speed.
+- **B1.2** $400 \div 80 = 5$ m/s.
+- **B1.3** 2 min $= 120$ s, so $d = 6 \times 120 = 720$ m.
+- **B1.4** 45 min $= 0.75$ h, so $60 \div 0.75 = 80$ km/h.
+- **B1.5** Velocity and acceleration.
+- **B1.6** 11 m/s if she runs in the same direction as the train, or 5 m/s if she runs in the opposite direction.
+- **B1.7** 0 m/s.
+- **B1.8** The speed is constant, but the velocity is not, because the direction keeps changing.
+
+**Part B2: Position-time graph (Figure 1)**
+
+- **B2.1** 8 m.
+- **B2.2** 0 m (the doorway).
+- **B2.3** 0 m/s (flat line, so at rest).
+- **B2.4** Slope $= (-8 - 8) \div (12 - 8) = -16 \div 4 =$ **$-4$ m/s**: 4 m/s in the negative direction (toward the west end).
+- **B2.5** Slope from 16 s to 20 s $= (-4 - (-8)) \div 4 =$ **$+1$ m/s**.
+- **B2.6** From 4 s to 8 s and from 12 s to 16 s.
+- **B2.7** From 0 s to 10 s (after the start).
+- **B2.8** From 0 s to 4 s and from 16 s to 20 s.
+- **B2.9** From 8 s to 12 s, at 4 m/s (the steepest line).
+- **B2.10** No. The position is zero at that instant, but the slope is $-4$ m/s, so the student is moving.
+- **B2.11** Distance $= 8 + 16 + 4 =$ **28 m** (the total length of the walk). The final position is **$-4$ m**, which is 4 m toward the west end from the doorway. Distance adds up every step, while position only says where the student ended up.
+
+**Part B3: Tables and acceleration**
+
+- **B3.1** (a) $(32 - 20) \div 2 = 6$ m/s. (b) $(140 - 120) \div 2 = 10$ m/s. (c) $(10 - 6) \div (15 - 5) = 0.4$ m/s$^2$.
+- **B3.2** $60 \div 10 = 6$ m/s$^2$.
+- **B3.3** 0 m/s$^2$, because the velocity is constant.
+- **B3.4** $(4 - 12) \div 4 =$ **$-2$ m/s$^2$**. The negative sign means velocity is decreasing: the cyclist is slowing down while moving in the positive direction.
+- **B3.5** 0 m/s$^2$. It moves 8 m every second, which is a constant velocity of 8 m/s.
+- **B3.6** (a) $t = (0 - 30) \div (-10) =$ **3 s**. (b) $d = 15 \times 3 =$ **45 m**. (c) $a = (0 - 30) \div 0.05 =$ **$-600$ m/s$^2$**, which is 60 times the braking acceleration.
+- **B3.7** Yes. Its velocity changes because the direction changes, even though the speed does not.
+- **B3.8** $a = (-6 - 6) \div 0.2 =$ **$-60$ m/s$^2$**.
+
+**Part B4: Velocity-time graph (Figure 2)**
+
+- **B4.1** $+6$ m/s (6 m/s east).
+- **B4.2** $-4$ m/s (4 m/s west).
+- **B4.3** 0 m/s$^2$ (flat line).
+- **B4.4** Slope from 6 s to 8 s $= (0 - 6) \div 2 =$ **$-3$ m/s$^2$**.
+- **B4.5** $(-4 - 0) \div 2 =$ **$-2$ m/s$^2$**.
+- **B4.6** $(0 - (-4)) \div 2 =$ **$+2$ m/s$^2$**.
+- **B4.7** At $t = 0$, $t = 8$ s, and $t = 16$ s (where the line is at $v = 0$).
+- **B4.8** From 0 s to 8 s (velocity is positive).
+- **B4.9** (a) Speeding up: 0 to 2 s and 8 to 10 s. (b) Slowing down: 6 to 8 s and 14 to 16 s. (c) Constant velocity: 2 to 6 s and 10 to 14 s.
+- **B4.10** Average velocity $= (0 + 6) \div 2 = 3$ m/s, so $d = 3 \times 2 =$ **6 m**.
+- **B4.11** A flat line on a velocity-time graph means constant velocity ($+6$ m/s east), not rest. The cyclist is stopped only where the line is at zero.
+- **B4.12** The velocity is negative (moving west) and the acceleration is negative too. When they have the same sign, the speed increases. On the graph, the line moves farther from zero.
+
+**Part B5: Constant acceleration equations**
+
+- **B5.1** 2 m/s$^2$.
+- **B5.2** (a) $v = 2 \times 3 = 6$ m/s. (b) $d = \tfrac{1}{2} \times 2 \times 3^2 = 9$ m.
+- **B5.3** $v = 3 \times 5 =$ **15 m/s**. $d = \tfrac{1}{2} \times 3 \times 5^2 =$ **37.5 m**.
+- **B5.4** $t = v \div a = 24 \div 3 =$ **8 s**.
+- **B5.5** $v = 50 \times 60 =$ **3000 m/s**.
+- **B5.6** $v = 5 \times 4 = 20$ m/s. $d = \tfrac{1}{2} \times 5 \times 4^2 = 40$ m. With averages: $v_{\text{avg}} = (0 + 20) \div 2 = 10$ m/s, and $d = 10 \times 4 = 40$ m. Both agree.
+- **B5.7** $v = 20 + 3 \times 4 =$ **32 m/s**.
+- **B5.8** The student used the final speed for the whole trip, but the car was slower earlier. The average speed is $(0 + 15) \div 2 = 7.5$ m/s, so $d = 7.5 \times 5 =$ **37.5 m**.
+
+**Part B6: Free fall**
+
+- **B6.1** C (acceleration).
+- **B6.2** $v = 10 \times 3 = 30$ m/s. $d = 5 \times 3^2 = 45$ m.
+- **B6.3** $d = 5 \times 6^2 = 5 \times 36 = 180$ m.
+- **B6.4** $5 = 5t^2$, so $t = 1$ s. $v = 10 \times 1 = 10$ m/s.
+- **B6.5** $v = 20 \times 5 = 100$ m/s. $d = \tfrac{1}{2} \times 20 \times 5^2 = 250$ m.
+- **B6.6** (a) $+10$ m/s (10 m/s up). (b) 0 m/s (the top). (c) $-10$ m/s (10 m/s down). (d) 4 s. (e) 10 m/s$^2$ downward. (f) $\tfrac{1}{2} \times 10 \times 2^2 = 20$ m.
+- **B6.7** After 1 s: $v = 5 - 10 = -5$, so **5 m/s downward** (the rock rose for half a second, then started falling). After 2 s: $v = 5 - 20 = -15$, so **15 m/s downward**.
+- **B6.8** It must rise for 3 s, so $v_0 = 10 \times 3 =$ **30 m/s**.
+- **B6.9** Both hit with the same speed. The ball thrown up rises, stops, and comes back down past the cliff edge with the same speed it was thrown with, going downward. From there it is exactly like the ball thrown down.
+- **B6.10** She rises for 0.5 s, so $h = 5 \times 0.5^2 =$ **1.25 m**.
+- **B6.11** It is a straight line sloping downward with slope $-10$ m/s$^2$. It starts at $+20$ m/s at $t = 0$, crosses zero at $t = 2$ s (the top of the path), and ends at $-20$ m/s at $t = 4$ s.
+
+**Part B7: Adding velocity vectors**
+
+- **B7.1** 90 km/h.
+- **B7.2** 70 km/h.
+- **B7.3** $\sqrt{100^2 + 100^2} \approx$ **141 km/h**.
+- **B7.4** $\sqrt{80^2 + 60^2} =$ **100 km/h**.
+- **B7.5** (a) $100 \text{ m} \div 1 \text{ m/s} = 100$ s. (b) $1 \text{ m/s} \times 100 \text{ s} = 100$ m south. (c) Speed $= \sqrt{1^2 + 1^2} \approx 1.4$ m/s, and the distance traveled is about $1.4 \times 100 \approx 141$ m.
+- **B7.6** (a) $2 + 1.5 =$ **3.5 m/s east**. (b) $2 - 1.5 =$ **0.5 m/s west**. (c) $\sqrt{2^2 + 1.5^2} = \sqrt{6.25} =$ **2.5 m/s**, toward the north and tilted east.
+- **B7.7** Point the boat **upstream**. The upstream part of the boat's velocity cancels the current, so the resultant points straight across. In the tip-to-tail diagram, the boat's arrow is angled upstream, the current's arrow points downstream from its tip, and the resultant goes straight across.
+
+**Part C: Connecting questions**
+
+- **C1** (a) 0 m/s$^2$. (b) 0 N. (c) 0.02 N upward.
+- **C2** (a) No, the direction changes. (b) Yes. (c) No. The net force points toward the center of the circle.
+- **C3** (a) 0 m/s. (b) 10 m/s$^2$ downward. (c) No, because the weight is not balanced.
+- **C4** The net force is zero (dynamic equilibrium). The forward pull on the sled equals the backward friction force.
+- **C5** (a) The tension equals the weight. (b) The position-time graph is a straight line sloping upward (slope 3 m/s). The velocity-time graph is a flat line at $+3$ m/s.
+- **C6** (a) $\sqrt{30^2 + 40^2} = 50$ N. (b) $\sqrt{3^2 + 4^2} = 5$ m/s. (c) Both combine two perpendicular vectors, so both use the Pythagorean theorem.
+- **C7** (a) 0 N. (b) 0 m/s$^2$. (c) The velocity-time graph is a flat line at 5 m/s. The position-time graph is a straight line sloping upward with slope 5 m/s. (d) $5 \times 4 = 20$ m.
+- **C8** (a) The net force equals the rock's weight, pointing down, so the acceleration is 10 m/s$^2$ downward. (b) Air resistance has grown until it equals the weight. The net force is zero, the acceleration is zero, and the rock is in dynamic equilibrium.
+
+**Mixed practice test**
+
+- **T1** C. **T2** D. **T3** C. **T4** B. **T5** A. **T6** B. **T7** B. **T8** C ($\sqrt{50^2 + 120^2} = 130$).
+- **T9** (a) 60 N to the right (the up and down forces cancel). (b) No, the net force is not zero. (c) 60 N to the left.
+- **T10** (a) $v = 10 \times 3 = 30$ m/s. (b) $d = 5 \times 3^2 = 45$ m.
+- **T11** (a) $v = 4 \times 6 = 24$ m/s. (b) $d = \tfrac{1}{2} \times 4 \times 6^2 = 72$ m.
+- **T12** (a) $(26 - 18) \div 2 = 4$ m/s. (b) $(160 - 146) \div 2 = 7$ m/s. (c) $(7 - 4) \div (30 - 10) = 0.15$ m/s$^2$.
+- **T13** (a) $-8$ m. (b) $-4$ m/s (4 m/s in the negative direction). (c) 4 to 8 s and 12 to 16 s.
+- **T14** (a) $-3$ m/s$^2$. (b) $-4$ m/s (4 m/s west). (c) 0 to 2 s and 8 to 10 s.
+- **T15** The passenger is moving forward with the car. When the brakes slow the car, nothing slows the passenger at the same moment, so by inertia the passenger keeps moving forward at the original velocity. Relative to the slowing car, the passenger seems to lurch forward.
+- **T16** She is not right. At the top, the velocity is zero for an instant, but gravity still acts on the ball and nothing balances it. The net force is the weight, the acceleration is 10 m/s$^2$ downward, and the velocity is changing. Equilibrium requires zero net force.
+- **T17** (a) Draw an arrow east for 1.5 m/s, then start an arrow north for 2.0 m/s at the tip of the first. The resultant goes from the start of the first arrow to the tip of the second. (b) $\sqrt{1.5^2 + 2.0^2} = \sqrt{6.25} =$ **2.5 m/s**. (c) $2.0$ north $-$ $1.5$ south $=$ **0.5 m/s north**.
