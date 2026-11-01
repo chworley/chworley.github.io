@@ -1,0 +1,51 @@
+---
+title: "Chapter 4 Practice Quiz: Answer Key"
+output: pdf_document
+geometry: margin=1in
+fontsize: 12pt
+---
+
+1. A
+2. D
+3. C
+4. A
+5. D
+6. B
+7. A
+8. C
+9. B
+10. D
+11. D (40 N, the peak of the graph)
+12. B (the box is not sliding, so static friction equals the push)
+13. (a) 25 N (kinetic friction, from the graph)
+    (b) 55 N - 25 N = 30 N
+    (c) a = F/m = 30 N / 10 kg = 3 m/s$^2$
+14. C (speed triples, so 3$^2$ = 9 times)
+15. B
+16. C
+17. A
+18. C
+19. D
+20. B
+21. A
+22. m = F/a = 18 N / 3 m/s$^2$ = 6 kg
+23. 500 g = 0.5 kg. F = ma = 0.5 kg $\times$ 6 m/s$^2$ = 3 N
+24. (a) a = change in v / t = 20 m/s / 10 s = 2 m/s$^2$
+    (b) F = ma = 1000 kg $\times$ 2 m/s$^2$ = 2000 N
+25. (a) W = mg = 40 kg $\times$ 10 N/kg = 400 N
+    (b) W = 40 kg $\times$ 1.6 N/kg = 64 N
+    (c) 40 kg (mass does not change)
+26. (a) 25 N - 5 N = 20 N to the right
+    (b) a = F/m = 20 N / 4 kg = 5 m/s$^2$ to the right
+27. (a) W = mg = 2 kg $\times$ 10 N/kg = 20 N
+    (b) net force = 20 N - 8 N = 12 N (downward)
+    (c) a = F/m = 12 N / 2 kg = 6 m/s$^2$ (downward)
+28. Speed triples, so air resistance is 3$^2$ = 9 times as big: 9 $\times$ 20 N = 180 N
+29. (a) W = mg = 3 kg $\times$ 3.7 N/kg = 11.1 N
+    (b) a = F/m = 11.1 N / 3 kg = 3.7 m/s$^2$ (the same as g)
+30. (a) 1.4 + 0.6 = 2.0 kg
+    (b) Pulling force = weight of the hanger = 0.6 kg $\times$ 10 N/kg = 6 N
+    (c) a = 6 N / 2.0 kg = 3 m/s$^2$
+31. (a) Pulling force = weight of the hanger = 0.4 kg $\times$ 10 N/kg = 4 N
+    (b) total mass = F/a = 4 N / 2 m/s$^2$ = 2.0 kg
+    (c) cart = 2.0 kg - 0.4 kg = 1.6 kg

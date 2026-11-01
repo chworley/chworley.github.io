@@ -1,0 +1,22 @@
+---
+title: "Pancakes"
+output: html_document
+---
+
+* Dry ingredients:
+  * 1 cup whole wheat flour
+  * 1 cup all-purpose (white) flour
+  * ¼ cup sugar (or brown sugar or maple syrup)
+  * 2 tablespoons ground flaxseed
+  * 2 tablespoons baking powder
+  * ½ teaspoon salt
+* Wet ingredients:
+  * 2 cups almond milk or dairy-free milk of choice
+  * ¼ cup olive oil or melted coconut oil
+  * 2 teaspoons pure vanilla extract
+
+
+1. Mix dry ingredients and stir.
+2. Mix in wet ingredients and whisk.
+3. Cook on stove top... like pancakes
+

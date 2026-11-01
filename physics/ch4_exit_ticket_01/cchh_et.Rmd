@@ -94,9 +94,9 @@ text(8.2, 0.8, paste0("heft ", kg(heft), " kg"), adj = 0)
 
 Answerlist
 ----------
-* What is the forward force (in N)?
-* What is the total mass (in kg)?
-* What is the acceleration of the cart (in m/s$^2$)?
+* What is the forward force (include units!)?
+* What is the total mass (include units!)?
+* What is the acceleration of the cart (include units!)?
 
 Solution
 ========

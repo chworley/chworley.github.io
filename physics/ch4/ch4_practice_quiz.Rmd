@@ -1,0 +1,368 @@
+---
+title: "Chapter 4 Practice Quiz"
+output: pdf_document
+geometry: margin=1in
+fontsize: 12pt
+header-includes:
+  - \usepackage{tikz}
+---
+
+Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ Date: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Use g = 10 N/kg = 10 $\mathrm{\frac{m}{s^2}}$. Numeric answers need units. For calculations, show the formula, the substitution, and the answer.
+
+**1.** A cart moves to the right and is speeding up. Which way does the net force on it point?
+
+(A) To the right
+(B) To the left
+(C) The net force is zero
+(D) Can't tell without knowing its mass
+
+\vfill
+
+**2.** A cart moves to the left. The net force on it points to the right. What happens to the cart?
+
+(A) It speeds up.
+(B) It moves at constant speed.
+(C) It instantly moves to the right.
+(D) It slows down.
+
+\vfill
+
+**3.** Cart A and Cart B have the same mass. The net force on A is 4 N and the net force on B is 12 N. How do their accelerations compare?
+
+(A) B's acceleration is 1/3 of A's.
+(B) They are the same.
+(C) B's acceleration is 3 times A's.
+(D) B's acceleration is 9 times A's.
+
+\vfill
+
+**4.** Which statement about mass and weight is correct?
+
+(A) Mass is measured in kg and weight is measured in N.
+(B) Mass is measured in N and weight is measured in kg.
+(C) Both are measured in kg.
+(D) Both are measured in N.
+
+\vfill
+
+\newpage
+
+**5.** A ball is thrown straight up. While it is on its way up (before the top), which is true? Ignore air resistance.
+
+(A) It slows down because its acceleration points upward.
+(B) It speeds up because its acceleration points downward.
+(C) It moves at constant speed because its acceleration is zero.
+(D) It slows down because its acceleration points downward.
+
+\vfill
+
+**6.** A car is moving east and slowing down. Which statement is true?
+
+(A) Its acceleration points east.
+(B) Its net force points west.
+(C) Its net force is zero.
+(D) Its velocity points west.
+
+\vfill
+
+**7.** Which two quantities always point in the same direction?
+
+(A) Net force and acceleration
+(B) Velocity and acceleration
+(C) Velocity and net force
+(D) Position and net force
+
+\vfill
+
+**8.** A box sits at rest on the floor. You push it with 30 N and it does not move. The friction force on the box is:
+
+(A) 0 N
+(B) Less than 30 N
+(C) Exactly 30 N
+(D) More than 30 N
+
+\vfill
+
+**9.** A heavy box is hard to start moving but easier to keep moving. This is because:
+
+(A) Kinetic friction is greater than static friction.
+(B) The maximum static friction is usually greater than the kinetic friction.
+(C) There is no friction once the box moves.
+(D) The box gets lighter when it moves.
+
+\vfill
+
+**10.** Which change would increase the kinetic friction on a sliding crate?
+
+(A) Sliding it faster
+(B) Turning it so a smaller face is on the floor
+(C) None of these. Friction can't change.
+(D) Loading more mass into the crate
+
+\vfill
+
+\newpage
+
+Use this graph for #11-13. It shows the friction force on a box as you push harder and harder.
+
+\begin{center}
+\begin{tikzpicture}[x=0.13cm,y=0.11cm]
+\draw[gray!40] (0,0) grid[xstep=10,ystep=10] (60,50);
+\draw[->] (0,0) -- (63,0);
+\draw[->] (0,0) -- (0,53);
+\foreach \x in {10,20,30,40,50,60} \draw (\x,0) -- (\x,-1) node[below] {\small \x};
+\foreach \y in {10,20,30,40,50} \draw (0,\y) -- (-1,\y) node[left] {\small \y};
+\node at (30,-10) {Push (N)};
+\node[rotate=90] at (-11,25) {Friction force (N)};
+\draw[very thick] (0,0) -- (40,40) -- (40,25) -- (60,25);
+\end{tikzpicture}
+\end{center}
+
+**11.** What is the largest static friction force on the box?
+
+(A) 25 N
+(B) 30 N
+(C) 35 N
+(D) 40 N
+
+**12.** You push the box with 30 N. The friction force on it is:
+
+(A) 0 N
+(B) 30 N
+(C) 40 N
+(D) 60 N
+
+
+**13.** A 10 kg box is pushed with 55 N and slides across the floor.
+
+(a) Use the graph to find the friction force on it.
+
+\vspace{1.8cm}
+
+(b) Find the net force.
+
+\vspace{1.8cm}
+
+(c) Find the acceleration.
+
+\vspace{1.8cm}
+
+
+\newpage
+
+Air resistance is proportional to the frontal area and to the square of the speed. Use this for #14, #15, and #28.
+
+**14.** A car's speed triples. The air resistance on it becomes about:
+
+(A) 3 times as big
+(B) 6 times as big
+(C) 9 times as big
+(D) 27 times as big
+
+\vfill
+
+**15.** A skydiver spreads out so that her frontal area doubles. At the same speed, the air resistance on her becomes about:
+
+(A) The same
+(B) 2 times as big
+(C) 4 times as big
+(D) 8 times as big
+
+\vfill
+
+**16.** A skydiver falls at a constant speed (terminal velocity). Compared with her weight, the upward air resistance on her is:
+
+(A) Zero
+(B) Less than her weight
+(C) Equal to her weight
+(D) Greater than her weight
+
+\vfill
+
+**17.** A rock is taken from Earth to the Moon. Its mass and its weight:
+
+(A) Mass stays the same; weight is smaller.
+(B) Both stay the same.
+(C) Mass is smaller; weight stays the same.
+(D) Both are smaller.
+
+\vfill
+
+**18.** The value of g is 1.6 N/kg on the Moon, 10 N/kg on Earth, and 25 N/kg on Jupiter. Which list shows the weight of the same rock on each world, from least to greatest?
+
+(A) Earth, Moon, Jupiter
+(B) Jupiter, Earth, Moon
+(C) Moon, Earth, Jupiter
+(D) All the same
+
+\vfill
+
+\newpage
+
+**19.** A student reports, "The net force on the cart was 15 kg." What is the problem?
+
+(A) Nothing. It is correct.
+(B) Force should be in m/s$^2$.
+(C) Force should be in m/s.
+(D) Force should be in N.
+
+\vfill
+
+**20.** Which quantity is matched with the correct unit?
+
+(A) Force: kg
+(B) Mass: kg
+(C) Acceleration: m/s
+(D) Velocity: m/s$^2$
+
+\vfill
+
+**21.** An object has a mass of 150 g. What is this in kg?
+
+(A) 0.15 kg
+(B) 1.5 kg
+(C) 15 kg
+(D) 150 kg
+
+\vfill
+
+**22.** A net force of 18 N gives a cart an acceleration of 3 m/s$^2$. Find the mass of the cart.
+
+\vspace{2.5cm}
+
+\vfill
+
+**23.** A 500 g cart accelerates at 6 m/s$^2$. Find the net force on it (in N).
+
+\vspace{2.5cm}
+
+\vfill
+
+\newpage
+
+**24.** A 1000 kg car speeds up from 0 to 20 m/s in 10 s.
+
+(a) Find its acceleration.
+
+\vspace{2.2cm}
+
+(b) Find the net force on the car.
+
+\vspace{2.2cm}
+
+\vfill
+
+**25.** A 40 kg student. The value of g is 10 N/kg on Earth and 1.6 N/kg on the Moon.
+
+(a) Find her weight on Earth.
+
+\vspace{1.4cm}
+
+(b) Find her weight on the Moon.
+
+\vspace{1.4cm}
+
+(c) What is her mass on the Moon?
+
+\vspace{1.4cm}
+
+\vfill
+
+**26.** A 4 kg box moves to the right. A 25 N push acts to the right and 5 N of friction acts to the left.
+
+(a) Find the net force (size and direction).
+
+\vspace{2.2cm}
+
+(b) Find the acceleration (size and direction).
+
+\vspace{2.2cm}
+
+\vfill
+
+\newpage
+
+**27.** A 2 kg ball is falling. At one moment, the air resistance on it is 8 N.
+
+(a) Find the ball's weight.
+
+\vspace{1.5cm}
+
+(b) Find the net force on the ball.
+
+\vspace{1.5cm}
+
+(c) Find the ball's acceleration at that moment.
+
+\vspace{1.5cm}
+
+\vfill
+
+**28.** At 10 m/s, the air resistance on a cyclist is 20 N. Remember that air resistance is proportional to the square of the speed. How big is the air resistance at 30 m/s?
+
+\vspace{2.5cm}
+
+**29.** A 3 kg rock is dropped on Mars, where g = 3.7 N/kg. There is no air resistance.
+
+(a) Find the rock's weight.
+
+\vspace{1.5cm}
+
+(b) Find the rock's acceleration.
+
+\vspace{1.5cm}
+
+\vfill
+
+\newpage
+
+
+\begin{center}
+\begin{tikzpicture}[scale=1.4]
+\fill[gray!40] (0,0) rectangle (5,0.25);
+\fill[gray!40] (0.3,0) rectangle (0.5,-1.2);
+\draw[thick,fill=gray!15] (0.8,0.25) rectangle (2.4,0.95);
+\fill (1.1,0.37) circle (0.12);
+\fill (2.1,0.37) circle (0.12);
+\node at (1.6,0.68) {cart};
+\draw[thick] (2.4,0.65) -- (5.2,0.65);
+\draw[thick,fill=white] (5.2,0.45) circle (0.2);
+\draw[thick] (5.4,0.45) -- (5.4,-0.6);
+\draw[thick,fill=gray!15] (5.2,-1.1) rectangle (5.6,-0.6);
+\node[right] at (5.7,-0.85) {hanger};
+\end{tikzpicture}
+\end{center}
+
+**30.** Cart = 1.4 kg and hanger = 0.6 kg.
+
+(a) What is the total mass being accelerated?
+
+\vspace{1.6cm}
+
+(b) What is the pulling force?
+
+\vspace{1.6cm}
+
+(c) What is the acceleration?
+
+\vspace{1.6cm}
+
+\vfill
+
+**31.** Now the hanger is 0.4 kg and the system accelerates at 2 m/s$^2$. The mass of the cart is not known.
+
+(a) What is the pulling force?
+
+\vspace{1.6cm}
+
+(b) What is the total mass being accelerated?
+
+\vspace{1.6cm}
+
+(c) What is the mass of the cart?
+
+\vspace{1.6cm}
+
+\vfill
