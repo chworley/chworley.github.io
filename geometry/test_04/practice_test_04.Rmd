@@ -1,0 +1,468 @@
+---
+title: "Honors Geometry Practice Test 4"
+subtitle: "Problems 116–168"
+output: pdf_document
+geometry: margin=1in
+header-includes: 
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{tikz}
+  - \usetikzlibrary{calc}
+  - \usepackage{eso-pic}
+  - \definecolor{gridgray}{gray}{0.88}
+  - |
+    \AddToShipoutPictureBG{%
+    \begin{tikzpicture}[remember picture,overlay]
+    \draw[gridgray, line width=0.2pt, step=0.3cm]
+    (current page.south west) grid (current page.north east);
+    \end{tikzpicture}%
+    }
+  - |
+    \newcommand{\skillbox}[1]{\par\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\setlength{\parskip}{5pt}#1}}\par\medskip}
+---
+
+Name: \underline{\hspace{6cm}}
+
+Show all work. Give all answers in exact, simplified form with rationalized denominators unless told otherwise.
+
+# Part 1: Essential Skills
+
+## Skill 1: Vectors between points
+
+\skillbox{
+\textbf{Rule:} The vector from $A$ to $B$ is $\overrightarrow{AB} = B - A$ (subtract coordinates). The length of $[a, b]$ is $\sqrt{a^2 + b^2}$.
+
+\textbf{Example:} From $A = (2, -1)$ to $B = (5, 3)$: $\overrightarrow{AB} = [5 - 2,\ 3 - (-1)] = [3, 4]$, and its length is $\sqrt{9 + 16} = 5$.
+}
+
+a. Find the vector from $(-4, 6)$ to $(2, -2)$, and find its length.
+
+\vfill
+
+b. Find a vector with integer components, neither of them zero, that has length $\sqrt{68}$.
+
+\vfill
+
+c. Is there a vector with integer components that has length $\sqrt{21}$? Explain.
+
+\vfill
+
+\newpage
+
+## Skill 2: Rationalizing denominators
+
+\skillbox{
+\textbf{Rule:} Multiply the top and bottom by the same thing, so the value doesn't change. For a single square root, multiply by that root. For a sum or difference, multiply by the \textbf{conjugate}, which flips the sign: $(a + \sqrt{b})(a - \sqrt{b}) = a^2 - b$.
+
+\textbf{Examples:} $\dfrac{6}{\sqrt{3}} \cdot \dfrac{\sqrt{3}}{\sqrt{3}} = \dfrac{6\sqrt{3}}{3} = 2\sqrt{3}$ \qquad $\dfrac{8}{3 + \sqrt{5}} \cdot \dfrac{3 - \sqrt{5}}{3 - \sqrt{5}} = \dfrac{8(3 - \sqrt{5})}{9 - 5} = 6 - 2\sqrt{5}$
+}
+
+Rationalize each denominator and simplify.
+
+a. $\dfrac{10}{\sqrt{5}}$
+
+\vfill
+
+b. $\dfrac{4}{\sqrt{7} - \sqrt{3}}$
+
+\vfill
+
+c. $\dfrac{\sqrt{3}}{\sqrt{3} + 1}$
+
+\vfill
+
+\newpage
+
+## Skill 3: Scaling a vector
+
+\skillbox{
+\textbf{Rule:} To get length 1, divide each component by the length. To get length $k$, multiply the length-1 vector by $k$. For the opposite direction, multiply by $-k$.
+
+\textbf{Example:} $[3, 4]$ has length 5. Same direction, length 1: $\left[\frac{3}{5}, \frac{4}{5}\right]$. Opposite direction, length 15: $-15\left[\frac{3}{5}, \frac{4}{5}\right] = [-9, -12]$.
+}
+
+a. Given $[5, -12]$, find the vector with length 1 in the same direction, and the vector with length 26 in the opposite direction.
+
+\vfill
+
+b. Given $[3, -1]$, find the vector with length 1 in the same direction, and the vector with length 5 in the opposite direction.
+
+\vfill
+
+\newpage
+
+## Skill 4: Perpendicular vectors
+
+\skillbox{
+\textbf{Rule:} Swap the components and change one sign: $[a, b]$ is perpendicular to both $[-b, a]$ and $[b, -a]$. (Check with slopes: $\frac{b}{a}$ and $-\frac{a}{b}$ are opposite reciprocals.)
+
+\textbf{Example:} $[3, 4]$ is perpendicular to $[-4, 3]$ and $[4, -3]$.
+}
+
+a. Find both vectors that are perpendicular to $[7, 1]$ and have length $5\sqrt{2}$.
+
+\vfill
+
+b. Find both vectors that are perpendicular to $[-8, 6]$ and have length 20.
+
+\vfill
+
+
+\newpage
+
+## Skill 5: A point part of the way along a segment
+
+\skillbox{
+\textbf{Rule:} The point that is $k$ of the way from $A$ to $B$ is $A + k\,\overrightarrow{AB}$. The midpoint is the case $k = \frac{1}{2}$.
+
+\textbf{Example:} One-third of the way from $A = (1, 2)$ to $B = (7, 11)$: $\overrightarrow{AB} = [6, 9]$, so the point is $(1, 2) + \frac{1}{3}[6, 9] = (3, 5)$.
+}
+
+a. Find the point that is three-fourths of the way from $(-5, 6)$ to $(7, -2)$.
+
+\vfill
+
+b. Point $P = (4, 3)$ is two-thirds of the way from $A = (-4, 9)$ to $B$. Find $B$.
+
+\vfill
+
+\newpage
+
+## Skill 6: Adding vectors
+
+\skillbox{
+\textbf{Rule:} Add vectors component by component. Following one vector and then another (head-to-tail) is the same as following their sum. Translating a point by a vector adds the vector to the point.
+
+\textbf{Example:} $[2, 5] + [5, 7] = [7, 12]$. Translating $(3, 8)$ by $[2, -5]$ gives $(5, 3)$.
+}
+
+a. Starting at point $S$, a bug moves with a displacement vector of $[5, -2]$ and then with another displacement vector $[1, 6]$. What single vector brings it straight back to $S$?
+
+\vfill
+
+b. Find numbers $s$ and $t$ so that $s\,[2, 1] + t\,[1, 3] = [7, 11]$.
+
+\vfill
+
+\newpage
+
+## Skill 7: Special right triangles
+
+\skillbox{
+\textbf{Ratios:} In a 30-60-90 triangle, the sides are $x$ (opposite $30^\circ$), $x\sqrt{3}$ (opposite $60^\circ$), and $2x$ (hypotenuse). In a 45-45-90 triangle, the sides are $x$, $x$, and $x\sqrt{2}$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+\draw[thick] (0,0) -- (2.6,0) -- (0,1.5) -- cycle;
+\draw (0,0.25) -- (0.25,0.25) -- (0.25,0);
+\node[left] at (0,0.75) {$x$};
+\node[below] at (1.3,0) {$x\sqrt{3}$};
+\node[above right] at (1.3,0.75) {$2x$};
+\node[font=\small] at (0.3,1.05) {$60^\circ$};
+\node[font=\small] at (1.95,0.15) {$30^\circ$};
+\begin{scope}[xshift=5.5cm]
+\draw[thick] (0,0) -- (1.8,0) -- (0,1.8) -- cycle;
+\draw (0,0.25) -- (0.25,0.25) -- (0.25,0);
+\node[left] at (0,0.9) {$x$};
+\node[below] at (0.9,0) {$x$};
+\node[above right] at (0.9,0.9) {$x\sqrt{2}$};
+\node[font=\small] at (0.3,1.3) {$45^\circ$};
+\node[font=\small] at (1.25,0.2) {$45^\circ$};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\textbf{Example (30-60-90):} If the long leg is 6, then $x\sqrt{3} = 6$, so $x = \dfrac{6}{\sqrt{3}} = 2\sqrt{3}$, and the hypotenuse is $2x = 4\sqrt{3}$.
+
+\textbf{Example (45-45-90):} If the hypotenuse is 10, then $x\sqrt{2} = 10$, so $x = \dfrac{10}{\sqrt{2}} \cdot \dfrac{\sqrt{2}}{\sqrt{2}} = 5\sqrt{2}$. Each leg is $5\sqrt{2}$.
+}
+
+a. Fill in the missing sides.
+
+| Triangle | Short leg | Long leg | Hypotenuse |
+|:---------|:---------:|:--------:|:----------:|
+|  |  | | |
+| 30-60-90 | 9 | | |
+|  |  | | |
+| 30-60-90 | | $6\sqrt{3}$ | |
+|  |  | | |
+| 30-60-90 | | 12 | |
+|  |  | | |
+| 30-60-90 | | | 14 |
+|  |  | | |
+
+| Triangle | Leg | Leg | Hypotenuse |
+|:---------|:---:|:---:|:----------:|
+|  |  | | |
+| 45-45-90 | 7 | | |
+|  |  | | |
+| 45-45-90 | | | 18 |
+|  |  | | |
+
+\vspace{0.5cm}
+
+b. An equilateral triangle has sides of length 10. How long is its altitude?
+
+\vfill
+
+
+
+
+
+\newpage
+
+## Skill 8: Perimeter of a special right triangle
+
+\skillbox{
+\textbf{Rule:} Write each side in terms of $x$, add, factor out $x$, then solve and rationalize.
+
+\textbf{Example:} A 45-45-90 triangle has perimeter 4. Then $x + x + x\sqrt{2} = 4$, so $x(2 + \sqrt{2}) = 4$, and $x = \dfrac{4}{2 + \sqrt{2}} \cdot \dfrac{2 - \sqrt{2}}{2 - \sqrt{2}} = \dfrac{4(2 - \sqrt{2})}{2} = 4 - 2\sqrt{2}$.
+}
+
+a. A 30-60-90 triangle has perimeter 18. Find the lengths of all three sides.
+
+\vfill
+
+b. A 45-45-90 triangle has perimeter 10. Find the lengths of all three sides.
+
+\vfill
+
+\newpage
+
+## Skill 9: Triangle type from side lengths
+
+\skillbox{
+\textbf{Rule:} A triangle has two fixed, \textbf{different} sides and a third side $t$. As $t$ grows from 0, the triangle goes through: impossible $\to$ degenerate $\to$ obtuse $\to$ right $\to$ acute $\to$ right $\to$ obtuse $\to$ degenerate $\to$ impossible. A \textbf{degenerate} triangle has collapsed into a segment.
+
+\textbf{Example: sides 3, 5, and $t$.} Degenerate: $t + 3 = 5$, so $t = 2$; and $3 + 5 = t$, so $t = 8$. Right with 5 longest: $t^2 + 3^2 = 5^2$, so $t = 4$. Right with $t$ longest: $3^2 + 5^2 = t^2$, so $t = \sqrt{34}$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[thick,->] (0,0) -- (13,0);
+\draw[thick] (0,-0.2) -- (0,0.2);
+\node[below] at (0,-0.3) {0};
+\node[below] at (13,-0.3) {$t$};
+\foreach \x/\l/\k in {2.5/2/degenerate, 5.5/4/right, 8/{\sqrt{34}}/right, 11/8/degenerate} {
+  \fill (\x,0) circle (2.5pt);
+  \node[below] at (\x,-0.3) {$\l$};
+  \node[below,font=\itshape\small] at (\x,-0.8) {\k};
+}
+\node[above,font=\small] at (1.25,0.3) {impossible};
+\node[above,font=\small] at (4,0.3) {obtuse};
+\node[above,font=\small] at (6.75,0.3) {acute};
+\node[above,font=\small] at (9.5,0.3) {obtuse};
+\node[above,font=\small] at (12,0.3) {impossible};
+\end{tikzpicture}
+\end{center}
+}
+
+a. A triangle has sides 8, 15, and $t$. Find each boundary value, then make a diagram like the example, labeling every boundary and every interval.
+
+\vfill
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[thick,->] (0,0) -- (13,0);
+\draw[thick] (0,-0.2) -- (0,0.2);
+\node[below] at (0,-0.3) {0};
+\node[below] at (13,-0.3) {$t$};
+\end{tikzpicture}
+\end{center}
+
+\vspace{1cm}
+
+b. A triangle has sides 6, 6, and $t$. Make a similar diagram. Which parts of the pattern disappear? Explain why.
+
+\vfill
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[thick,->] (0,0) -- (13,0);
+\draw[thick] (0,-0.2) -- (0,0.2);
+\node[below] at (0,-0.3) {0};
+\node[below] at (13,-0.3) {$t$};
+\end{tikzpicture}
+\end{center}
+
+\vspace{1cm}
+
+c. Give three side lengths that make an acute triangle, and three side lengths that make an obtuse triangle. Justify each set, including why it makes a triangle at all.
+
+\vfill
+
+\newpage
+
+## Skill 10: Reflections
+
+\skillbox{
+\textbf{Rules:} Over the $x$-axis: $(x, y) \to (x, -y)$. Over the $y$-axis: $(x, y) \to (-x, y)$. Over $y = x$: $(x, y) \to (y, x)$. Over $y = -x$: $(x, y) \to (-y, -x)$.
+
+\textbf{Key idea:} The mirror line is the perpendicular bisector of any point and its image.
+
+\textbf{Example:} $P = (1, 2)$ reflects to $P' = (5, 4)$. The midpoint is $(3, 3)$, and $\overrightarrow{PP'} = [4, 2]$ has slope $\frac{1}{2}$, so the mirror line has slope $-2$, and the mirror line is $y - 3 = -2(x - 3)$.
+}
+
+a. Triangle $ABC$ has $A = (1, 2)$, $B = (4, 3)$, and $C = (2, 5)$. Find the vertices of its image after a reflection over the line $y = -x$.
+
+\vfill
+
+b. A reflection sends $(-3, 4)$ to $(5, 0)$. Find an equation of the mirror line.
+
+\vfill
+
+\newpage
+
+## Skill 11: Identifying a transformation
+
+\skillbox{
+\textbf{Rule:} Read the vertices of a figure in order and check whether they go clockwise or counterclockwise. Translations and rotations \textbf{keep} the order; reflections and glide-reflections \textbf{reverse} it.
+
+\begin{itemize}
+\item \textbf{Translation:} every vertex moves by the same vector.
+\item \textbf{Rotation:} the figure turns about a fixed point (the center). The order is kept, but the vertices don't all move by the same vector.
+\item \textbf{Reflection:} order reversed, and one line is the perpendicular bisector of every point and its image.
+\item \textbf{Glide-reflection:} order reversed, but no single mirror line works.
+\end{itemize}
+}
+
+Triangle $ABC$ has $A = (1, 1)$, $B = (4, 1)$, and $C = (1, 3)$. Each triangle below is its image, listed with the images of $A$, $B$, and $C$ in that order. Name each transformation and justify your answer. For a translation, give the vector; for a reflection, give the mirror line.
+
+i. $(4, 5)$, $(7, 5)$, $(4, 7)$
+
+\vspace{1cm}
+
+ii. $(9, 1)$, $(6, 1)$, $(9, 3)$
+
+\vspace{1cm}
+
+iii. $(-1, 1)$, $(-1, 4)$, $(-3, 1)$
+
+\vspace{1cm}
+
+iv. $(5, -1)$, $(8, -1)$, $(5, -3)$
+
+\newpage
+
+## Skill 12: Angle hunts
+
+\skillbox{
+\textbf{Rules:} Vertical angles (opposite each other where two lines cross) are equal. Angles that form a straight line (a linear pair) add to $180^\circ$. The three angles of a triangle add to $180^\circ$.
+
+\textbf{Example:} Two lines cross, and one of the four angles is $40^\circ$. The angle vertical to it is also $40^\circ$, and each of the other two angles is $180^\circ - 40^\circ = 140^\circ$.
+}
+
+Three lines intersect to form triangle $PQR$. The diagram is not drawn to scale.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+\coordinate (P) at (0,0); \coordinate (Q) at (6,0); \coordinate (R) at (2,3.5);
+\draw[thick] (-1.5,0) -- (8,0);
+\draw[thick] (-1,-1.75) -- (2.8,4.9);
+\draw[thick] (7.4,-1.225) -- (0.8,4.55);
+\foreach \pt in {P,Q,R} \fill (\pt) circle (2pt);
+\node[below right] at (P) {$P$}; \node[below left] at (Q) {$Q$}; \node[left] at ($(R)+(-0.15,0.1)$) {$R$};
+\draw (P) ++(0:0.6) arc (0:60.26:0.6); \node at ($(P)+(30:1.1)$) {$58^\circ$};
+\draw (P) ++(180:0.6) arc (180:240.26:0.6); \node at ($(P)+(210:1.0)$) {$a$};
+\draw (Q) ++(0:0.6) arc (0:138.8:0.6); \node at ($(Q)+(69:1.1)$) {$125^\circ$};
+\draw (Q) ++(138.8:0.5) arc (138.8:180:0.5); \node at ($(Q)+(159:0.95)$) {$b$};
+\draw (R) ++(240.26:0.5) arc (240.26:318.8:0.5); \node at ($(R)+(279.5:0.9)$) {$c$};
+\draw (R) ++(-41.2:0.5) arc (-41.2:60.26:0.5); \node at ($(R)+(9.5:0.9)$) {$d$};
+\end{tikzpicture}
+\end{center}
+
+a. Find $a$, $b$, $c$, and $d$. Give a reason for each.
+
+\vfill
+
+b. Compare $d$ with the angles of the triangle at $P$ and $Q$. What do you notice? Explain why this happens.
+
+\vfill
+
+\newpage
+
+# Part 2: Putting Skills Together
+
+## Question 1
+
+Let $A = (-1, 2)$ and $B = (3, 4)$. Point $C$ is chosen so that triangle $ABC$ is equilateral.
+
+a. Find the side length of the triangle.
+
+\vfill
+
+b. Find the length of the altitude from $C$ to side $\overline{AB}$.
+
+\vfill
+
+c. Find both possible locations of $C$.
+
+\vfill
+
+\newpage
+
+## Question 2
+
+Let $A = (1, 2)$ and $B = (4, 8)$. Find the point that is exactly 5 units from $A$ in the direction of $B$.
+
+\newpage
+
+## Question 3
+
+Points $A = (0, 0)$ and $B = (8, 0)$ are fixed. Point $C$ moves along the line $y = 4$, so at time $t$ its position is $C = (0, 4) + t\,[1, 0] = (t, 4)$.
+
+a. For which values of $t$ is triangle $ABC$ a right triangle? At which vertex is the right angle in each case?
+
+\vspace{6cm}
+
+b. For which values of $t$ is the triangle acute? For which is it obtuse?
+
+\newpage
+
+## Question 4
+
+Triangle $ABC$ has $m\angle B = 45^\circ$ and $m\angle C = 60^\circ$. The altitude from $A$ to side $\overline{BC}$ has length $6\sqrt{3}$. Find the lengths of all three sides and the perimeter of the triangle.
+
+\newpage
+
+## Question 5
+
+A circular table is pushed into the corner of a room so that it touches both walls. A mark at point $P$ on the edge of the table, in the curved gap between the table and the corner, is 2 inches from one wall and 9 inches from the other. Let $r$ be the radius of the table.
+
+a. Draw a diagram that includes the center of the table, point $P$, and a right triangle whose sides you can write in terms of $r$.
+
+\vspace{5cm}
+
+b. Write an equation using the Pythagorean Theorem. Expand, combine like terms, and factor to solve for $r$.
+
+\vspace{5cm}
+
+c. Your equation has two solutions. Which one is the radius of the table? Explain why the other one doesn't work.
+
+
+\newpage
+
+## Question 6
+
+Triangle $KLM$ has $K = (-4, 2)$, $L = (-3, 9)$, and $M = (-6, 8)$. Triangle $XZY$ has $X = (0, 0)$, $Z = (5, 5)$, and $Y = (6, 2)$.
+
+a. Show that $\triangle KLM \cong \triangle XZY$.
+
+\vfill
+
+b. Explain why the transformation from $KLM$ to $XZY$ could be a reflection but cannot be a rotation or translation.
+
+\vspace{3cm}
+
+c. Find the equation of the mirror line. Then check that it works for all three pairs of vertices.
+
+\vfill
+
+\newpage
+
+## Question 7
+
+a. Reflect $P = (2, 5)$ over the line $x = 1$, and then reflect the image over the line $x = 4$. Do the same for $Q = (-3, 0)$. What single transformation has the same effect? What if the reflections are done in the opposite order?
+
+\vspace{6cm}
+
+b. A point is translated by $[-5, 4]$ and then reflected over the $y$-axis. Its final image is $(1, 6)$. Where did the point start? What sequence of transformations would undo the original sequence?

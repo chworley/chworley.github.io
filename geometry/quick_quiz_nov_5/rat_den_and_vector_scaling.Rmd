@@ -1,0 +1,92 @@
+---
+output: pdf_document
+geometry: margin=0.8in
+header-includes:
+  - \usepackage{framed}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+
+# 30-60-90 reference triangle: short leg x (vertical), long leg x*sqrt(3), hypotenuse 2x
+draw_306090 <- function() {
+  par(mar = c(1.5, 1.5, 0.5, 1.5))
+  s <- sqrt(3)
+  plot(NA, xlim = c(-0.3, s + 0.3), ylim = c(-0.25, 1.15), asp = 1,
+       axes = FALSE, xlab = "", ylab = "")
+  polygon(c(0, s, 0), c(0, 0, 1), lwd = 2)
+  rect(0, 0, 0.12, 0.12)                                  # right-angle mark
+  text(-0.12, 0.5, expression(italic(x)))                 # short leg
+  text(s / 2, -0.15, expression(italic(x) * sqrt(3)))     # long leg
+  text(s / 2 + 0.15, 0.62, expression(2 * italic(x)))     # hypotenuse
+  text(s - 0.38, 0.08, expression(30 * degree), cex = 0.8)
+  text(0.16, 0.72, expression(60 * degree), cex = 0.8)
+}
+```
+
+\hspace{5in} Name:
+
+## 1. Rationalizing denominators
+
+\begin{framed}
+\textbf{Goal:} Rewrite a fraction so there is no square root in the denominator. Multiplying the {\bf top and bottom} by the same thing multiplies by 1, so the value does not change.
+
+\textbf{Simple square root in denominator:} Multiply by that square root. \quad
+$\dfrac{6}{\sqrt{3}} = \dfrac{6}{\sqrt{3}} \cdot \dfrac{\sqrt{3}}{\sqrt{3}} = \dfrac{6\sqrt{3}}{3} = 2\sqrt{3}$
+
+\textbf{A sum or difference:} Multiply by the \textbf{conjugate}, which flips the sign between the terms. It works because $(a + \sqrt{b})(a - \sqrt{b}) = a^2 - b$, which has no square root.
+
+$\dfrac{8}{3 + \sqrt{5}} = \dfrac{8}{3 + \sqrt{5}} \cdot \dfrac{3 - \sqrt{5}}{3 - \sqrt{5}} = \dfrac{8(3 - \sqrt{5})}{9 - 5} = 2(3 - \sqrt{5}) = 6 - 2\sqrt{5}$
+\end{framed}
+
+Rationalize each denominator and simplify.
+
+\vspace{0.3cm}
+(a) $\dfrac{3}{\sqrt{6}}$ \hspace{4cm} (b) $\dfrac{6}{\sqrt{3} - 1}$ \hspace{4cm} (c) $\dfrac{\sqrt{5}}{2+\sqrt{5}}$
+
+\vfill
+
+
+
+## 2. Scaling a vector
+
+\begin{framed}
+\textbf{Length:} The vector $[a, b]$ has length $\sqrt{a^2 + b^2}$.
+
+\textbf{Length 1:} Divide each component by the length. \quad \textbf{Length $k$:} Multiply the length-1 vector by $k$. \quad \textbf{Opposite direction:} Use $-k$.
+
+\textbf{Example:} $[1, 1]$ has length $\sqrt{2}$. Same direction, length 1: $\left[\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right] = \left[\frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}\right]$.
+Opposite direction, length 6: $\left[\frac{-6}{\sqrt{2}}, \frac{-6}{\sqrt{2}}\right] = \left[-3\sqrt{2}, -3\sqrt{2}\right]$.
+\end{framed}
+
+Given the vector $[2, 1]$, find each vector. Rationalize any denominators.
+
+(a) Same direction, length 1
+
+\vfill
+
+(b) Opposite direction, length 10
+
+\vfill
+
+
+\newpage
+
+
+
+## 3. The 30-60-90 triangle
+
+\begin{framed}
+\textbf{Ratio:} In a 30-60-90 triangle, the sides are $x$ (opposite $30^\circ$), $x\sqrt{3}$ (opposite $60^\circ$), and $2x$ (the hypotenuse).
+
+\textbf{Example:} If the long leg is 6, then $x\sqrt{3} = 6$, so $x = \dfrac{6}{\sqrt{3}} = 2\sqrt{3}$, and the hypotenuse is $2x = 4\sqrt{3}$.
+\end{framed}
+
+```{r tri, fig.width=3, fig.height=1.7}
+draw_306090()
+```
+
+A 30-60-90 triangle has perimeter 12. Find the length of its shorter leg. Rationalize the denominator.
+*Hint: Write the perimeter in terms of $x$, then factor out $x$.*
+
+\vfill

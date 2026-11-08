@@ -1,0 +1,228 @@
+---
+title: "Honors Geometry Practice Test 4 — Answer Key"
+subtitle: "Problems 116–168"
+output: pdf_document
+geometry: margin=1in
+header-includes: |
+  \usepackage{tikz}
+  \usetikzlibrary{calc}
+---
+
+# Part 1: Essential Skills
+
+## Skill 1: Vectors between points
+
+a. $[2 - (-4),\ -2 - 6] = [6, -8]$, with length $\sqrt{36 + 64} = 10$.
+
+b. $64 + 4 = 68$, so $[8, 2]$ works (also $[2, 8]$, $[-8, 2]$, and so on).
+
+c. No. We'd need integers with $a^2 + b^2 = 21$. Subtracting each square up to 21 leaves $21, 20, 17, 12, 5$, and none of those is a perfect square.
+
+## Skill 2: Rationalizing denominators
+
+a. $\dfrac{10}{\sqrt{5}} \cdot \dfrac{\sqrt{5}}{\sqrt{5}} = \dfrac{10\sqrt{5}}{5} = 2\sqrt{5}$
+
+b. $\dfrac{4}{\sqrt{7} - \sqrt{3}} \cdot \dfrac{\sqrt{7} + \sqrt{3}}{\sqrt{7} + \sqrt{3}} = \dfrac{4(\sqrt{7} + \sqrt{3})}{7 - 3} = \sqrt{7} + \sqrt{3}$
+
+c. $\dfrac{\sqrt{3}}{\sqrt{3} + 1} \cdot \dfrac{\sqrt{3} - 1}{\sqrt{3} - 1} = \dfrac{3 - \sqrt{3}}{3 - 1} = \dfrac{3 - \sqrt{3}}{2}$
+
+## Skill 3: Scaling a vector
+
+a. $|[5, -12]| = 13$. Length 1: $\left[\frac{5}{13}, -\frac{12}{13}\right]$. Opposite direction, length 26: $-26\left[\frac{5}{13}, -\frac{12}{13}\right] = [-10, 24]$.
+
+b. $|[3, -1]| = \sqrt{10}$. Length 1: $\left[\dfrac{3}{\sqrt{10}}, -\dfrac{1}{\sqrt{10}}\right] = \left[\dfrac{3\sqrt{10}}{10}, -\dfrac{\sqrt{10}}{10}\right]$.
+Opposite direction, length 5: $-5\left[\dfrac{3\sqrt{10}}{10}, -\dfrac{\sqrt{10}}{10}\right] = \left[-\dfrac{3\sqrt{10}}{2}, \dfrac{\sqrt{10}}{2}\right]$.
+
+## Skill 4: Perpendicular vectors
+
+a. $[1, -7]$ and $[-1, 7]$. Each has length $\sqrt{50} = 5\sqrt{2}$ already.
+
+b. $[6, 8]$ and $[-6, -8]$ are perpendicular to $[-8, 6]$ with length 10. Doubling: $[12, 16]$ and $[-12, -16]$.
+
+## Skill 5: A point part of the way along a segment
+
+a. $\overrightarrow{AB} = [12, -8]$, so the point is $(-5, 6) + \frac{3}{4}[12, -8] = (-5 + 9,\ 6 - 6) = (4, 0)$.
+
+b. $\overrightarrow{AP} = [8, -6] = \frac{2}{3}\overrightarrow{AB}$, so $\overrightarrow{AB} = [12, -9]$ and $B = (8, 0)$.
+
+## Skill 6: Adding vectors
+
+a. $[5, -2] + [1, 6] = [6, 4]$, so the return vector is $[-6, -4]$.
+
+b. Components: $2s + t = 7$ and $s + 3t = 11$. Solving gives $s = 2$, $t = 3$.
+Check: $2[2, 1] + 3[1, 3] = [4 + 3,\ 2 + 9] = [7, 11]$.
+
+## Skill 7: Special right triangles
+
+a.
+
+| Triangle | Short leg | Long leg | Hypotenuse |
+|:---------|:---------:|:--------:|:----------:|
+| 30-60-90 | 9 | $9\sqrt{3}$ | 18 |
+| 30-60-90 | 6 | $6\sqrt{3}$ | 12 |
+| 30-60-90 | $4\sqrt{3}$ | 12 | $8\sqrt{3}$ |
+| 30-60-90 | 7 | $7\sqrt{3}$ | 14 |
+
+| Triangle | Leg | Leg | Hypotenuse |
+|:---------|:---:|:---:|:----------:|
+| 45-45-90 | 7 | 7 | $7\sqrt{2}$ |
+| 45-45-90 | $9\sqrt{2}$ | $9\sqrt{2}$ | 18 |
+
+b. The altitude splits the equilateral triangle into two 30-60-90 triangles. Each has hypotenuse 10 (a side) and short leg 5 (half a side), so the altitude is the long leg: $5\sqrt{3}$.
+
+## Skill 8: Perimeter of a special right triangle
+
+a. $x + x\sqrt{3} + 2x = 18$, so $x(3 + \sqrt{3}) = 18$ and
+$x = \dfrac{18}{3 + \sqrt{3}} \cdot \dfrac{3 - \sqrt{3}}{3 - \sqrt{3}} = \dfrac{18(3 - \sqrt{3})}{6} = 9 - 3\sqrt{3}$.
+Sides: short leg $9 - 3\sqrt{3}$, long leg $9\sqrt{3} - 9$, hypotenuse $18 - 6\sqrt{3}$.
+
+b. $x(2 + \sqrt{2}) = 10$, so $x = \dfrac{10(2 - \sqrt{2})}{2} = 10 - 5\sqrt{2}$.
+Sides: legs $10 - 5\sqrt{2}$, hypotenuse $10\sqrt{2} - 10$.
+
+## Skill 9: Triangle type from side lengths
+
+a. Degenerate: $t + 8 = 15$, so $t = 7$; and $8 + 15 = t$, so $t = 23$.
+Right with 15 longest: $t^2 + 64 = 225$, so $t = \sqrt{161}$. Right with $t$ longest: $64 + 225 = t^2$, so $t = 17$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[thick,->] (0,0) -- (13,0);
+\draw[thick] (0,-0.2) -- (0,0.2);
+\node[below] at (0,-0.3) {0};
+\node[below] at (13,-0.3) {$t$};
+\foreach \x/\l/\k in {2.5/7/degenerate, 5.5/{\sqrt{161}}/right, 8/17/right, 11/23/degenerate} {
+  \fill (\x,0) circle (2.5pt);
+  \node[below] at (\x,-0.3) {$\l$};
+  \node[below,font=\itshape\small] at (\x,-0.8) {\k};
+}
+\node[above,font=\small] at (1.25,0.3) {impossible};
+\node[above,font=\small] at (4,0.3) {obtuse};
+\node[above,font=\small] at (6.75,0.3) {acute};
+\node[above,font=\small] at (9.5,0.3) {obtuse};
+\node[above,font=\small] at (12,0.3) {impossible};
+\end{tikzpicture}
+\end{center}
+
+b. Right: $6^2 + 6^2 = t^2$, so $t = 6\sqrt{2}$. Degenerate: $6 + 6 = t$, so $t = 12$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[thick,->] (0,0) -- (13,0);
+\draw[thick] (0,-0.2) -- (0,0.2);
+\node[below] at (0,-0.3) {0};
+\node[below] at (13,-0.3) {$t$};
+\foreach \x/\l/\k in {5/{6\sqrt{2}}/right, 9/12/degenerate} {
+  \fill (\x,0) circle (2.5pt);
+  \node[below] at (\x,-0.3) {$\l$};
+  \node[below,font=\itshape\small] at (\x,-0.8) {\k};
+}
+\node[above,font=\small] at (2.5,0.3) {acute};
+\node[above,font=\small] at (7,0.3) {obtuse};
+\node[above,font=\small] at (11,0.3) {impossible};
+\end{tikzpicture}
+\end{center}
+
+The first four stages disappear: impossible, degenerate, obtuse, and the first right. The lower degenerate boundary would be $t + 6 = 6$, so $t = 0$, which isn't a triangle. The early obtuse and right stages need a fixed side to be the longest side, opposite the obtuse or right angle; with two equal fixed sides that angle would appear twice, and a triangle can't have two right or obtuse angles.
+
+
+c. Answers vary. Acute: 5, 6, 7 ($5 + 6 > 7$, and $5^2 + 6^2 = 61 > 49 = 7^2$). Obtuse: 4, 5, 8 ($4 + 5 > 8$, and $4^2 + 5^2 = 41 < 64 = 8^2$). Any set must pass the triangle inequality (the two shorter sides add to more than the longest), then compare $a^2 + b^2$ with $c^2$ for the longest side $c$.
+
+## Skill 10: Reflections
+
+a. $(x, y) \to (-y, -x)$: $A' = (-2, -1)$, $B' = (-3, -4)$, $C' = (-5, -2)$.
+
+b. Midpoint: $(1, 2)$. The vector $[8, -4]$ has slope $-\frac{1}{2}$, so the mirror line has slope 2: $y - 2 = 2(x - 1)$, or $y = 2x$.
+
+## Skill 11: Identifying a transformation
+
+$A \to B \to C$ goes counterclockwise.
+
+i. Translation by $[3, 4]$: every vertex moves by $[3, 4]$, and the order stays counterclockwise.
+
+ii. Reflection over $x = 5$: the order is reversed, and $x = 5$ is the perpendicular bisector of each pair, with midpoints $(5, 1)$, $(5, 1)$, $(5, 3)$ and every segment horizontal.
+
+iii. Rotation: the order is kept (still counterclockwise), but the vertices don't all move by the same vector ($A$ moves by $[-2, 0]$, $B$ by $[-5, 3]$), so it isn't a translation. (It's a $90^\circ$ turn about the origin; students only need to recognize it as a rotation.)
+
+iv. Glide-reflection: the order is reversed, but there's no single mirror line. The perpendicular bisector of $AA'$ is $y = 2x - 6$ (through midpoint $(3, 0)$ with slope 2), but the midpoint of $BB'$, $(6, 0)$, isn't on it. It's a reflection over the $x$-axis followed by a translation by $[4, 0]$.
+
+## Skill 12: Angle hunts
+
+a. $a = 58^\circ$ (vertical to the $58^\circ$ angle at $P$).
+$b = 180^\circ - 125^\circ = 55^\circ$ (linear pair at $Q$).
+$c = 180^\circ - 58^\circ - 55^\circ = 67^\circ$ (triangle angle sum).
+$d = 180^\circ - 67^\circ = 113^\circ$ (linear pair at $R$).
+
+b. $d = 113^\circ = 58^\circ + 55^\circ$: the exterior angle at $R$ equals the sum of the two interior angles at the other vertices. Both $d$ and $58^\circ + 55^\circ$ are what's left when $c$ is subtracted from $180^\circ$ (one by the linear pair, one by the triangle sum), so they must be equal.
+
+\newpage
+
+# Part 2: Putting Skills Together
+
+## Question 1
+
+a. $\overrightarrow{AB} = [4, 2]$, so the side length is $\sqrt{20} = 2\sqrt{5}$.
+
+b. The altitude splits the triangle into two 30-60-90 triangles with short leg $\sqrt{5}$ (half of a side), so the altitude is $\sqrt{5} \cdot \sqrt{3} = \sqrt{15}$.
+
+c. The altitude starts at the midpoint $M = (1, 3)$ and is perpendicular to $[4, 2]$, so it points along $[-1, 2]$ or $[1, -2]$, each of length $\sqrt{5}$.
+Scale to length $\sqrt{15}$: $\dfrac{\sqrt{15}}{\sqrt{5}}[-1, 2] = \sqrt{3}[-1, 2] = [-\sqrt{3}, 2\sqrt{3}]$.
+$C = (1 - \sqrt{3},\ 3 + 2\sqrt{3})$ or $C = (1 + \sqrt{3},\ 3 - 2\sqrt{3})$.
+Check: from $A$ to the first $C$ is $[2 - \sqrt{3},\ 1 + 2\sqrt{3}]$, with length squared $(7 - 4\sqrt{3}) + (13 + 4\sqrt{3}) = 20$.
+
+## Question 2
+
+$\overrightarrow{AB} = [3, 6]$, with length $\sqrt{45} = 3\sqrt{5}$. Length 1 in that direction: $\left[\dfrac{1}{\sqrt{5}}, \dfrac{2}{\sqrt{5}}\right]$. Length 5: $\left[\dfrac{5}{\sqrt{5}}, \dfrac{10}{\sqrt{5}}\right] = [\sqrt{5}, 2\sqrt{5}]$.
+The point is $(1 + \sqrt{5},\ 2 + 2\sqrt{5})$.
+
+## Question 3
+
+a. Right angle at $A$: $\overline{AC}$ must be vertical, so $t = 0$.
+Right angle at $B$: $\overline{BC}$ must be vertical, so $t = 8$.
+Right angle at $C$: $CA^2 + CB^2 = AB^2$:
+$(t^2 + 16) + ((t - 8)^2 + 16) = 64$
+$2t^2 - 16t + 96 = 64$
+$t^2 - 8t + 16 = 0$
+$(t - 4)^2 = 0$, so $t = 4$ only.
+(Slopes work too: $\frac{4}{t} \cdot \frac{4}{t - 8} = -1$ gives the same equation.)
+
+b. Obtuse: $t < 0$ (obtuse at $A$) or $t > 8$ (obtuse at $B$).
+Acute: $0 < t < 4$ or $4 < t < 8$. In this range the angles at $A$ and $B$ are acute, and $CA^2 + CB^2 - AB^2 = 2(t - 4)^2 > 0$, so the angle at $C$ is acute too. The angle at $C$ reaches $90^\circ$ only at $t = 4$.
+
+## Question 4
+
+Let $D$ be the foot of the altitude.
+In $\triangle ABD$ (45-45-90): $BD = 6\sqrt{3}$ and $AB = 6\sqrt{3} \cdot \sqrt{2} = 6\sqrt{6}$.
+In $\triangle ACD$ (30-60-90): $AD = 6\sqrt{3}$ is the long leg, so $CD = 6$ and $AC = 12$.
+Sides: $AB = 6\sqrt{6}$, $AC = 12$, $BC = 6\sqrt{3} + 6$. Perimeter: $18 + 6\sqrt{3} + 6\sqrt{6}$.
+
+## Question 5
+
+a. Put the corner at the origin with the walls along the axes. The center is $(r, r)$ and $P = (2, 9)$. The right triangle from the center to $P$ has legs $r - 2$ and $r - 9$, and its hypotenuse is a radius, $r$.
+
+b. $(r - 2)^2 + (r - 9)^2 = r^2$
+$r^2 - 4r + 4 + r^2 - 18r + 81 = r^2$
+$r^2 - 22r + 85 = 0$
+$(r - 5)(r - 17) = 0$, so $r = 5$ or $r = 17$.
+
+c. $r = 17$ inches. If $r = 5$, the center would be 5 inches from each wall, but $P$ is 9 inches from one wall, farther than the center. Then $P$ would be on the side of the table facing away from the corner, not in the gap between the table and the corner.
+
+
+## Question 6
+
+a. $KL = |[1, 7]| = \sqrt{50}$, $LM = |[-3, -1]| = \sqrt{10}$, $MK = |[2, -6]| = \sqrt{40}$.
+$XZ = |[5, 5]| = \sqrt{50}$, $ZY = |[1, -3]| = \sqrt{10}$, $YX = |[-6, -2]| = \sqrt{40}$.
+All three pairs of corresponding sides are equal, so the triangles are congruent.
+
+b. $K \to L \to M$ goes counterclockwise, but $X \to Z \to Y$ goes clockwise. Rotations and translations keep the order, so this has to be a reflection (or glide-reflection).
+
+c. Midpoint of $KX$: $(-2, 1)$. $\overrightarrow{KX} = [4, -2]$ has slope $-\frac{1}{2}$, so the mirror line has slope 2: $y - 1 = 2(x + 2)$, or $y = 2x + 5$.
+Check: the midpoint of $LZ$ is $(1, 7)$ and $2(1) + 5 = 7$; the midpoint of $MY$ is $(0, 5)$ and $2(0) + 5 = 5$. Also, $\overrightarrow{LZ} = [8, -4]$ and $\overrightarrow{MY} = [12, -6]$ both have slope $-\frac{1}{2}$, perpendicular to the mirror line.
+
+## Question 7
+
+a. $P$: over $x = 1$ gives $(0, 5)$, then over $x = 4$ gives $(8, 5)$. $Q$: over $x = 1$ gives $(5, 0)$, then over $x = 4$ gives $(3, 0)$.
+Both moved by $[6, 0]$: the single transformation is a translation by $[6, 0]$, twice the distance between the lines.
+Opposite order: a translation by $[-6, 0]$.
+
+b. Undo the reflection: $(1, 6) \to (-1, 6)$. Undo the translation: $(-1, 6) + [5, -4] = (4, 2)$. The point started at $(4, 2)$.
+To undo the sequence: reflect over the $y$-axis, then translate by $[5, -4]$ (the steps reversed, in reverse order).

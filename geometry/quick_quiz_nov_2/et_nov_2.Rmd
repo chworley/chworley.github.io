@@ -1,0 +1,73 @@
+---
+title: "Quick Quiz: Nov 2"
+author: ""
+date: ""
+output:
+  pdf_document:
+    latex_engine: pdflatex
+geometry: margin=0.75in
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{tikz}
+  - \usepackage{eso-pic}
+  - \definecolor{gridgray}{gray}{0.8}
+  - |
+    \AddToShipoutPictureBG{%
+    \begin{tikzpicture}[remember picture,overlay]
+    \draw[gridgray, line width=0.3pt, step=0.5cm]
+    (current page.south west) grid (current page.north east);
+    \end{tikzpicture}%
+    }
+---
+
+Name: \vspace{5pt} \hrule
+
+
+# Question 1
+
+For each set of 3 lengths, determine if the triangle is acute, right, obtuse, or impossible. 
+
+* $8$, $\sqrt{5}$, $11$
+
+\vfill
+
+* $3$, $4$, $2\sqrt{6}$
+
+\vfill
+
+* $5$, $6\sqrt{2}$, $10$
+
+\vfill
+
+\newpage
+
+
+# Question 2
+
+Given coordinates of triangle vertices, apply the given transformation by graphing the preimage and image. Label the vertices of the preimage with $A$, $B$, and $C$, and label the vertices of the image with $A'$, $B'$, and $C'$.
+
+* Preimage coordinates are $A(-2,-1)$, $B(3,-1)$, and $C(0,2)$. Apply a translation by vector $[5,-1]$ to produce the image.
+
+
+\vfill
+
+
+* Preimage coordinates are $A(0,0)$, $B(3,1)$, and $C(2,4)$. Apply a reflection over the line $x=-1$.
+
+
+\vfill
+
+
+
+
+
+
+
+
+
+
+
+
+
+

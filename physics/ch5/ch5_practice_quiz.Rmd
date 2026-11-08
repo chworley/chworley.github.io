@@ -1,0 +1,273 @@
+---
+output: pdf_document
+geometry: margin=1in
+fontsize: 12pt
+params:
+  key: false
+---
+
+```{r setup, include=FALSE}
+# Student version: knit normally.
+# Answer key: rmarkdown::render("ch5_practice_quiz.Rmd", params = list(key = TRUE),
+#                               output_file = "ch5_practice_quiz_key.pdf")
+key <- function(ans) if (isTRUE(params$key)) paste0("  **[", ans, "]**") else ""
+# Free-response helpers: blanks for students, answers (with brief work) for the key
+ans <- function(a, work = "") {
+  if (isTRUE(params$key)) paste0("**", a, "**", if (work != "") paste0(" (", work, ")"))
+  else "\\underline{\\hspace{3.5cm}}"
+}
+space <- function(cm = 1.5) if (isTRUE(params$key)) "" else paste0("\\vspace{", cm, "cm}")
+```
+
+Name: \underline{\hspace{6cm}} \hfill 
+
+# Chapter 5 Practice Quiz: Newton's Third Law and Vectors
+
+## Part 1: Choose the best choice
+
+1. A soccer player kicks a ball. The action force is "the foot pushes on the ball." What is the reaction force? `r key("C")`
+
+    A) Earth pulls down on the ball.
+    B) The ball speeds up and moves forward.
+    C) The ball pushes on the player's foot.
+    D) The ground pushes up on the player.
+
+2. You push on a wall with a force of 50 N. How hard does the wall push on you? `r key("C")`
+
+    A) 0 N
+    B) 25 N
+    C) 50 N
+    D) 100 N
+
+3. A book rests on a table. Earth pulls down on the book, and the table pushes up on the book. Are these two forces an action-reaction pair? `r key("D")`
+
+    A) Yes, because they are equal and opposite.
+    B) Yes, because they both act on the book.
+    C) No, because they are not equal in size.
+    D) No, because they both act on the book, and an action-reaction pair acts on two different objects.
+
+4. For the same book, what is the reaction force to "Earth pulls down on the book"? `r key("B")`
+
+    A) The table pushes up on the book.
+    B) The book pulls up on Earth.
+    C) The book pushes down on the table.
+    D) The air pushes up on the book.
+
+5. A swimmer pushes the water backward with her arms. What force moves her forward? `r key("A")`
+
+    A) The water pushes her forward.
+    B) Her arms push her forward.
+    C) Her inertia pushes her forward.
+    D) Gravity pulls her forward.
+    
+\newpage
+
+6. A bug hits the windshield of a moving car. How do the forces compare? `r key("B")`
+
+    A) The bug pushes on the car harder than the car pushes on the bug.
+    B) The forces are equal in size.
+    C) The car pushes on the bug harder than the bug pushes on the car.
+    D) It depends on how fast the car is going.
+
+7. In the same collision, the bug is splattered, but the car barely slows down. Why? `r key("A")`
+
+    A) The bug's acceleration is much greater because it has much less mass.
+    B) The car's acceleration is greater because it is moving faster.
+    C) Their accelerations are equal because the forces are equal.
+    D) The bug's acceleration is greater because the car exerts more force on it.
+
+8. Two ice skaters, one 40 kg and one 80 kg, push off each other. Each skater feels a 120 N push. What is the acceleration of the 40 kg skater? `r key("D")`
+
+    A) 0 m/s^2^, because the forces cancel
+    B) 1 m/s^2^
+    C) 1.5 m/s^2^
+    D) 3 m/s^2^
+
+9. A horse says, "The cart pulls back on me just as hard as I pull on it, so we can never move." What actually lets the horse and cart speed up? `r key("C")`
+
+    A) The horse pulls on the cart harder than the cart pulls back.
+    B) Nothing. The forces between the horse and the cart cancel, so they can't move.
+    C) The ground pushes the horse forward harder than friction holds the cart back.
+    D) The cart has no inertia once it is rolling.
+
+10. An airplane heads north at 80 km/h while the wind blows it east at 60 km/h. What is the plane's speed relative to the ground? `r key("C")`
+
+    A) 20 km/h
+    B) 70 km/h
+    C) 100 km/h
+    D) 140 km/h
+
+11. One rope pulls a box east with a force of 6 N, and another rope pulls it north with a force of 8 N. What is the net force on the box? `r key("B")`
+
+    A) 2 N
+    B) 10 N
+    C) 10 m/s^2^
+    D) 14 N
+    
+\newpage
+
+12. Two forces, 6 N and 8 N, act on the same object. They can point in any directions. Which of these could NOT be the net force? `r key("D")`
+
+    A) 2 N
+    B) 10 N
+    C) 14 N
+    D) 16 N
+
+13. A boat is aimed straight across a river. If the river's current becomes faster, how does that change the time it takes the boat to cross? `r key("A")`
+
+    A) It takes the same time, but it lands farther downstream.
+    B) It takes less time, because the current adds speed.
+    C) It takes more time, because it travels farther.
+    D) The boat cannot reach the other side.
+
+*Read this before answering 14--16.* When a block sits on a ramp, its weight can be split into two components: one **perpendicular** to the ramp (pushing straight into the surface) and one **parallel** to the ramp (pointing down along the slope). The normal force from the ramp balances the perpendicular component. The parallel component is what makes the block want to slide.
+
+14. A block rests on a tilted ramp. Compared to the block's weight, the normal force is: `r key("B")`
+
+    A) zero
+    B) less than its weight
+    C) equal to its weight
+    D) greater than its weight
+
+15. The ramp is made steeper. What happens? `r key("D")`
+
+    A) The normal force increases.
+    B) Both components of the weight increase.
+    C) Nothing changes, because the weight stays the same.
+    D) The parallel component increases, and the normal force decreases.
+
+16. A 20 N block is on a ramp. The ramp is tilted all the way until it is vertical, like a wall. What is the parallel component of the block's weight now? `r key("C")`
+
+    A) 0 N
+    B) 10 N
+    C) 20 N
+    D) 40 N
+    
+\newpage
+
+*Read this before answering 17--19.* When an object hangs from two ropes, the tension in each rope is a vector. The two tension vectors must add up to a resultant that points straight up and exactly balances the object's weight. Only the **vertical** components of the tensions help hold the object up.
+
+17. A 100 N sign hangs from two vertical ropes that share the load equally. What is the tension in each rope? `r key("B")`
+
+    A) 25 N
+    B) 50 N
+    C) 100 N
+    D) 200 N
+
+18. The same 100 N sign is rehung so the two ropes spread out at an angle, closer to horizontal. Now the tension in each rope is: `r key("D")`
+
+    A) zero
+    B) less than 50 N
+    C) exactly 50 N
+    D) more than 50 N
+
+19. Why can a clothesline holding wet clothes never be pulled perfectly straight and horizontal? `r key("A")`
+
+    A) A horizontal rope has no vertical component to hold the clothes up, so the tension would have to be impossibly large.
+    B) The rope is too heavy to be straight.
+    C) Gravity pulls the rope sideways.
+    D) Tension only works in vertical ropes.
+
+For 20--22, choose the law that best explains each situation.
+
+20. Passengers on a bus lurch forward when the bus suddenly stops. `r key("A")`
+
+    A) Newton's first law (inertia)
+    B) Newton's second law (F = ma)
+    C) Newton's third law (action-reaction)
+    D) None of Newton's laws
+
+21. The same push gives an empty shopping cart a greater acceleration than a full one. `r key("B")`
+
+    A) Newton's first law (inertia)
+    B) Newton's second law (F = ma)
+    C) Newton's third law (action-reaction)
+    D) None of Newton's laws
+
+22. A rifle kicks backward into the shooter's shoulder when it is fired. `r key("C")`
+
+    A) Newton's first law (inertia)
+    B) Newton's second law (F = ma)
+    C) Newton's third law (action-reaction)
+    D) None of Newton's laws
+
+
+## Part 2: Free Response
+
+Show your work in the space given. Every number you write must have **units** (for example, 12 N or 3 m/s^2^). When a blank asks for a **direction**, write one of the choices given in that question. Use g = 10 N/kg.
+
+Reminder: when two vectors are at right angles, (resultant)^2^ = (first)^2^ + (second)^2^.
+
+### Action-reaction and F = ma
+
+23. A 60 kg student on roller skates faces a wall and pushes on it with a force of 120 N.
+
+    a) How hard does the wall push on the student? `r ans("120 N")`
+    b) Direction of the wall's push (write "toward the wall" or "away from the wall"): `r ans("away from the wall")`
+    c) What is the student's acceleration? `r ans("2 m/s^2^", "120 N / 60 kg")` `r space()`
+
+24. Two skaters stand face to face and push off each other. Maya has a mass of 50 kg and Leo has a mass of 25 kg. Each pushes on the other with a force of 100 N. After the push, Maya moves east.
+
+    a) What is the force on Leo? `r ans("100 N")`
+    b) Leo's direction (write "east" or "west"): `r ans("west")`
+    c) What is Maya's acceleration? `r ans("2 m/s^2^", "100 N / 50 kg")` `r space()`
+    d) What is Leo's acceleration? `r ans("4 m/s^2^", "100 N / 25 kg")` `r space()`
+
+25. A 1000 kg cannon fires a 10 kg cannonball. The cannon pushes the ball forward with a force of 5000 N.
+
+    a) How hard does the ball push on the cannon? `r ans("5000 N")`
+    b) Direction of the ball's push on the cannon (write "forward" or "backward"): `r ans("backward")`
+    c) What is the cannonball's acceleration? `r ans("500 m/s^2^", "5000 N / 10 kg")` `r space()`
+    d) What is the cannon's acceleration? `r ans("5 m/s^2^", "5000 N / 1000 kg")` `r space()`
+
+### Vectors
+
+26. An airplane heads east at 120 km/h while the wind blows it north at 90 km/h.
+
+    a) What is the plane's speed relative to the ground? `r ans("150 km/h", "120 squared + 90 squared = 22,500 = 150 squared")` `r space(2)`
+    b) Is the plane's path closer to east or closer to north? (write "closer to east" or "closer to north"): `r ans("closer to east")`
+
+27. A boat is aimed straight across a river that is 40 m wide. The boat moves across at 4 m/s, and the current carries it downstream at 3 m/s.
+
+    a) What is the boat's speed relative to the shore? `r ans("5 m/s", "3-4-5 triangle")` `r space()`
+    b) How long does it take the boat to cross? `r ans("10 s", "40 m / 4 m/s")` `r space()`
+    c) How far downstream does the boat land? `r ans("30 m", "3 m/s times 10 s")` `r space()`
+
+28. A 3 kg box sits on frictionless ice. One rope pulls it east with a force of 9 N, and another pulls it north with a force of 12 N.
+
+    a) What is the net force on the box? `r ans("15 N", "3-4-5 triangle times 3")` `r space()`
+    b) What is the box's acceleration? `r ans("5 m/s^2^", "15 N / 3 kg")` `r space()`
+
+29. Two ropes pull on a box. One pulls east with a force of 6 N, and the other pulls west with a force of 8 N.
+
+    a) What is the net force on the box? `r ans("2 N", "8 N - 6 N")` `r space(1)`
+    b) Direction of the net force (write "east" or "west"): `r ans("west")`
+    c) If both ropes pulled east instead, what would the net force be? `r ans("14 N", "6 N + 8 N")` `r space(1)`
+
+30. A ball is thrown with a speed of 10 m/s. The horizontal component of its velocity is 6 m/s. What is the vertical component of its velocity? `r ans("8 m/s", "6-8-10 triangle")` `r space()`
+
+### Forces on a ramp
+
+31. A 50 N block rests on a level floor. What is the normal force on the block? `r ans("50 N")`
+
+32. The same 50 N block is placed on a frictionless ramp. Its weight splits into a perpendicular component of 40 N and a parallel component of 30 N.
+
+    a) What is the normal force on the block? `r ans("40 N", "balances the perpendicular component")`
+    b) Direction of the normal force (write "into the ramp's surface" or "out of the ramp's surface"): `r ans("out of the ramp's surface")`
+    c) What is the net force on the block? `r ans("30 N", "the parallel component")`
+    d) Direction of the net force (write "up the ramp" or "down the ramp"): `r ans("down the ramp")`
+    e) What is the block's mass? `r ans("5 kg", "50 N / 10 N/kg")` `r space()`
+    f) What is the block's acceleration? `r ans("6 m/s^2^", "30 N / 5 kg")` `r space()`
+
+### Tension
+
+33. An 80 N lamp hangs from two vertical ropes that share the load equally.
+
+    a) What is the tension in each rope? `r ans("40 N", "80 N / 2")` `r space(1)`
+    b) If one rope is cut and the lamp hangs from the other rope alone, what is the tension in that rope? `r ans("80 N")`
+
+34. A 120 N picture hangs from two ropes that make equal angles, like an upside-down V.
+
+    a) Together, how much upward force must the two ropes provide? `r ans("120 N")`
+    b) What is the vertical component of the tension in each rope? `r ans("60 N", "120 N / 2")` `r space(1)`
+    c) The horizontal component of the tension in each rope is 80 N. What is the tension in each rope? `r ans("100 N", "60 squared + 80 squared = 10,000 = 100 squared")` `r space(2)`
