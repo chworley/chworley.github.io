@@ -1,31 +1,37 @@
-sss = "<!DOCTYPE html>
-<html>
-<head>
-<meta charset='utf-8' />
-<title>Worley Files</title>
-</head>
-<body>
+# Builds index.html: a page of links to every .html and .pdf file in this
+# folder and all subfolders. Run it from the root folder of the website
+# (the folder that holds the chworley.github.io repo).
 
-"
+base_url <- "https://chworley.github.io/"
 
-ddd = list.dirs("./",TRUE,TRUE)
-for(dir in ddd){
-  fls = list.files(dir)
-  for(fl in fls){
-    if(grepl(".html",fl,fixed=T) || grepl(".pdf",fl,fixed=T)){
-      s1 = paste0(substring(dir,3),"/",fl,collapse="")
-      sss = paste0(sss,"<a href=https://chworley.github.io",s1,">",s1,"</a><br>")
-    }
-    if(grepl(".html",fl,fixed=T) && grepl("examp",fl,fixed=T)){ 
-      s1 = paste0(substring(dir,3),"/",fl,collapse="")
-      sss = paste0(sss,"<a href=https://chworley.github.io",s1,">",s1,"</a><br>")
-    }
-  }
-}
+# Every .html and .pdf file, as paths like "physics/Ch 4 Quiz.pdf".
+# recursive = TRUE searches subfolders; hidden folders like .git are skipped.
+files <- list.files(".", pattern = "\\.(html|pdf)$",
+                    recursive = TRUE, ignore.case = TRUE)
 
-sss = paste0(sss,"</body>")
+# Don't link the index page to itself
+files <- files[files != "index.html"]
 
-fileConn<-file("index.html")
-writeLines(sss, fileConn)
-close(fileConn)
+# Link text: escape characters that have special meaning in HTML
+link_text <- gsub("&", "&amp;", files, fixed = TRUE)
+link_text <- gsub("<", "&lt;", link_text, fixed = TRUE)
+link_text <- gsub(">", "&gt;", link_text, fixed = TRUE)
 
+# Link address: URLencode turns spaces into %20 but keeps the slashes
+links <- paste0('<a href="', base_url, URLencode(files), '">',
+                link_text, '</a><br>')
+
+page <- c("<!DOCTYPE html>",
+          "<html>",
+          "<head>",
+          "<meta charset='utf-8' />",
+          "<title>Worley Files</title>",
+          "</head>",
+          "<body>",
+          "",
+          links,
+          "",
+          "</body>",
+          "</html>")
+
+writeLines(page, "index.html")
